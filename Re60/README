@@ -1,0 +1,2 @@
+Re40: single VTK file, time independent solution
+Re60: many VTK files, delta t = 0.2s, Period ~ 8s, see the v_t.csv (v at x=3,y=0 over time) for the period info 

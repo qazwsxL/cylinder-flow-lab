@@ -1,0 +1,8 @@
+usage: cfp40.py [-h] --vtk-path VTK_PATH [--save-dir SAVE_DIR]
+                [--viz-dir VIZ_DIR] [--width WIDTH] [--depth DEPTH]
+                [--epochs-adam EPOCHS_ADAM] [--maxiter-bfgs MAXITER_BFGS]
+                [--iters-per-batch ITERS_PER_BATCH] [--n-f N_F]
+                [--n-data N_DATA] [--lr-adam LR_ADAM] [--gtol-bfgs GTOL_BFGS]
+                [--lift-delta LIFT_DELTA] [--seed SEED] [--device DEVICE]
+                [--viz-only]
+cfp40.py: error: unrecognized arguments: train_re40_final2.log
