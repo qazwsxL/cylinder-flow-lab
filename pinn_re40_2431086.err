@@ -1,0 +1,4 @@
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1048: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/var/spool/slurmd/job2431086/slurm_script: line 25: 642516 Killed                  python -u cfp40.py --vtk-path Re40.vtk --save-dir checkpoints_re40_v2 --viz-dir viz_re40_v2 --width 128 --depth 6 --epochs-adam 4000 --maxiter-bfgs 12000 --iters-per-batch 200 --n-f 50000 --n-data 20000 --n-cfd-pde 12000 --lambda-pde-cfd 2.0 --cfd-pde-wall-buffer 0.5 --cfd-pde-edge-buffer 0.5 --method-bfgs SSBroyden1
+[2026-05-07T02:17:31.933] error: Detected 1 oom_kill event in StepId=2431086.batch. Some of the step tasks have been OOM Killed.

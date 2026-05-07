@@ -1,0 +1,19 @@
+CFD-PDE residual diagnostic for Re40.vtk
+Re = 40.0
+interior points used: 3378/8234
+k-nearest neighbours: 12
+
+quantity                        mean        median           p90           p99           max
+|continuity|               3.788e-03     4.043e-04     1.237e-02     3.923e-02     7.432e-02
+|vorticity|                3.228e-01     3.604e-02     9.254e-01     3.388e+00     4.497e+00
+|vort transport|           4.331e-01     2.146e-03     1.103e-01     1.587e+01     3.174e+01
+
+INTERPRETATION
+--------------
+|continuity|        : how well the CFD field is divergence-free.
+|vort transport|    : steady NS residual after eliminating pressure.
+                      This is the FLOOR for any PDE-respecting fit.
+                      If p99 of |vort transport| ~ 1e-3 then a PINN
+                      that ALSO satisfies the PDE cannot get data MAE
+                      much below ~1e-3 either, regardless of n_f, depth,
+                      or training time.
