@@ -1128,6 +1128,65 @@ def train_re40_single(model: nn.Module,
     os.makedirs(save_dir, exist_ok=True)
     dataset = SingleSnapshotDataset(snapshot, device=device)
 
+    # ---------- pre-flight memory check for full-matrix BFGS ----------
+    # SSBroyden / standard BFGS keep the dense inverse-Hessian H0, an N x N
+    # float64 array where N is the parameter count. With width=128, depth=6
+    # that is ~52 GB. SLURM jobs typically have 32 GB and OOM-kill on entry
+    # to BFGS. Fail loudly here so you don't wait through Adam first.
+    if maxiter_bfgs > 0:
+        n_params = sum(p.numel() for p in model.parameters())
+        h0_bytes = n_params * n_params * 8  # float64
+        h0_gb = h0_bytes / (1024 ** 3)
+        # Try to read SLURM allocation; fall back to /proc/meminfo on the node.
+        slurm_mem_mb = os.environ.get("SLURM_MEM_PER_NODE")
+        budget_gb = None
+        if slurm_mem_mb is not None:
+            try:
+                budget_gb = float(slurm_mem_mb) / 1024.0
+            except ValueError:
+                budget_gb = None
+        if budget_gb is None:
+            try:
+                with open("/proc/meminfo") as f:
+                    for line in f:
+                        if line.startswith("MemAvailable:"):
+                            kb = int(line.split()[1])
+                            budget_gb = kb / (1024 ** 2)
+                            break
+            except Exception:
+                budget_gb = None
+
+        print(f"[mem ] params={n_params}  H0 (NxN float64) = {h0_gb:.2f} GB"
+              + (f"  available ~ {budget_gb:.1f} GB" if budget_gb is not None else ""))
+        # Two thresholds:
+        #   - hard abort: budget < 1.5 * H0 + 4 GB. There is literally no way
+        #     to even allocate H0 plus the symmetrize copy.
+        #   - soft warn:  budget < 3.5 * H0 + 8 GB. The SSBroyden1 update line
+        #     (Hk - outer(Hkyk,Hkyk)/c + ... + outer(sk,sk)*rho) creates 3
+        #     temporary N x N matrices in one numpy expression, so peak can
+        #     hit ~3-4 x H0.
+        hard_min_gb = 1.5 * h0_gb + 4.0
+        soft_min_gb = 3.5 * h0_gb + 8.0
+        if budget_gb is not None and budget_gb < hard_min_gb:
+            msg = (
+                f"\n[ABORT] BFGS will OOM:\n"
+                f"        H0 alone = {h0_gb:.1f} GB,  hard minimum ~ {hard_min_gb:.1f} GB,\n"
+                f"        but only {budget_gb:.1f} GB available.\n"
+                f"        Choose ONE of:\n"
+                f"          (a) shrink the network: --width 96 --depth 5  (38k params, H0 ~ 11.6 GB)\n"
+                f"                                  --width 64 --depth 6  (21k params, H0 ~  3.4 GB)\n"
+                f"          (b) raise SBATCH --mem to >= {int(soft_min_gb + 2)}G\n"
+                f"          (c) skip BFGS: --maxiter-bfgs 0\n"
+            )
+            raise SystemExit(msg)
+        if budget_gb is not None and budget_gb < soft_min_gb:
+            print(f"[mem ] WARNING: budget {budget_gb:.1f} GB < soft min "
+                  f"{soft_min_gb:.1f} GB. SSBroyden update peaks 3-4x H0 due "
+                  f"to NxN outer products; you may OOM mid-batch.")
+        if budget_gb is None and h0_gb > 8.0:
+            print(f"[mem ] note: H0 = {h0_gb:.1f} GB float64; if your SLURM --mem is "
+                  f"< {int(soft_min_gb)}G expect possible OOM during BFGS update.")
+
     print("=" * 60)
     print(f"Phase 1 — Adam ({epochs_adam} epochs)")
     print("Goal: match CFD while improving PDE and enforcing wall no-slip exactly")
