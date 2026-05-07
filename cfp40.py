@@ -1,7 +1,9 @@
 
 import os
+import sys
 import math
 import argparse
+import warnings
 from dataclasses import dataclass
 
 import numpy as np
@@ -18,6 +20,33 @@ try:
     import pyvista as pv
 except Exception:
     pv = None
+
+
+# ----------------------------------------------------------------------
+# Custom BFGS (SSBroyden / SSBFGS variants) — must be loaded explicitly,
+# scipy's stock _minimize_bfgs does NOT accept the `method_bfgs` option
+# and will silently fall back to standard BFGS if you only pass
+# method="BFGS". Mirrors the pattern used in cfp.py.
+# ----------------------------------------------------------------------
+_OPT_DIR_CANDIDATES = [
+    os.path.dirname(os.path.abspath(__file__)),
+    "/oscar/home/jchen790/cylinder flow lab",
+]
+_CUSTOM_MIN_BFGS = None
+for _d in _OPT_DIR_CANDIDATES:
+    if _d and _d not in sys.path:
+        sys.path.insert(0, _d)
+try:
+    from _optimize import _minimize_bfgs as _CUSTOM_MIN_BFGS  # type: ignore
+    print("[OK] _optimize._minimize_bfgs loaded — SSBroyden / SSBFGS variants available")
+except Exception as _e:
+    warnings.warn(
+        f"_optimize._minimize_bfgs NOT loaded ({_e}). "
+        "BFGS will silently fall back to scipy's standard BFGS — "
+        "SSBroyden1 / SSBroyden2 / SSBFGS_OL / SSBFGS_AB will be IGNORED.",
+        RuntimeWarning,
+    )
+    _CUSTOM_MIN_BFGS = None
 
 
 # ==========================================================
@@ -268,20 +297,40 @@ class SingleSnapshotDataset:
         self.snapshot = snapshot
         self.device = device
 
-    def _domain_candidate_ids(self, xlim=None, ylim=None, radius: float = 0.5):
-        """Return CFD fluid-cell ids inside the current PDE box."""
+    def _domain_candidate_ids(self, xlim=None, ylim=None, radius: float = 0.5,
+                               wall_buffer: float = 0.0, edge_buffer: float = 0.0):
+        """
+        Return CFD fluid-cell ids inside the current PDE box.
+
+        wall_buffer  : exclude CFD points whose distance to the cylinder is < this.
+        edge_buffer  : exclude CFD points within this distance of the box boundary.
+
+        Use a positive buffer when sampling CFD points for the PDE residual
+        loss: the boundary-layer cells in coarse CFD are NOT a good PDE
+        solution (diagnose_cfd_pde.py confirms residuals of 1~10 there) and
+        forcing the PINN to satisfy the PDE on those points fights the data
+        loss and stalls training.
+        """
         s = self.snapshot
         x = s.x
         y = s.y
         domain_mask = np.ones_like(x, dtype=bool)
         if xlim is not None:
-            domain_mask &= (x >= float(xlim[0])) & (x <= float(xlim[1]))
+            x0 = float(xlim[0]) + edge_buffer
+            x1 = float(xlim[1]) - edge_buffer
+            domain_mask &= (x >= x0) & (x <= x1)
         if ylim is not None:
-            domain_mask &= (y >= float(ylim[0])) & (y <= float(ylim[1]))
-        domain_mask &= ((x ** 2 + y ** 2) >= radius ** 2)
+            y0 = float(ylim[0]) + edge_buffer
+            y1 = float(ylim[1]) - edge_buffer
+            domain_mask &= (y >= y0) & (y <= y1)
+        eff_R = float(radius) + float(wall_buffer)
+        domain_mask &= ((x ** 2 + y ** 2) >= eff_R ** 2)
         ids = np.where(domain_mask)[0]
         if len(ids) == 0:
-            raise ValueError(f"No CFD fluid points remain inside domain xlim={xlim}, ylim={ylim}")
+            raise ValueError(
+                f"No CFD fluid points remain inside domain xlim={xlim}, ylim={ylim}, "
+                f"wall_buffer={wall_buffer}, edge_buffer={edge_buffer}"
+            )
         return ids
 
     def _sample_ids(self, ids, n):
@@ -356,10 +405,14 @@ class SingleSnapshotDataset:
         v = torch.tensor(s.v[ids], dtype=torch.float32, device=self.device).view(-1, 1)
         return t, x, y, u, v
 
-    def sample_domain_xy(self, n_total: int, xlim=None, ylim=None, radius: float = 0.5):
+    def sample_domain_xy(self, n_total: int, xlim=None, ylim=None, radius: float = 0.5,
+                          wall_buffer: float = 0.0, edge_buffer: float = 0.0):
         """Sample CFD mesh points for PDE residual, biased toward high-error wake zones."""
         s = self.snapshot
-        all_ids = self._domain_candidate_ids(xlim=xlim, ylim=ylim, radius=radius)
+        all_ids = self._domain_candidate_ids(
+            xlim=xlim, ylim=ylim, radius=radius,
+            wall_buffer=wall_buffer, edge_buffer=edge_buffer,
+        )
         broad_ids, core_ids = self._wake_id_sets(all_ids, xlim=xlim, ylim=ylim)
 
         n_core = int(0.50 * n_total)
@@ -643,7 +696,8 @@ def compute_total_loss(model, dataset, device, epoch, n_f, n_data, Re, t_value,
                        fixed_weights=None,
                        x_f=None, y_f=None, t_f=None,
                        xlim=(-3.0, 12.0), ylim=(-4.0, 4.0),
-                       n_cfd_pde=0, lambda_pde_cfd=1.0):
+                       n_cfd_pde=0, lambda_pde_cfd=1.0,
+                       cfd_pde_wall_buffer=0.0, cfd_pde_edge_buffer=0.0):
     if x_f is None:
         (x_f, y_f, t_f), (t_d, x_d, y_d, u_d, v_d) = sample_training_batches(
             dataset=dataset,
@@ -662,7 +716,8 @@ def compute_total_loss(model, dataset, device, epoch, n_f, n_data, Re, t_value,
 
     if n_cfd_pde > 0:
         t_cfd_pde, x_cfd_pde, y_cfd_pde = dataset.sample_domain_xy(
-            n_cfd_pde, xlim=xlim, ylim=ylim, radius=0.5
+            n_cfd_pde, xlim=xlim, ylim=ylim, radius=0.5,
+            wall_buffer=cfd_pde_wall_buffer, edge_buffer=cfd_pde_edge_buffer,
         )
         loss_pde_cfd = compute_pde_loss(model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
     else:
@@ -742,7 +797,8 @@ def save_training_state(model, save_dir, epoch, best_loss, stage, extra_state=No
 def run_adam(model, dataset, device, save_dir,
              epochs_adam, n_f, n_data, lr_adam, Re, t_value,
              xlim=(-3.0, 12.0), ylim=(-4.0, 4.0),
-             n_cfd_pde=0, lambda_pde_cfd=1.0):
+             n_cfd_pde=0, lambda_pde_cfd=1.0,
+             cfd_pde_wall_buffer=0.0, cfd_pde_edge_buffer=0.0):
     os.makedirs(save_dir, exist_ok=True)
     best_loss = float("inf")
     adam = torch.optim.Adam(model.parameters(), lr=lr_adam)
@@ -767,6 +823,8 @@ def run_adam(model, dataset, device, save_dir,
             ylim=ylim,
             n_cfd_pde=n_cfd_pde,
             lambda_pde_cfd=lambda_pde_cfd,
+            cfd_pde_wall_buffer=cfd_pde_wall_buffer,
+            cfd_pde_edge_buffer=cfd_pde_edge_buffer,
         )
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
@@ -833,7 +891,9 @@ def run_scipy_bfgs(model: nn.Module,
                    n_cfd_pde: int = 0,
                    lambda_pde_cfd: float = 1.0,
                    full_data_bfgs: bool = True,
-                   frozen_colloc_bfgs: bool = True):
+                   frozen_colloc_bfgs: bool = True,
+                   cfd_pde_wall_buffer: float = 0.0,
+                   cfd_pde_edge_buffer: float = 0.0):
     os.makedirs(save_dir, exist_ok=True)
 
     best = {"loss": float("inf")}
@@ -860,6 +920,7 @@ def run_scipy_bfgs(model: nn.Module,
         if n_cfd_pde > 0:
             t_cfd_fix, x_cfd_fix, y_cfd_fix = dataset.sample_domain_xy(
                 n_cfd_pde, xlim=xlim, ylim=ylim, radius=0.5,
+                wall_buffer=cfd_pde_wall_buffer, edge_buffer=cfd_pde_edge_buffer,
             )
         else:
             t_cfd_fix = x_cfd_fix = y_cfd_fix = None
@@ -968,13 +1029,26 @@ def run_scipy_bfgs(model: nn.Module,
             f"DATA={last['data']:.3e}"
         )
 
+    if _CUSTOM_MIN_BFGS is None and method_bfgs not in ("BFGS", "BFGS_scipy"):
+        warnings.warn(
+            f"Requested method_bfgs='{method_bfgs}' but custom _optimize is not "
+            f"available. Falling back to scipy standard BFGS — expect to plateau "
+            f"around 1e-3 instead of reaching 1e-6.",
+            RuntimeWarning,
+        )
+
+    use_custom = _CUSTOM_MIN_BFGS is not None
+    bfgs_method = _CUSTOM_MIN_BFGS if use_custom else "BFGS"
+    print(f"[BFGS] using {'CUSTOM _optimize._minimize_bfgs' if use_custom else 'scipy stock BFGS'} "
+          f"(method_bfgs='{method_bfgs}')")
+
     while total_calls["n"] < maxiter:
         batch_no["i"] += 1
 
         result = minimize(
             loss_and_gradient,
             initial_weights,
-            method="BFGS",
+            method=bfgs_method,
             jac=True,
             options={
                 "maxiter": iters_per_batch,
@@ -1047,7 +1121,9 @@ def train_re40_single(model: nn.Module,
                       n_cfd_pde: int = 0,
                       lambda_pde_cfd: float = 1.0,
                       full_data_bfgs: bool = True,
-                      frozen_colloc_bfgs: bool = True):
+                      frozen_colloc_bfgs: bool = True,
+                      cfd_pde_wall_buffer: float = 0.0,
+                      cfd_pde_edge_buffer: float = 0.0):
 
     os.makedirs(save_dir, exist_ok=True)
     dataset = SingleSnapshotDataset(snapshot, device=device)
@@ -1071,6 +1147,8 @@ def train_re40_single(model: nn.Module,
         ylim=ylim,
         n_cfd_pde=n_cfd_pde,
         lambda_pde_cfd=lambda_pde_cfd,
+        cfd_pde_wall_buffer=cfd_pde_wall_buffer,
+        cfd_pde_edge_buffer=cfd_pde_edge_buffer,
     )
 
     if maxiter_bfgs > 0:
@@ -1100,6 +1178,8 @@ def train_re40_single(model: nn.Module,
             lambda_pde_cfd=lambda_pde_cfd,
             full_data_bfgs=full_data_bfgs,
             frozen_colloc_bfgs=frozen_colloc_bfgs,
+            cfd_pde_wall_buffer=cfd_pde_wall_buffer,
+            cfd_pde_edge_buffer=cfd_pde_edge_buffer,
         )
 
     print(f"[train] Saved -> {os.path.join(save_dir, 'pinn_Re40_single.pt')}")
@@ -1251,6 +1331,16 @@ def parse_args():
                    help="Multiplier on CFD-grid PDE residual inside total PDE loss. "
                         "Mentor's second point — push the PDE to be satisfied right at "
                         "the points where we are matching data.")
+    # Diagnostics on Re40.vtk show CFD has |vort transport| ~ 1~10 inside the
+    # 0.5-thick band around the cylinder/box (boundary layer + far-field
+    # under-resolution). Enforcing PDE residual on those CFD points is
+    # numerically a contradiction. Defaults exclude that band.
+    p.add_argument("--cfd-pde-wall-buffer", type=float, default=0.5,
+                   help="Skip CFD points within this distance of the cylinder when "
+                        "evaluating PDE residual on the CFD grid.")
+    p.add_argument("--cfd-pde-edge-buffer", type=float, default=0.5,
+                   help="Skip CFD points within this distance of the PDE box edges "
+                        "when evaluating PDE residual on the CFD grid.")
     # Use the full CFD point cloud for data fitting in BFGS phase. Random
     # subsampling injects noise into the gradient that BFGS cannot tolerate
     # below ~1e-4. With this flag every BFGS evaluation sees ALL CFD points
@@ -1322,6 +1412,8 @@ def main():
             lambda_pde_cfd=args.lambda_pde_cfd,
             full_data_bfgs=args.full_data_bfgs,
             frozen_colloc_bfgs=args.frozen_colloc_bfgs,
+            cfd_pde_wall_buffer=args.cfd_pde_wall_buffer,
+            cfd_pde_edge_buffer=args.cfd_pde_edge_buffer,
         )
 
     visualize_re40_single(
