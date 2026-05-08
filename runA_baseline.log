@@ -1,0 +1,12 @@
+[OK] _optimize._minimize_bfgs loaded — SSBroyden / SSBFGS variants available
+[warn] CUDA not available, falling back to CPU.
+Loaded Re40.vtk  cells=8234
+Model: width=96, depth=5, params=38018
+Loss weights: adaptive during Adam, frozen during BFGS
+Cylinder no-slip: enforced hard through stream-function lifting
+CFD-aware PDE residual: n_cfd_pde=4000, lambda_pde_cfd=2.0
+[mem ] params=38018  H0 (NxN float64) = 10.77 GB  available ~ 155.7 GB
+============================================================
+Phase 1 — Adam (1500 epochs)
+Goal: match CFD while improving PDE and enforcing wall no-slip exactly
+============================================================
