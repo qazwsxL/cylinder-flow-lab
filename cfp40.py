@@ -1158,15 +1158,17 @@ def train_re40_single(model: nn.Module,
 
         print(f"[mem ] params={n_params}  H0 (NxN float64) = {h0_gb:.2f} GB"
               + (f"  available ~ {budget_gb:.1f} GB" if budget_gb is not None else ""))
-        # Two thresholds:
-        #   - hard abort: budget < 1.5 * H0 + 4 GB. There is literally no way
-        #     to even allocate H0 plus the symmetrize copy.
-        #   - soft warn:  budget < 3.5 * H0 + 8 GB. The SSBroyden1 update line
-        #     (Hk - outer(Hkyk,Hkyk)/c + ... + outer(sk,sk)*rho) creates 3
-        #     temporary N x N matrices in one numpy expression, so peak can
-        #     hit ~3-4 x H0.
-        hard_min_gb = 1.5 * h0_gb + 4.0
-        soft_min_gb = 3.5 * h0_gb + 8.0
+        # Two thresholds (calibrated against an actual OOM at width=96, depth=5,
+        # mem=48G in batch 2 of SSBroyden1):
+        #   - hard abort: budget < 1.2 * H0 + 2 GB. Cannot even allocate H0.
+        #   - soft warn:  budget < 7 * H0 + 8 GB. The SSBroyden1 update line
+        #         Hk = (Hk - outer(Hkyk,Hkyk)/c + phi*outer(vk,vk))/tau
+        #              + outer(sk,sk)*rho
+        #     allocates ~6-7 transient N x N matrices in one numpy expression
+        #     plus ~2 more during the inter-batch hess_inv copy and
+        #     symmetrize step, peaking at ~6-8 x H0.
+        hard_min_gb = 1.2 * h0_gb + 2.0
+        soft_min_gb = 7.0 * h0_gb + 8.0
         if budget_gb is not None and budget_gb < hard_min_gb:
             msg = (
                 f"\n[ABORT] BFGS will OOM:\n"
