@@ -9,13 +9,20 @@
 
 1. 修了一个之前没察觉的 bug：BFGS 阶段实际上一直跑的是 **scipy 标准 BFGS**，
    不是 SSBroyden——`method_bfgs="SSBroyden1"` 这个 option 被 scipy 静默吞掉了。
-   修好之后，BFGS 阶段第一次真正起作用，data MSE 从 ~8·10⁻³ 直接掉到 ~2.4·10⁻⁴。
-2. 按你之前的两条建议（"加点"、"看 CFD 是不是 PDE 的解"），各做了独立诊断：
-   - 加点确实有用，但**边际效用递减**，从 8e-4 量级再往下 1.5× 左右就到顶。
-   - **CFD 自己**在 Re40 网格上的 NS 残差 median ≈ 1·10⁻³，
-     这给"既要 fit 数据又要 satisfy PDE 的 PINN" 设了一个物理硬地板。
-3. 因此，把 PINN 的**绝对速度误差压到 1e-4 ~ 1e-5** 在当前这份 CFD 上做不到。
-   要做就必须换更细的 CFD 网格，或者把 PINN 当作"纯插值器"用（PDE 权重压到很低）。
+   修好之后 BFGS 阶段第一次真正起作用，**training-time** data MSE 从 ~8·10⁻³
+   降到 ~2.4·10⁻⁴。
+2. 但用 `analysis_updated_re40_clean` 在 4869 个 CFD 点上**真正评估**之后发现，
+   全网格 MAE 只有 **0.125**（不是我从 training log 推算的 1.5·10⁻²）。差 8×。
+   原因：训练时 data 采样 `wake_frac=0.8` 偏向尾流，把入口和远场误差遮住了。
+   **教训：用 training log 判断进度不可靠，必须每阶段在全网格上跑 evaluate。**
+3. 按你"加点降 loss"和"看 CFD 是不是 PDE 解"两条建议，各做了独立诊断：
+   - 加点（Run A 20k → Run B 80k）有用但**边际递减**——两个 run 都跑完
+     500 calls，training-DATA plateau 从 2.32·10⁻⁴ 降到 1.46·10⁻⁴（1.6× 降）；
+     按 sqrt-ratio 推算全网格 MAE 从 0.125 → 约 0.099（21% 改善）。
+   - **CFD 自己**在 Re40 网格上的稳态涡量输运残差 median ≈ 1.4·10⁻³，
+     给"既 fit data 又 satisfy PDE 的 PINN"设了物理硬地板。
+   - 结论：**1e-4 ~ 1e-5 的目标在这份 CFD 上不可达**，要么换 CFD 网格，
+     要么放弃 PDE 约束。
 
 ---
 
@@ -68,9 +75,26 @@ result = scipy.optimize.minimize(
 启动时打印一行 `[BFGS] using CUSTOM _optimize._minimize_bfgs`
 确保不会再被无声坑一次。
 
-**效果**：BFGS 阶段 data MSE 从 8.2·10⁻³ → 2.4·10⁻⁴（30× 改善），
-对应 MAE 从 6.3·10⁻² → 1.5·10⁻²，**比之前总改善 4 倍**。
-这是这次最大单点收益。
+**效果（training log）**：BFGS 阶段 data MSE 从 8.2·10⁻³ → 2.4·10⁻⁴（30× 改善）。
+
+**真实评估（全网格 4869 点，见 analysis_runA/summary.txt）**：
+```
+mae_u = 0.125,   mae_v = 0.068,   rel_l2_uv = 0.238
+```
+比原始（mae_u ≈ 6.3·10⁻²）**反而差了 2×**。这一点出乎我意料。
+
+**原因诊断**：
+- 训练时 data 采样器 `wake_frac=0.8`，80% 点取自尾流（PINN 在那里拟合得好）。
+  完整 4869 点评估包含远场 + 入口 + 上下边界——那些位置 PINN 误差大得多。
+- 入口处 rmse(u−1) = 0.196（这是直接报出来的诊断值）。看图能看到
+  入口 u 在 [0.5, 1.2] 之间晃，离 target=1 差很远。
+- 训练 log 里 inlet/top_bottom 的权重被自适应权重压到 0.7~1.0，
+  PINN 觉得"反正这块儿数据点少（不在 wake_frac 里），少管点没事"。
+
+**修法（下一阶段）**：
+- 评估永远在全网格上跑，别看 training log 的 DATA 项。
+- 把 inlet/top_bottom 的固定权重至少 ×3。
+- 或干脆 `wake_frac=0.4` 让训练采样更均匀。
 
 ---
 
@@ -150,24 +174,56 @@ Run A 实际测到的是 **3·10⁻¹⁵**，量级完全对得上。✓
 
 ---
 
-## 4. 加点的对照实验
+## 4. Run A vs Run B —— 加点对照
 
 按你"加点能降 loss"的建议，在同样的 1500 Adam + 500 BFGS 预算下做 A/B：
 
-| Run | n_f | n_cfd_pde | data MSE @ BFGS call 100 | data MSE @ call 200 |
-|---|---|---|---|---|
-| A (baseline)  | 20000 | 4000  | 1.40·10⁻³ | 5.0·10⁻⁴ |
-| B (4× points) | 80000 | 16000 | **8.1·10⁻⁴** | ~3.5·10⁻⁴ (推算) |
+| 项目 | Run A | Run B |
+|---|---|---|
+| n_f               | 20 000 | 80 000 (4×) |
+| n_cfd_pde         | 4 000  | 16 000 (4×) |
+| n_data            | 8 000  | 8 000  |
+| Adam epochs       | 1 500  | 1 500  |
+| BFGS calls        | 500 | 500 |
+| 网络              | 96 / 5 | 96 / 5 |
 
-**观察**：
-- 加点确实让早期收敛快 1.5×，特别是 BFGS 前 100 calls。
-- 但 BFGS batch 2 之后 Run A 已经卡在 plateau 2.4·10⁻⁴，再多 calls 不动。
-  Run B 估计 plateau ~ 1.5·10⁻⁴。
-- **边际效用递减**：4× 的点换来不到 2× 的 loss 改善。
+### 4.1 Trajectory 对比（training-time data MSE）
 
-**为什么会卡**：在 plateau 处，data 项和 PDE 项贡献几乎等量
-（w_data·data ≈ w_pde·pde ≈ 1.3·10⁻³），优化器在两个目标的
-Pareto 前沿上找平衡。再加点没用，得改权重比或者动数据本身。
+```
+              Run A         Run B
+call  50    8.96·10⁻³    7.74·10⁻³
+call 100    1.40·10⁻³    8.08·10⁻⁴   ← B 比 A 低 1.7×
+call 107    9.40·10⁻⁴    6.30·10⁻⁴   ← B 比 A 低 1.5×
+plateau     2.32·10⁻⁴    1.46·10⁻⁴   ← B 比 A 低 1.6×
+```
+
+Run A 的 BFGS 在 call ~220 之后卡在 plateau ≈ 2.32·10⁻⁴；
+Run B 在 call ~250 之后卡在 plateau ≈ 1.46·10⁻⁴。
+
+### 4.2 推算 Run B 全网格 MAE
+
+由 Run A 实测 mae_u = 0.125 对应 training-DATA = 2.32·10⁻⁴，
+按 sqrt-ratio 推 Run B：
+
+$$
+\text{mae}_u^{(B)} \;\approx\; 0.125 \cdot \sqrt{1.46\!\times\!10^{-4} / 2.32\!\times\!10^{-4}}
+\;\approx\; 0.125 \times 0.793 \;\approx\; 0.099
+$$
+
+对应 mae_v ≈ 0.054。
+
+（注：这是基于"误差均匀缩放"的粗估；要精确数字需要在 Run B 的
+checkpoint 上跑一遍 `run_analysis_re40.py --save-dir checkpoints_sanity_B`。）
+
+### 4.3 结论
+
+- **加点确实有用，但边际递减**：n_f 从 20k 加到 80k（4×）换来 training-DATA
+  plateau 1.6× 降低，对应 MAE 改善 ~21%。
+- **plateau 的本质**：在 plateau 处 w_data·data ≈ w_pde·pde（两边贡献等量），
+  优化器在 data-PDE 的 Pareto 前沿上找平衡。再加 colloc 点只缩小蒙特卡洛
+  噪声、不改变 Pareto 前沿——所以从 80k 再加到 320k 估计也只能再降一档。
+- **真正能突破 plateau 的杠杆**是改权重比 + 重采样数据分布，
+  不是单纯加点。
 
 ---
 
@@ -234,23 +290,90 @@ data MAE 的物理下限就在 ~10⁻³ 这一档**——这次 Run A 的 1.5·1
 
 **Run A 最终状态**（96/5 网络，1500 Adam + 500 BFGS calls）：
 
+| 指标 | Training log | 全网格评估（4869 点） |
+|---|---|---|
+| data MSE       | 2.4·10⁻⁴ | (没直接报，对应 mae²≈1.6·10⁻²) |
+| **mae_u**       | — | **0.125** |
+| **mae_v**       | — | **0.068** |
+| **rel_l2_uv**   | — | **0.238** |
+| PDE rmse_mag   | 4.3·10⁻⁴ | 0.366（near_cyl 0.85，far 0.058，比 15:1）|
+| L_wall_uv      | 3·10⁻¹⁵ | max\|u\|=2.0·10⁻⁷, max\|v\|=1.4·10⁻⁷ ✓ |
+| inlet rmse(u−1)| — | **0.196**（比预期高很多）|
+| top/bottom rmse(u−1) | — | 0.169 / 0.154 |
+| vorticity rmse | — | 2.71（CFD peak ±8.1）|
+
+相比原始（mae≈0.063）**实际反而差了 2×**——但 PDE 残差降了，
+说明 PINN 现在更"满足 PDE"但更不"匹配 data"。这是权重设定问题，不是模型容量问题。
+
+**下一步：mentor 给的两阶段策略**
+
+Mentor 听完汇报后给的方案——**比单纯调权重/加点更聪明**：
+
+**Phase 1（data-only）**：把 PDE 完全关掉（`--data-only`），让 PINN 当
+**纯插值器**去拟合所有 4869 个 CFD 点。这一步的目的是：把 CFD 的"真值场"
+重建出来，不让 PDE 干扰。
+
+**Phase 2（resume + 开 PDE）**：从 Phase 1 的 checkpoint 接着训，把 PDE
+打开。这时 BFGS 一开始报的 PDE 残差直接告诉我们"**纯数据拟合的场到底
+违反 NS 多少**"。如果残差小，说明 CFD 跟我们的 NS setup 是一致的；
+如果残差大、且 BFGS 必须把 data loss 抬高才能压下去，说明 CFD 跟 NS
+本身就矛盾。
+
+**为什么这个方法比之前我做的 `diagnose_cfd_pde.py` 好**：
+- `diagnose_cfd_pde.py` 用局部二次拟合算 NS 残差，对 CFD 网格上的噪声敏感，
+  剪切层附近 p99 跳到 1.6
+- PINN 当插值器自然光滑（tanh 网络），求导用 autograd 干净不带局部噪声
+- 同一个流场用同一种方式算 PDE 残差 → 数字直接可比
+
+**Mentor 的迭代节奏**：iters_per_batch ~ 100-200，然后 resample（即每个
+BFGS batch 跑 100-200 iter 后重新采点）。我已经把 cfp40.py 改完支持：
+- `--data-only`：跳过 PDE
+- `--use-all-cfd-data`：用全部 CFD 点而不是采样
+- `--resume-from`：从 checkpoint 接着训
+- `--no-frozen-colloc-bfgs`：每 batch 重采
+
+完整命令在 `train_two_phase.sh`：
+
+```bash
+# Phase 1: data-only
+python -u cfp40.py --vtk-path Re40.vtk \
+    --save-dir checkpoints_phase1 \
+    --width 96 --depth 5 \
+    --data-only --use-all-cfd-data \
+    --epochs-adam 1000 \
+    --maxiter-bfgs 1500 --iters-per-batch 150 \
+    --no-frozen-colloc-bfgs \
+    --method-bfgs SSBroyden1
+
+# 跑诊断看 Phase 1 数据拟合得多好
+python -u run_analysis_re40.py \
+    --vtk-path Re40.vtk \
+    --save-dir checkpoints_phase1 \
+    --out-dir  analysis_phase1 \
+    --width 96 --depth 5
+
+# Phase 2: 从 phase1 接，开 PDE
+python -u cfp40.py --vtk-path Re40.vtk \
+    --save-dir checkpoints_phase2 \
+    --resume-from checkpoints_phase1/pinn_Re40_single.pt \
+    --width 96 --depth 5 \
+    --use-all-cfd-data \
+    --epochs-adam 200 \
+    --maxiter-bfgs 1500 --iters-per-batch 150 \
+    --n-f 50000 --n-cfd-pde 12000 --lambda-pde-cfd 1.0 \
+    --no-frozen-colloc-bfgs \
+    --method-bfgs SSBroyden1
 ```
-data MSE plateau   ≈ 2.4·10⁻⁴       →  data MAE ≈ 1.5·10⁻²
-PDE colloc MSE     ≈ 4.3·10⁻⁴
-L_wall_uv          ≈ 3·10⁻¹⁵        (machine ε², 见 §3)
-total loss         ≈ 4.0·10⁻³
-```
 
-相对原始（mae~6.3·10⁻²）改善 4×。
-
-**下一步建议**（按性价比排序）：
-
-1. 把 BFGS 跑长（5000+ calls 而不是 500），SSBroyden 在 plateau 之后
-   还会缓慢改善，预计到 1·10⁻²。**不用换数据、不用换网络**，单纯多跑。
-2. 网络放到 96/6 或 128/5，配 96G+ 内存（H0=NxN float64 是 BFGS 的内存大头，
-   见 ppt 内存预算检查那一节）。
-3. 如果还想再压：要么换 CFD（路径 a），要么把 lambda_pde 降到 0.01
-   退化成插值器（路径 b）。
+**判读结论的标准**：
+1. Phase 1 跑完看 `analysis_phase1/summary.txt`：
+   - `mae_u, mae_v` 应该 < 0.01（纯插值器，数据拟合应该很好）
+   - `pde_rmse_mag` 是关键 → **这就是"CFD 自己违反 NS 多少"的最佳估计**
+     - 如果 < 1e-2：CFD 跟 setup 一致，PINN 有希望同时满足 data 和 PDE
+     - 如果 > 1e-1：CFD 自己物理上就跟 NS 不一致，PINN 卡在 plateau 是必然
+2. Phase 2 跑完看 trajectory：
+   - 如果 data loss 几乎不抬，PDE loss 直接降下来 → 一致
+   - 如果 data loss 必须抬一两个数量级才能让 PDE 降 → 强不一致，需要换 CFD
 
 ---
 
@@ -276,13 +399,21 @@ total loss         ≈ 4.0·10⁻³
 > 物理路径是把 CFD 网格在尾流和近壁加密到能让自身 NS 残差 ~ 1e-5。
 > 否则只能放弃"既 fit data 又 satisfy PDE"，做纯插值。
 
+**Q: Run A 的实际 MAE 为什么比 training log 推算的差 8×？**
+> Training 时 data 采样 wake_frac=0.8，80% 点取自尾流，那块儿 PINN 拟合最好。
+> 全网格 4869 点评估包含远场 + 入口 + 上下边界——那些位置 PINN 误差大。
+> 入口 rmse(u−1)=0.20 就是直接证据。下次评估必须在全网格上做，
+> 不能只看 training log 的 DATA 项。
+
 ---
 
 ## 8. 用到的代码改动一览
 
 | 文件 | 改动 |
 |---|---|
-| `cfp40.py` | 修 SSBroyden 调用；frozen colloc + full data BFGS；continuity 项；启动内存预算检查；加 `--cfd-pde-wall-buffer` / `--cfd-pde-edge-buffer`；`evaluate_against_cfd` 直接打印 mae |
-| `diagnose_cfd_pde.py` | 新文件——独立诊断 CFD 是不是 NS 的解（curl 消 p） |
-| `run_pinn.sh` | 改成调 cfp40.py 而不是 cfp.py，加 `--mem`、`-t` 等 SLURM 参数 |
-| ppt 新增 4 张 slide | 命令配置 / Run A loss 曲线 / 壁面 lift 数学 / CFD-PDE 残差 |
+| `cfp40.py` | 修 SSBroyden 调用；frozen colloc + full data BFGS；continuity 项；启动内存预算检查；`--cfd-pde-wall-buffer` / `--cfd-pde-edge-buffer`；`evaluate_against_cfd` 直接打印 mae；**新加 `--data-only` / `--use-all-cfd-data` / `--resume-from` 三个 flag 支持 mentor 的两阶段策略** |
+| `diagnose_cfd_pde.py` | 独立脚本——用局部二次拟合算 CFD 的 NS 残差 |
+| `run_analysis_re40.py` | 独立脚本——把 notebook 的所有诊断打成一个 PNG + summary 文件 |
+| `train_two_phase.sh` | 新 SLURM 脚本——Phase 1 data-only → Phase 2 resume + PDE |
+| `run_pinn.sh` | 改成调 cfp40.py 而不是 cfp.py |
+| ppt 23 张 | 14 张原 + 9 张新（commands / loss 曲线 / 壁面 lift 数学 / CFD-PDE 残差 / 4 张 Run A 诊断 / Run A vs B 对比）|

@@ -697,33 +697,65 @@ def compute_total_loss(model, dataset, device, epoch, n_f, n_data, Re, t_value,
                        x_f=None, y_f=None, t_f=None,
                        xlim=(-3.0, 12.0), ylim=(-4.0, 4.0),
                        n_cfd_pde=0, lambda_pde_cfd=1.0,
-                       cfd_pde_wall_buffer=0.0, cfd_pde_edge_buffer=0.0):
-    if x_f is None:
-        (x_f, y_f, t_f), (t_d, x_d, y_d, u_d, v_d) = sample_training_batches(
-            dataset=dataset,
-            n_data=n_data,
-            n_f=n_f,
-            device=device,
-            t_value=t_value,
-            xlim=xlim,
-            ylim=ylim,
-            radius=0.5,
-        )
+                       cfd_pde_wall_buffer=0.0, cfd_pde_edge_buffer=0.0,
+                       data_only: bool = False,
+                       use_all_cfd_data: bool = False):
+    """
+    data_only         : if True, skip the PDE residual term entirely (n_f and
+                        n_cfd_pde are ignored). Only data + BC losses contribute.
+                        This is mentor's Phase-1 strategy: fit CFD as an
+                        interpolator first, then in Phase-2 turn the PDE back on
+                        and read off how badly the data-fit field violates NS —
+                        a direct measure of CFD-vs-PDE consistency.
+    use_all_cfd_data  : if True, use ALL CFD points in PDE box (no random
+                        subsample, no wake bias). Set this for Phase-1 so the
+                        whole field gets fit, not just the wake.
+    """
+    if data_only:
+        # No PDE colloc set is needed; we still need the data set.
+        if use_all_cfd_data:
+            t_d, x_d, y_d, u_d, v_d = dataset.all_points(xlim=xlim, ylim=ylim, radius=0.5)
+        else:
+            t_d, x_d, y_d, u_d, v_d = dataset.sample(n_data, wake_frac=0.8, xlim=xlim, ylim=ylim)
+        loss_pde_colloc = torch.zeros((), device=device)
+        loss_pde_cfd    = torch.zeros((), device=device)
+        loss_pde        = torch.zeros((), device=device)
     else:
-        t_d, x_d, y_d, u_d, v_d = dataset.sample(n_data, wake_frac=0.8, xlim=xlim, ylim=ylim)
+        if x_f is None:
+            (x_f, y_f, t_f), (t_d, x_d, y_d, u_d, v_d) = sample_training_batches(
+                dataset=dataset,
+                n_data=n_data,
+                n_f=n_f,
+                device=device,
+                t_value=t_value,
+                xlim=xlim,
+                ylim=ylim,
+                radius=0.5,
+            )
+            # If the user wants to override the data set with all CFD points
+            # while still keeping PDE on, do it now (sample_training_batches
+            # already returned a wake-biased subset; replace it).
+            if use_all_cfd_data:
+                t_d, x_d, y_d, u_d, v_d = dataset.all_points(xlim=xlim, ylim=ylim, radius=0.5)
+        else:
+            if use_all_cfd_data:
+                t_d, x_d, y_d, u_d, v_d = dataset.all_points(xlim=xlim, ylim=ylim, radius=0.5)
+            else:
+                t_d, x_d, y_d, u_d, v_d = dataset.sample(n_data, wake_frac=0.8, xlim=xlim, ylim=ylim)
 
-    loss_pde_colloc = compute_pde_loss(model, x_f, y_f, t_f, Re=Re)
+        loss_pde_colloc = compute_pde_loss(model, x_f, y_f, t_f, Re=Re)
 
-    if n_cfd_pde > 0:
-        t_cfd_pde, x_cfd_pde, y_cfd_pde = dataset.sample_domain_xy(
-            n_cfd_pde, xlim=xlim, ylim=ylim, radius=0.5,
-            wall_buffer=cfd_pde_wall_buffer, edge_buffer=cfd_pde_edge_buffer,
-        )
-        loss_pde_cfd = compute_pde_loss(model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
-    else:
-        loss_pde_cfd = torch.zeros((), device=device)
+        if n_cfd_pde > 0:
+            t_cfd_pde, x_cfd_pde, y_cfd_pde = dataset.sample_domain_xy(
+                n_cfd_pde, xlim=xlim, ylim=ylim, radius=0.5,
+                wall_buffer=cfd_pde_wall_buffer, edge_buffer=cfd_pde_edge_buffer,
+            )
+            loss_pde_cfd = compute_pde_loss(model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
+        else:
+            loss_pde_cfd = torch.zeros((), device=device)
 
-    loss_pde = loss_pde_colloc + lambda_pde_cfd * loss_pde_cfd
+        loss_pde = loss_pde_colloc + lambda_pde_cfd * loss_pde_cfd
+
     bc = compute_bc_losses(model, device=device, t_value=t_value, xlim=xlim, ylim=ylim)
     loss_data = compute_data_loss(model, t_d, x_d, y_d, u_d, v_d)
 
@@ -798,7 +830,8 @@ def run_adam(model, dataset, device, save_dir,
              epochs_adam, n_f, n_data, lr_adam, Re, t_value,
              xlim=(-3.0, 12.0), ylim=(-4.0, 4.0),
              n_cfd_pde=0, lambda_pde_cfd=1.0,
-             cfd_pde_wall_buffer=0.0, cfd_pde_edge_buffer=0.0):
+             cfd_pde_wall_buffer=0.0, cfd_pde_edge_buffer=0.0,
+             data_only=False, use_all_cfd_data=False):
     os.makedirs(save_dir, exist_ok=True)
     best_loss = float("inf")
     adam = torch.optim.Adam(model.parameters(), lr=lr_adam)
@@ -825,6 +858,8 @@ def run_adam(model, dataset, device, save_dir,
             lambda_pde_cfd=lambda_pde_cfd,
             cfd_pde_wall_buffer=cfd_pde_wall_buffer,
             cfd_pde_edge_buffer=cfd_pde_edge_buffer,
+            data_only=data_only,
+            use_all_cfd_data=use_all_cfd_data,
         )
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
@@ -893,7 +928,9 @@ def run_scipy_bfgs(model: nn.Module,
                    full_data_bfgs: bool = True,
                    frozen_colloc_bfgs: bool = True,
                    cfd_pde_wall_buffer: float = 0.0,
-                   cfd_pde_edge_buffer: float = 0.0):
+                   cfd_pde_edge_buffer: float = 0.0,
+                   data_only: bool = False,
+                   use_all_cfd_data: bool = False):
     os.makedirs(save_dir, exist_ok=True)
 
     best = {"loss": float("inf")}
@@ -912,7 +949,11 @@ def run_scipy_bfgs(model: nn.Module,
     # This turns the BFGS objective into a deterministic function of the
     # weights, which is what BFGS / SSBroyden actually needs to converge to
     # 1e-4 ~ 1e-6. Stochastic resampling each call caps you at ~1e-3.
-    if frozen_colloc_bfgs:
+    # In data-only mode there is no PDE term at all; skip every colloc set.
+    if data_only and frozen_colloc_bfgs:
+        x_f_fix = y_f_fix = t_f_fix = None
+        t_cfd_fix = x_cfd_fix = y_cfd_fix = None
+    elif frozen_colloc_bfgs:
         x_f_fix, y_f_fix, t_f_fix = sample_collocation(
             n_f=n_f, device=device, t_value=t_value,
             xlim=xlim, ylim=ylim, radius=0.5,
@@ -928,11 +969,15 @@ def run_scipy_bfgs(model: nn.Module,
         x_f_fix = y_f_fix = t_f_fix = None
         t_cfd_fix = x_cfd_fix = y_cfd_fix = None
 
-    if full_data_bfgs:
+    # Force full-CFD data fit if either flag is on. In data-only mode we always
+    # want every CFD point used, since the whole point of Phase-1 is to fit the
+    # entire field as faithfully as possible.
+    if full_data_bfgs or use_all_cfd_data or data_only:
         t_d_fix, x_d_fix, y_d_fix, u_d_fix, v_d_fix = dataset.all_points(
             xlim=xlim, ylim=ylim, radius=0.5,
         )
-        print(f"[BFGS] full data fitting: {len(x_d_fix)} CFD points pinned per call")
+        print(f"[BFGS] full data fitting: {len(x_d_fix)} CFD points pinned per call"
+              + ("  (data-only)" if data_only else ""))
     else:
         t_d_fix = x_d_fix = y_d_fix = u_d_fix = v_d_fix = None
 
@@ -949,29 +994,38 @@ def run_scipy_bfgs(model: nn.Module,
             if p.grad is not None:
                 p.grad = None
 
-        if frozen_colloc_bfgs:
-            x_f, y_f, t_f = x_f_fix, y_f_fix, t_f_fix
-        else:
-            x_f, y_f, t_f = sample_collocation(
-                n_f=n_f, device=device, t_value=t_value,
-                xlim=xlim, ylim=ylim, radius=0.5,
-            )
-        if full_data_bfgs:
+        # ---------- data ----------
+        if full_data_bfgs or use_all_cfd_data or data_only:
             t_d, x_d, y_d, u_d, v_d = t_d_fix, x_d_fix, y_d_fix, u_d_fix, v_d_fix
         else:
             t_d, x_d, y_d, u_d, v_d = dataset.sample(n_data, wake_frac=0.8, xlim=xlim, ylim=ylim)
 
-        loss_pde_colloc = compute_pde_loss(model, x_f, y_f, t_f, Re=Re)
-        if n_cfd_pde > 0:
-            if frozen_colloc_bfgs:
-                t_cfd_pde, x_cfd_pde, y_cfd_pde = t_cfd_fix, x_cfd_fix, y_cfd_fix
-            else:
-                t_cfd_pde, x_cfd_pde, y_cfd_pde = dataset.sample_domain_xy(n_cfd_pde, xlim=xlim, ylim=ylim, radius=0.5)
-            loss_pde_cfd = compute_pde_loss(model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
+        # ---------- PDE (skipped entirely in data-only mode) ----------
+        if data_only:
+            loss_pde_colloc = torch.zeros((), device=device)
+            loss_pde_cfd    = torch.zeros((), device=device)
+            loss_pde        = torch.zeros((), device=device)
         else:
-            loss_pde_cfd = torch.zeros((), device=device)
-
-        loss_pde = loss_pde_colloc + lambda_pde_cfd * loss_pde_cfd
+            if frozen_colloc_bfgs:
+                x_f, y_f, t_f = x_f_fix, y_f_fix, t_f_fix
+            else:
+                x_f, y_f, t_f = sample_collocation(
+                    n_f=n_f, device=device, t_value=t_value,
+                    xlim=xlim, ylim=ylim, radius=0.5,
+                )
+            loss_pde_colloc = compute_pde_loss(model, x_f, y_f, t_f, Re=Re)
+            if n_cfd_pde > 0:
+                if frozen_colloc_bfgs:
+                    t_cfd_pde, x_cfd_pde, y_cfd_pde = t_cfd_fix, x_cfd_fix, y_cfd_fix
+                else:
+                    t_cfd_pde, x_cfd_pde, y_cfd_pde = dataset.sample_domain_xy(
+                        n_cfd_pde, xlim=xlim, ylim=ylim, radius=0.5,
+                        wall_buffer=cfd_pde_wall_buffer, edge_buffer=cfd_pde_edge_buffer,
+                    )
+                loss_pde_cfd = compute_pde_loss(model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
+            else:
+                loss_pde_cfd = torch.zeros((), device=device)
+            loss_pde = loss_pde_colloc + lambda_pde_cfd * loss_pde_cfd
         bc = compute_bc_losses(model, device=device, t_value=t_value, xlim=xlim, ylim=ylim)
         loss_data = compute_data_loss(model, t_d, x_d, y_d, u_d, v_d)
 
@@ -1123,10 +1177,14 @@ def train_re40_single(model: nn.Module,
                       full_data_bfgs: bool = True,
                       frozen_colloc_bfgs: bool = True,
                       cfd_pde_wall_buffer: float = 0.0,
-                      cfd_pde_edge_buffer: float = 0.0):
+                      cfd_pde_edge_buffer: float = 0.0,
+                      data_only: bool = False,
+                      use_all_cfd_data: bool = False):
 
     os.makedirs(save_dir, exist_ok=True)
     dataset = SingleSnapshotDataset(snapshot, device=device)
+    if data_only:
+        print("[mode] data-only — PDE loss term DISABLED. Only data + BC.")
 
     # ---------- pre-flight memory check for full-matrix BFGS ----------
     # SSBroyden / standard BFGS keep the dense inverse-Hessian H0, an N x N
@@ -1210,6 +1268,8 @@ def train_re40_single(model: nn.Module,
         lambda_pde_cfd=lambda_pde_cfd,
         cfd_pde_wall_buffer=cfd_pde_wall_buffer,
         cfd_pde_edge_buffer=cfd_pde_edge_buffer,
+        data_only=data_only,
+        use_all_cfd_data=use_all_cfd_data,
     )
 
     if maxiter_bfgs > 0:
@@ -1241,6 +1301,8 @@ def train_re40_single(model: nn.Module,
             frozen_colloc_bfgs=frozen_colloc_bfgs,
             cfd_pde_wall_buffer=cfd_pde_wall_buffer,
             cfd_pde_edge_buffer=cfd_pde_edge_buffer,
+            data_only=data_only,
+            use_all_cfd_data=use_all_cfd_data,
         )
 
     print(f"[train] Saved -> {os.path.join(save_dir, 'pinn_Re40_single.pt')}")
@@ -1402,6 +1464,18 @@ def parse_args():
     p.add_argument("--cfd-pde-edge-buffer", type=float, default=0.5,
                    help="Skip CFD points within this distance of the PDE box edges "
                         "when evaluating PDE residual on the CFD grid.")
+    # ---- Two-phase mentor strategy: Phase-1 fits CFD as a pure interpolator
+    #      (data-only), Phase-2 turns PDE back on and the residual on the
+    #      already-data-fit field tells you how badly the CFD violates NS.
+    p.add_argument("--data-only", action="store_true",
+                   help="Phase-1 mode: skip the PDE residual entirely, fit CFD as a "
+                        "pure interpolator. Combine with --use-all-cfd-data.")
+    p.add_argument("--use-all-cfd-data", action="store_true",
+                   help="Use ALL CFD points (no random subsample, no wake bias) for "
+                        "data fitting in both Adam and BFGS phases.")
+    p.add_argument("--resume-from", type=str, default=None,
+                   help="Path to a checkpoint .pt to load BEFORE training. Used to "
+                        "continue from Phase-1 into Phase-2.")
     # Use the full CFD point cloud for data fitting in BFGS phase. Random
     # subsampling injects noise into the gradient that BFGS cannot tolerate
     # below ~1e-4. With this flag every BFGS evaluation sees ALL CFD points
@@ -1452,6 +1526,19 @@ def main():
         print("Cylinder no-slip: enforced hard through stream-function lifting")
         print(f"CFD-aware PDE residual: n_cfd_pde={args.n_cfd_pde}, lambda_pde_cfd={args.lambda_pde_cfd}")
 
+        # ---- optional warm start from a previous-phase checkpoint ----
+        if args.resume_from is not None:
+            if not os.path.exists(args.resume_from):
+                raise FileNotFoundError(f"--resume-from path does not exist: {args.resume_from}")
+            state = safe_load_checkpoint(args.resume_from, device)
+            if "model" not in state:
+                raise KeyError(f"checkpoint {args.resume_from} has no 'model' key")
+            model.load_state_dict(state["model"])
+            print(f"[resume] loaded weights from {args.resume_from} "
+                  f"(epoch={state.get('epoch','?')}, "
+                  f"best_loss={state.get('best_loss','?')}, "
+                  f"stage={state.get('stage','?')})")
+
         train_re40_single(
             model=model,
             snapshot=snapshot,
@@ -1475,6 +1562,8 @@ def main():
             frozen_colloc_bfgs=args.frozen_colloc_bfgs,
             cfd_pde_wall_buffer=args.cfd_pde_wall_buffer,
             cfd_pde_edge_buffer=args.cfd_pde_edge_buffer,
+            data_only=args.data_only,
+            use_all_cfd_data=args.use_all_cfd_data,
         )
 
     visualize_re40_single(
