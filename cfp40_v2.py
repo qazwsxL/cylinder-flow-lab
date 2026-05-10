@@ -610,16 +610,18 @@ def run_adam_v2(model, dataset, device, save_dir,
 
         if epoch % 20 == 0:
             w = logs["weights"]
+            # Use .item() so requires_grad tensors are detached + scalarized
+            # in one step (silences the autograd UserWarning).
             print(
                 f"[Adam-v2] ep={epoch:5d}  total={cur:.3e}  "
-                f"PDE={float(logs['pde']):.3e} (w={w['pde']:.3f})  "
-                f"OUT={float(logs['outlet']):.3e} (w={w['outlet']:.3f})  "
-                f"DATA={float(logs['data']):.3e} (w={w['data']:.3f})  "
+                f"PDE={logs['pde'].item():.3e} (w={w['pde']:.3f})  "
+                f"OUT={logs['outlet'].item():.3e} (w={w['outlet']:.3f})  "
+                f"DATA={logs['data'].item():.3e} (w={w['data']:.3f})  "
                 f"|  hard-BC residuals: "
-                f"in={float(logs['inlet']):.2e} "
-                f"tb={float(logs['top_bottom']):.2e} "
-                f"wuv={float(logs['wall_uv']):.2e} "
-                f"wpsi={float(logs['wall_psi']):.2e}"
+                f"in={logs['inlet'].item():.2e} "
+                f"tb={logs['top_bottom'].item():.2e} "
+                f"wuv={logs['wall_uv'].item():.2e} "
+                f"wpsi={logs['wall_psi'].item():.2e}"
             )
 
     return best_loss, frozen_weights, weight_manager
