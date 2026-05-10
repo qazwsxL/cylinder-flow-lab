@@ -1,0 +1,11 @@
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1102: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1102: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/var/spool/slurmd/job2462960/slurm_script: line 56: 1835306 Killed                  python -u cfp40.py --vtk-path Re40.vtk --save-dir checkpoints_phase1 --viz-dir viz_phase1 --width $WIDTH --depth $DEPTH --data-only --use-all-cfd-data --epochs-adam 1000 --maxiter-bfgs 1500 --iters-per-batch $ITERS_PER_BATCH --no-frozen-colloc-bfgs --method-bfgs SSBroyden1
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1102: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1102: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/var/spool/slurmd/job2462960/slurm_script: line 86: 1837932 Killed                  python -u cfp40.py --vtk-path Re40.vtk --save-dir checkpoints_phase2 --viz-dir viz_phase2 --width $WIDTH --depth $DEPTH --resume-from checkpoints_phase1/pinn_Re40_single.pt --use-all-cfd-data --epochs-adam 200 --maxiter-bfgs 1500 --iters-per-batch $ITERS_PER_BATCH --n-f 50000 --n-cfd-pde 12000 --lambda-pde-cfd 1.0 --cfd-pde-wall-buffer 0.5 --cfd-pde-edge-buffer 0.5 --no-frozen-colloc-bfgs --method-bfgs SSBroyden1
+[2026-05-09T01:32:00.067] error: Detected 2 oom_kill events in StepId=2462960.batch. Some of the step tasks have been OOM Killed.

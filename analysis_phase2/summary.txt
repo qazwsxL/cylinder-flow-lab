@@ -1,0 +1,42 @@
+=== Velocity ===
+  n_points                     = 4869
+  speed_true_mean              = 7.003024e-01
+  mae_u                        = 4.831337e-02
+  mae_v                        = 2.874727e-02
+  rmse_u                       = 8.375873e-02
+  rmse_v                       = 5.821041e-02
+  max_abs_eu                   = 3.596534e-01
+  max_abs_ev                   = 3.065154e-01
+  rel_l2_u                     = 1.034624e-01
+  rel_l2_v                     = 4.597167e-01
+  rel_l2_uv                    = 1.244812e-01
+
+=== PDE residual ===
+  n_collocation                = 19817
+  pde_rmse_mag                 = 1.198841e-01
+  pde_mean_mag                 = 6.433696e-02
+  pde_p90_mag                  = 2.114963e-01
+  pde_p99_mag                  = 4.533749e-01
+  near_cyl_pde_rmse_mag        = 2.603089e-01
+  far_pde_rmse_mag             = 5.048421e-02
+
+=== Boundary ===
+  inlet_u_minus_1_rmse         = 4.921266e-02
+  inlet_v_rmse                 = 2.647220e-02
+  top_u_minus_1_rmse           = 2.991924e-02
+  bottom_u_minus_1_rmse        = 5.031323e-02
+  top_v_rmse                   = 3.095319e-02
+  bottom_v_rmse                = 2.813488e-02
+  wall_speed_max               = 1.232345e-07
+  wall_speed_p95               = 7.733423e-08
+  wall_u_max_abs               = 1.138850e-07
+  wall_v_max_abs               = 8.173267e-08
+
+=== Vorticity error ===
+  vort_rmse                    = 1.612016e+00
+  vort_max_abs                 = 3.807275e+00
+  vort_cfd_max                 = 8.076550e+00
+  vort_cfd_min                 = -8.076653e+00
+  vort_pinn_max                = 5.132464e+00
+  vort_pinn_min                = -5.301073e+00
+
