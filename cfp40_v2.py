@@ -66,11 +66,11 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-# We re-use most of cfp40 verbatim. The only bits we override are the model
-# and the loss composition.
+# We re-use most of cfp40 verbatim. The only bits we override are the model,
+# the loss composition, and the VTK loader (we want UMean/pMean by default,
+# not the snapshot 'U' that cfp40.load_single_vtk picks).
 from cfp40 import (
     set_seed,
-    load_single_vtk,
     SingleSnapshotDataset,
     Snapshot,
     grad,
@@ -89,8 +89,70 @@ from cfp40 import (
     save_training_state,
     evaluate_against_cfd,
     evaluate_on_grid,
-    visualize_re40_single,
 )
+
+
+# ==========================================================
+# VTK loader — defaults to UMean / pMean (steady time-average)
+# ==========================================================
+
+def _pick_array(arr_names, candidates):
+    lower = {n.lower(): n for n in arr_names}
+    for c in candidates:
+        if c.lower() in lower:
+            return lower[c.lower()]
+    return None
+
+
+def load_single_vtk_v2(vtk_path: str, t_value: float = 0.0,
+                       prefer_mean: bool = True) -> Snapshot:
+    """
+    Load a snapshot from VTK and pick the time-AVERAGE velocity field by
+    default (UMean), not the instantaneous one (U).
+
+    sanity_check_re40.py confirmed that for Re40.vtk, ||U − UMean||_rmse ≈ 9e-4
+    and there are non-zero turbulent stresses. A steady PINN must NOT be
+    trained against the snapshot 'U' — it would be fitting phase / fluctuation
+    that the steady NS model cannot represent.
+
+    Set prefer_mean=False to fall back to instantaneous 'U' (only do this if
+    you know the case is laminar steady and the VTK doesn't carry a UMean).
+    """
+    import pyvista as pv  # imported here so cfp40_v2 can be imported even
+                          # without pyvista (e.g. in unit tests)
+    if not os.path.exists(vtk_path):
+        raise FileNotFoundError(f"VTK file not found: {vtk_path}")
+    mesh = pv.read(vtk_path)
+    if mesh.n_cells > 0:
+        centers = mesh.cell_centers().points
+        src = mesh.cell_data
+    else:
+        centers = mesh.points
+        src = mesh.point_data
+    keys = list(src.keys())
+
+    if prefer_mean:
+        candidates = ["UMean", "Umean", "U_mean", "Uavg",
+                      "U", "u", "velocity", "Velocity", "vel"]
+    else:
+        candidates = ["U", "u", "velocity", "Velocity", "vel",
+                      "UMean", "Umean"]
+
+    name = _pick_array(keys, candidates)
+    if name is None:
+        raise KeyError(f"No usable velocity array in {vtk_path}. Available: {keys}")
+    vel = np.asarray(src[name])
+    if vel.ndim != 2 or vel.shape[1] < 2:
+        raise ValueError(f"Velocity array {name} has unexpected shape {vel.shape}")
+
+    x = centers[:, 0].astype(np.float32)
+    y = centers[:, 1].astype(np.float32)
+    u = vel[:, 0].astype(np.float32)
+    v = vel[:, 1].astype(np.float32)
+
+    print(f"[v2-loader] {os.path.basename(vtk_path)}  cells={len(x)}  "
+          f"velocity_array='{name}'  prefer_mean={prefer_mean}")
+    return Snapshot(t=float(t_value), x=x, y=y, u=u, v=v)
 
 
 # ==========================================================
@@ -700,10 +762,21 @@ def build_argparser():
     p.add_argument("--use-data", action="store_true",
                    help="Include CFD points as a soft anchor. Default off — "
                         "the goal is data-free reconstruction.")
-    p.add_argument("--x-min", type=float, default=-3.0)
+    # Domain defaults expanded to where CFD's free-stream BC actually holds.
+    # sanity_check_re40.py confirmed:
+    #   - CFD true inlet at x=-9.75: rmse(u-1)=2e-5, rmse(v)=5e-4   (clean)
+    #   - PINN box at x=-3.0      : rmse(u-1)=3e-2, rmse(v)=4e-2    (off by 5%)
+    # so hard-encoded u=1, v=0 is only physical near the larger CFD edges.
+    p.add_argument("--x-min", type=float, default=-8.0)
     p.add_argument("--x-max", type=float, default=12.0)
-    p.add_argument("--y-min", type=float, default=-4.0)
-    p.add_argument("--y-max", type=float, default=4.0)
+    p.add_argument("--y-min", type=float, default=-8.0)
+    p.add_argument("--y-max", type=float, default=8.0)
+    p.add_argument("--prefer-mean", action="store_true", default=True,
+                   help="Read 'UMean' from VTK (steady time-average). Default ON. "
+                        "Use --use-instantaneous to read snapshot 'U' instead.")
+    p.add_argument("--use-instantaneous", dest="prefer_mean", action="store_false",
+                   help="Force reading the instantaneous 'U' velocity array. "
+                        "Only do this for laminar steady cases without a UMean.")
     p.add_argument("--lift-delta", type=float, default=0.15)
     p.add_argument("--outer-delta-x", type=float, default=0.5)
     p.add_argument("--outer-delta-y", type=float, default=0.5)
@@ -727,7 +800,8 @@ def main():
     else:
         device = torch.device(args.device)
 
-    snapshot = load_single_vtk(args.vtk_path, t_value=0.0)
+    snapshot = load_single_vtk_v2(args.vtk_path, t_value=0.0,
+                                   prefer_mean=args.prefer_mean)
     xlim = (args.x_min, args.x_max)
     ylim = (args.y_min, args.y_max)
 
