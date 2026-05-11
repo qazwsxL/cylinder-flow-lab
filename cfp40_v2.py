@@ -207,8 +207,14 @@ class MLPStreamPressureHardBC(nn.Module):
                  x_min: float = -3.0,
                  y_min: float = -4.0,
                  y_max: float = 4.0,
-                 # Fourier features
+                 # Fourier features (multi-scale).
+                 # fourier_features = TOTAL number of Fourier rows in B.
+                 # fourier_sigmas   = list of bandwidths σ. The rows of B
+                 #                    are split evenly across these σs.
+                 # If a single fourier_sigma is given (or sigmas=None), all
+                 # rows use that single σ — backward-compatible with v1.
                  fourier_features: int = 32,
+                 fourier_sigmas=None,
                  fourier_sigma: float = 2.0,
                  # use deterministic feature draw so resume-from-ckpt is reproducible
                  fourier_seed: int = 0):
@@ -227,11 +233,48 @@ class MLPStreamPressureHardBC(nn.Module):
         self.y_max = float(y_max)
         self.fourier_features = int(fourier_features)
 
-        # Fourier feature matrix B ∈ R^{F x 2}, fixed (not learnable).
-        # gamma(x,y) = [sin(2π B [x;y]), cos(2π B [x;y])]
-        # Storing as buffer so it travels with the checkpoint.
+        # ---- Build B (Fourier feature projection matrix), MULTI-SCALE ----
+        # Each row of B is drawn from N(0, σ_band²) where σ_band is taken
+        # from `fourier_sigmas`. Rows are split evenly across bands so the
+        # total row count stays = fourier_features.
+        #
+        # WHY MULTI-SCALE
+        #   In single-σ mode the network has roughly one characteristic
+        #   wavelength λ ≈ 1/σ. For Re=40 cylinder flow, the boundary layer
+        #   is ~0.15 thick (needs σ≈4) but the wake / recirculation extends
+        #   over distances of ~3-5 (needs σ≈0.5). A single σ can resolve one
+        #   or the other but not both, which causes the wake to fail to
+        #   develop while the network "wastes" capacity on local features
+        #   (this was the failure mode of the first hard-BC run).
+        if fourier_sigmas is None:
+            sigmas = [float(fourier_sigma)]
+        else:
+            # accept list, tuple, numpy array, comma- or space-sep string
+            if isinstance(fourier_sigmas, str):
+                sigmas = [float(s) for s in fourier_sigmas.replace(",", " ").split()]
+            else:
+                sigmas = [float(s) for s in fourier_sigmas]
+            if len(sigmas) == 0:
+                sigmas = [float(fourier_sigma)]
+        self.fourier_sigmas = list(sigmas)
+
+        n_bands = len(sigmas)
+        # split rows evenly. Any remainder goes to the last band.
+        per_band = self.fourier_features // n_bands
+        if per_band <= 0:
+            raise ValueError(
+                f"fourier_features={self.fourier_features} too small for "
+                f"{n_bands} bands; need at least {n_bands}.")
+        counts = [per_band] * n_bands
+        counts[-1] += self.fourier_features - per_band * n_bands  # absorb rounding
+        self.fourier_band_counts = counts
+
         g = torch.Generator().manual_seed(int(fourier_seed))
-        B = torch.randn(self.fourier_features, 2, generator=g) * float(fourier_sigma)
+        rows = []
+        for sigma_b, n_b in zip(sigmas, counts):
+            rows.append(torch.randn(n_b, 2, generator=g) * float(sigma_b))
+        B = torch.cat(rows, dim=0)
+        assert B.shape == (self.fourier_features, 2)
         self.register_buffer("B", B)
 
         # Input dim = 2*F (Fourier xy) + 3 (t, sin t, cos t)
@@ -801,7 +844,12 @@ def build_argparser():
     p.add_argument("--outer-delta-x", type=float, default=0.5)
     p.add_argument("--outer-delta-y", type=float, default=0.5)
     p.add_argument("--fourier-features", type=int, default=32)
-    p.add_argument("--fourier-sigma", type=float, default=2.0)
+    p.add_argument("--fourier-sigma", type=float, default=2.0,
+                   help="single-σ Fourier features (used only if --fourier-sigmas not set).")
+    p.add_argument("--fourier-sigmas", type=str, default="0.5 1.0 2.0 4.0",
+                   help="space- or comma-separated list of σ bands. Default '0.5 1.0 2.0 4.0' "
+                        "covers wake-scale through boundary-layer-scale features. "
+                        "Pass an empty string to fall back to single-σ mode.")
     p.add_argument("--fourier-seed", type=int, default=0)
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--device", type=str, default="cuda")
@@ -825,6 +873,10 @@ def main():
     xlim = (args.x_min, args.x_max)
     ylim = (args.y_min, args.y_max)
 
+    # Translate --fourier-sigmas. Empty string -> fall back to single-σ.
+    sigmas_arg = args.fourier_sigmas.strip() if args.fourier_sigmas else ""
+    fourier_sigmas = sigmas_arg if sigmas_arg else None
+
     model_kwargs = dict(
         width=args.width, depth=args.depth,
         lift_delta=args.lift_delta,
@@ -833,14 +885,19 @@ def main():
         x_min=args.x_min, y_min=args.y_min, y_max=args.y_max,
         fourier_features=args.fourier_features,
         fourier_sigma=args.fourier_sigma,
+        fourier_sigmas=fourier_sigmas,
         fourier_seed=args.fourier_seed,
     )
 
     if not args.viz_only:
         model = MLPStreamPressureHardBC(**model_kwargs).to(device)
         n_params = sum(pr.numel() for pr in model.parameters())
+        bands_str = (
+            f"σ_bands={model.fourier_sigmas} (rows per band={model.fourier_band_counts})"
+            if hasattr(model, "fourier_band_counts") else f"σ={args.fourier_sigma}"
+        )
         print(f"[v2] Model: width={args.width}, depth={args.depth}, "
-              f"Fourier F={args.fourier_features} σ={args.fourier_sigma}, "
+              f"Fourier F={args.fourier_features}, {bands_str}, "
               f"params={n_params}")
 
         if args.resume_from is not None:

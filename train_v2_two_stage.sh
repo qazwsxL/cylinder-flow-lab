@@ -60,9 +60,12 @@ N_F=50000
 # because the data anchor couldn't outpull PDE.
 N_DATA=10000
 
-# ---------- Fourier features ----------
+# ---------- Fourier features (multi-scale) ----------
+# Single σ=2 only resolves λ ~ 0.5 — it captured the boundary layer fine but
+# the wake (λ ~ 3-5) never developed in the previous run. Multi-band gives
+# the network a basis from wake-scale (σ=0.5, λ~2) up to BL-scale (σ=4, λ~0.25).
 FOURIER_F=32
-FOURIER_SIGMA=2.0
+FOURIER_SIGMAS="0.5 1.0 2.0 4.0"
 
 # ---------- box (matches the sanity-check verdict) ----------
 XMIN=-8.0
@@ -90,7 +93,7 @@ python -u cfp40_v2.py --vtk-path Re40.vtk \
     --n-f $N_F \
     --n-data $N_DATA \
     --use-data \
-    --fourier-features $FOURIER_F --fourier-sigma $FOURIER_SIGMA \
+    --fourier-features $FOURIER_F --fourier-sigmas "$FOURIER_SIGMAS" \
     --x-min $XMIN --x-max $XMAX --y-min $YMIN --y-max $YMAX \
     --method-bfgs SSBroyden1
 
@@ -117,7 +120,7 @@ python -u cfp40_v2.py --vtk-path Re40.vtk \
     --maxiter-bfgs 8000 \
     --iters-per-batch $ITERS_PER_BATCH \
     --n-f $N_F \
-    --fourier-features $FOURIER_F --fourier-sigma $FOURIER_SIGMA \
+    --fourier-features $FOURIER_F --fourier-sigmas "$FOURIER_SIGMAS" \
     --x-min $XMIN --x-max $XMAX --y-min $YMIN --y-max $YMAX \
     --method-bfgs SSBroyden1
     # NOTE: NO --use-data here.
