@@ -2,11 +2,15 @@
 #SBATCH -J pinn_re40_v2
 #SBATCH -p gpu
 #SBATCH --gres=gpu:1
-#SBATCH --mem=64G
+#SBATCH --mem=128G
 #SBATCH -c 4
 #SBATCH -t 24:00:00
-#SBATCH -o pinn_re40_v2_%j.out
-#SBATCH -e pinn_re40_v2_%j.err
+# NOTE: bumped 64G -> 128G after job 2485074 OOM-killed during SSBroyden.
+# At width=96 depth=5 (~38k params), H0 is 11 GB but the SSBroyden update
+# allocates 6-7 transient N×N matrices in one numpy expression, peaking
+# at ~70-80 GB. 64 GB was insufficient. 128G has comfortable headroom.
+#SBATCH -o logs/pinn_re40_v2_%j.out
+#SBATCH -e logs/pinn_re40_v2_%j.err
 
 # ================================================================
 # v2 setup, two-stage training.
@@ -39,16 +43,22 @@ conda activate pinn
 cd "/oscar/home/jchen790/cylinder flow lab"
 
 # ---------- model size ----------
-# Width=96, depth=5 -> ~38k params -> H0 (full-matrix BFGS) ~12 GB.
-# This comfortably fits 64 GB even with SSBroyden's 6-7x transient peaks.
-# Bump to 128 / 6 only if you also bump --mem to ≥128G in the SBATCH header.
+# Width=96, depth=5 -> ~38k params -> H0 (full-matrix BFGS) ~11 GB,
+# SSBroyden transient peak ~70-80 GB. With --mem=128G we have comfortable
+# headroom. Bump to 128/6 (~91k params, H0 ~62 GB) only if you also bump
+# --mem to ≥256G.
 WIDTH=96
 DEPTH=5
 
 # ---------- shared training args ----------
 ITERS_PER_BATCH=150
 N_F=50000
-N_DATA=5000
+# n_data bumped 5000 -> 10000. Combined with the new AdaptiveLossWeightsV2
+# data-base of 5.0 + auto_normalize_from_ema's data_priority of 5x, the
+# effective data weight is now ~25x what the previous run had. That's what
+# the previous run was missing — it stayed in the trivial u=1 attractor
+# because the data anchor couldn't outpull PDE.
+N_DATA=10000
 
 # ---------- Fourier features ----------
 FOURIER_F=32
@@ -68,9 +78,11 @@ echo " Stage A1 — data-anchored (--use-data --n-data $N_DATA)"
 echo "   goal: break the trivial-solution (u=1,v=0) attractor"
 echo "============================================================"
 
+mkdir -p runs/v2_two_stage/A1 runs/v2_two_stage/A2 logs
+
 python -u cfp40_v2.py --vtk-path Re40.vtk \
-    --save-dir checkpoints_v2_A1 \
-    --viz-dir  viz_v2_A1 \
+    --save-dir runs/v2_two_stage/A1/checkpoints \
+    --viz-dir  runs/v2_two_stage/A1/viz \
     --width $WIDTH --depth $DEPTH \
     --epochs-adam 4000 \
     --maxiter-bfgs 8000 \
@@ -90,15 +102,16 @@ echo " Stage A2 — data-free refinement (warm-start from A1)"
 echo "   goal: the PINN should HOLD the field with no CFD nudging"
 echo "============================================================"
 
-if [[ ! -s checkpoints_v2_A1/pinn_Re40_single.pt ]]; then
-    echo "[A2] A1 checkpoint missing or empty — aborting A2."
+A1_CKPT=runs/v2_two_stage/A1/checkpoints/pinn_Re40_single.pt
+if [[ ! -s "$A1_CKPT" ]]; then
+    echo "[A2] A1 checkpoint missing or empty ($A1_CKPT) — aborting A2."
     exit 1
 fi
 
 python -u cfp40_v2.py --vtk-path Re40.vtk \
-    --save-dir checkpoints_v2_A2 \
-    --viz-dir  viz_v2_A2 \
-    --resume-from checkpoints_v2_A1/pinn_Re40_single.pt \
+    --save-dir runs/v2_two_stage/A2/checkpoints \
+    --viz-dir  runs/v2_two_stage/A2/viz \
+    --resume-from "$A1_CKPT" \
     --width $WIDTH --depth $DEPTH \
     --epochs-adam 1000 \
     --maxiter-bfgs 8000 \
@@ -114,8 +127,8 @@ python -u cfp40_v2.py --vtk-path Re40.vtk \
 # =================================================================
 echo "============================================================"
 echo " Done. Compare:"
-echo "   viz_v2_A1/  (with data anchor — should already show wake)"
-echo "   viz_v2_A2/  (data-free refine — wake should survive)"
+echo "   runs/v2_two_stage/A1/viz/  (with data anchor — should already show wake)"
+echo "   runs/v2_two_stage/A2/viz/  (data-free refine — wake should survive)"
 echo ""
 echo " Look for:"
 echo "   v2_speed.png      : recirculation bubble behind cylinder"

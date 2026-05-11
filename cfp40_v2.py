@@ -333,13 +333,17 @@ class AdaptiveLossWeightsV2:
         self.eps = float(eps)
         self.use_data = bool(use_data)
         self.ema: dict = {}
-        # Bias: PDE matters most (it's the actual physics we're solving for).
-        # Outlet is just a 1D anchor, so a small base. Data, if used, is a soft
-        # nudge.
+        # Bias:
+        #   PDE   — physics we want to solve.
+        #   data  — strong anchor in the FIRST stage to break the trivial
+        #           u=1, v=0 attractor (cfp40.py phase-1 uses fixed w=50;
+        #           here we pick 5.0 with adaptive on top so the *effective*
+        #           weighted contribution dominates while data is still big).
+        #   outlet — 1-D anchor, kept small.
         self.base = {
             "pde": 1.0,
             "outlet": 0.2,
-            "data": 0.5 if self.use_data else 0.0,
+            "data": 5.0 if self.use_data else 0.0,
         }
         self.current = default_fixed_weights_v2(use_data=self.use_data)
 
@@ -538,24 +542,38 @@ def compute_total_loss_v2(model, dataset, device, n_f, n_data, Re, t_value,
 
 def auto_normalize_from_ema(weight_manager: AdaptiveLossWeightsV2,
                             use_data: bool,
-                            eps: float = 1e-12) -> dict:
+                            eps: float = 1e-12,
+                            ema_floor: float = 1e-2,
+                            data_priority: float = 5.0) -> dict:
     """
     Convert the Adam-stage EMA of each loss term into a *fixed* weight set
     for BFGS, such that every active loss enters the BFGS objective at
     O(1) magnitude. SSBroyden's quasi-Hessian then handles the remaining
-    parameter-space conditioning — the user's mentor's claim that "you
-    don't need to tune weights with second-order" is operationally
-    implemented here.
+    parameter-space conditioning.
 
-    Hard-encoded terms (inlet, top_bottom, wall_*) keep weight 0 — they
-    are residuals, not objectives.
+    Two safeguards (lessons learned the hard way):
+
+    (1) ema_floor — already-converged terms (e.g. outlet EMA = 5e-3) would
+        otherwise get astronomical weight (1/5e-3 = 200) and dominate BFGS
+        at the expense of the still-large terms. Cap weights at 1/ema_floor.
+
+    (2) data_priority — multiply the data weight after normalization. The
+        data anchor is not just "another residual to balance"; it is what
+        breaks the trivial-attractor problem. Without explicit priority,
+        a normalized BFGS objective lets the network drift back to u=1, v=0
+        because that has tiny PDE residual.
+
+    Hard-encoded terms (inlet, top_bottom, wall_*) keep weight 0.
     """
     ema = weight_manager.get_ema()
     weights = default_fixed_weights_v2(use_data=use_data)
     for k in ("pde", "outlet", "data"):
         if weights[k] == 0.0:
             continue
-        weights[k] = 1.0 / (ema.get(k, 1.0) + eps)
+        e = max(ema.get(k, 1.0), ema_floor)
+        weights[k] = 1.0 / (e + eps)
+    if use_data:
+        weights["data"] *= data_priority
     return weights
 
 
