@@ -1,0 +1,9 @@
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1102: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1102: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/var/spool/slurmd/job2485074/slurm_script: line 83: 1162306 Killed                  python -u cfp40_v2.py --vtk-path Re40.vtk --save-dir checkpoints_v2_A1 --viz-dir viz_v2_A1 --width $WIDTH --depth $DEPTH --epochs-adam 4000 --maxiter-bfgs 8000 --iters-per-batch $ITERS_PER_BATCH --n-f $N_F --n-data $N_DATA --use-data --fourier-features $FOURIER_F --fourier-sigma $FOURIER_SIGMA --x-min $XMIN --x-max $XMAX --y-min $YMIN --y-max $YMAX --method-bfgs SSBroyden1
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1102: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/var/spool/slurmd/job2485074/slurm_script: line 109: 1190522 Killed                  python -u cfp40_v2.py --vtk-path Re40.vtk --save-dir checkpoints_v2_A2 --viz-dir viz_v2_A2 --resume-from checkpoints_v2_A1/pinn_Re40_single.pt --width $WIDTH --depth $DEPTH --epochs-adam 1000 --maxiter-bfgs 8000 --iters-per-batch $ITERS_PER_BATCH --n-f $N_F --fourier-features $FOURIER_F --fourier-sigma $FOURIER_SIGMA --x-min $XMIN --x-max $XMAX --y-min $YMIN --y-max $YMAX --method-bfgs SSBroyden1
+[2026-05-10T03:15:23.715] error: Detected 2 oom_kill events in StepId=2485074.batch. Some of the step tasks have been OOM Killed.

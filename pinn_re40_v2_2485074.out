@@ -1,0 +1,426 @@
+============================================================
+ Stage A1 — data-anchored (--use-data --n-data 5000)
+   goal: break the trivial-solution (u=1,v=0) attractor
+============================================================
+[OK] _optimize._minimize_bfgs loaded — SSBroyden / SSBFGS variants available
+[v2-loader] Re40.vtk  cells=8234  velocity_array='UMean'  prefer_mean=True
+[v2] Model: width=96, depth=5, Fourier F=32 σ=2.0, params=43970
+[v2] === Stage 1: Adam with adaptive (variable) weights ===
+[Adam-v2] ep=   20  total=1.869e+03  PDE=1.087e+03 (w=1.716)  OUT=8.571e+01 (w=0.047)  DATA=5.930e-01 (w=0.100)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.23e-13 wpsi=2.74e-29
+[Adam-v2] ep=   40  total=5.580e+01  PDE=3.242e+01 (w=1.716)  OUT=2.732e+00 (w=0.047)  DATA=4.247e-01 (w=0.100)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.14e-13 wpsi=2.53e-29
+[Adam-v2] ep=   60  total=1.768e+01  PDE=1.026e+01 (w=1.715)  OUT=6.920e-01 (w=0.048)  DATA=4.094e-01 (w=0.100)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=   80  total=1.128e+01  PDE=6.548e+00 (w=1.714)  OUT=3.179e-01 (w=0.049)  DATA=4.007e-01 (w=0.100)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.14e-13 wpsi=2.52e-29
+[Adam-v2] ep=  100  total=8.736e+00  PDE=5.093e+00 (w=1.705)  OUT=1.787e-01 (w=0.051)  DATA=4.158e-01 (w=0.100)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=  120  total=1.190e+01  PDE=7.081e+00 (w=1.667)  OUT=4.630e-01 (w=0.069)  DATA=4.333e-01 (w=0.160)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.12e-13 wpsi=2.50e-29
+[Adam-v2] ep=  140  total=8.076e+00  PDE=4.862e+00 (w=1.639)  OUT=1.814e-01 (w=0.068)  DATA=4.309e-01 (w=0.223)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=  160  total=6.831e+00  PDE=4.121e+00 (w=1.630)  OUT=1.354e-01 (w=0.064)  DATA=4.280e-01 (w=0.245)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=  180  total=8.043e+00  PDE=4.869e+00 (w=1.627)  OUT=2.094e-01 (w=0.060)  DATA=4.179e-01 (w=0.256)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.14e-13 wpsi=2.52e-29
+[Adam-v2] ep=  200  total=6.726e+00  PDE=4.063e+00 (w=1.627)  OUT=1.072e-01 (w=0.062)  DATA=4.276e-01 (w=0.253)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.50e-29
+[Adam-v2] ep=  220  total=5.693e+00  PDE=3.432e+00 (w=1.625)  OUT=8.091e-02 (w=0.054)  DATA=4.156e-01 (w=0.268)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.52e-29
+[Adam-v2] ep=  240  total=5.970e+00  PDE=3.603e+00 (w=1.625)  OUT=6.213e-02 (w=0.048)  DATA=4.078e-01 (w=0.274)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=  260  total=6.196e+00  PDE=3.740e+00 (w=1.623)  OUT=7.243e-02 (w=0.046)  DATA=4.394e-01 (w=0.280)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.52e-29
+[Adam-v2] ep=  280  total=5.519e+00  PDE=3.324e+00 (w=1.623)  OUT=5.420e-02 (w=0.043)  DATA=4.359e-01 (w=0.283)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=  300  total=5.634e+00  PDE=3.395e+00 (w=1.623)  OUT=4.280e-02 (w=0.041)  DATA=4.244e-01 (w=0.284)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=  320  total=5.643e+00  PDE=3.404e+00 (w=1.621)  OUT=4.762e-02 (w=0.040)  DATA=4.279e-01 (w=0.291)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=  340  total=5.222e+00  PDE=3.149e+00 (w=1.620)  OUT=4.839e-02 (w=0.040)  DATA=4.080e-01 (w=0.292)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.52e-29
+[Adam-v2] ep=  360  total=5.259e+00  PDE=3.170e+00 (w=1.621)  OUT=3.188e-02 (w=0.040)  DATA=4.151e-01 (w=0.289)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=  380  total=5.561e+00  PDE=3.356e+00 (w=1.620)  OUT=5.013e-02 (w=0.040)  DATA=4.247e-01 (w=0.292)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=  400  total=5.311e+00  PDE=3.200e+00 (w=1.619)  OUT=5.656e-02 (w=0.040)  DATA=4.319e-01 (w=0.294)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.52e-29
+[Adam-v2] ep=  420  total=5.349e+00  PDE=3.227e+00 (w=1.618)  OUT=3.614e-02 (w=0.040)  DATA=4.281e-01 (w=0.293)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=  440  total=5.198e+00  PDE=3.135e+00 (w=1.617)  OUT=6.581e-02 (w=0.040)  DATA=4.246e-01 (w=0.297)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=  460  total=5.209e+00  PDE=3.143e+00 (w=1.616)  OUT=3.593e-02 (w=0.040)  DATA=4.285e-01 (w=0.298)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.52e-29
+[Adam-v2] ep=  480  total=5.253e+00  PDE=3.171e+00 (w=1.616)  OUT=4.440e-02 (w=0.040)  DATA=4.245e-01 (w=0.300)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.14e-13 wpsi=2.52e-29
+[Adam-v2] ep=  500  total=4.820e+00  PDE=2.909e+00 (w=1.612)  OUT=2.763e-02 (w=0.040)  DATA=4.194e-01 (w=0.304)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.14e-13 wpsi=2.52e-29
+[Adam-v2] ep=  520  total=4.864e+00  PDE=2.943e+00 (w=1.608)  OUT=4.180e-02 (w=0.040)  DATA=4.232e-01 (w=0.310)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.50e-29
+[Adam-v2] ep=  540  total=4.181e+00  PDE=2.528e+00 (w=1.601)  OUT=3.459e-02 (w=0.040)  DATA=4.197e-01 (w=0.318)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.52e-29
+[Adam-v2] ep=  560  total=4.049e+00  PDE=2.455e+00 (w=1.594)  OUT=4.119e-02 (w=0.040)  DATA=4.128e-01 (w=0.326)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.51e-29
+[Adam-v2] ep=  580  total=3.593e+00  PDE=2.180e+00 (w=1.582)  OUT=4.480e-02 (w=0.040)  DATA=4.216e-01 (w=0.338)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.50e-29
+[Adam-v2] ep=  600  total=3.423e+00  PDE=2.093e+00 (w=1.565)  OUT=6.509e-02 (w=0.048)  DATA=4.147e-01 (w=0.352)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.14e-13 wpsi=2.52e-29
+[Adam-v2] ep=  620  total=2.725e+00  PDE=1.665e+00 (w=1.542)  OUT=6.100e-02 (w=0.058)  DATA=4.198e-01 (w=0.367)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.13e-13 wpsi=2.50e-29
+[Adam-v2] ep=  640  total=2.177e+00  PDE=1.333e+00 (w=1.503)  OUT=7.597e-02 (w=0.066)  DATA=4.230e-01 (w=0.398)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.11e-13 wpsi=2.47e-29
+[Adam-v2] ep=  660  total=1.740e+00  PDE=1.064e+00 (w=1.469)  OUT=6.437e-02 (w=0.070)  DATA=4.051e-01 (w=0.424)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.09e-13 wpsi=2.42e-29
+[Adam-v2] ep=  680  total=2.020e+00  PDE=1.264e+00 (w=1.454)  OUT=8.702e-02 (w=0.074)  DATA=4.041e-01 (w=0.433)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.12e-13 wpsi=2.50e-29
+[Adam-v2] ep=  700  total=1.378e+00  PDE=8.396e-01 (w=1.415)  OUT=4.703e-02 (w=0.070)  DATA=4.003e-01 (w=0.468)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.07e-13 wpsi=2.38e-29
+[Adam-v2] ep=  720  total=1.232e+00  PDE=7.580e-01 (w=1.377)  OUT=3.945e-02 (w=0.072)  DATA=3.751e-01 (w=0.494)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.05e-13 wpsi=2.33e-29
+[Adam-v2] ep=  740  total=1.031e+00  PDE=6.111e-01 (w=1.344)  OUT=4.490e-02 (w=0.071)  DATA=3.996e-01 (w=0.517)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.03e-13 wpsi=2.28e-29
+[Adam-v2] ep=  760  total=9.159e-01  PDE=5.350e-01 (w=1.299)  OUT=4.108e-02 (w=0.072)  DATA=4.009e-01 (w=0.543)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.00e-13 wpsi=2.23e-29
+[Adam-v2] ep=  780  total=8.166e-01  PDE=4.677e-01 (w=1.276)  OUT=3.346e-02 (w=0.071)  DATA=3.897e-01 (w=0.558)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.43e-14 wpsi=2.09e-29
+[Adam-v2] ep=  800  total=7.421e-01  PDE=4.172e-01 (w=1.237)  OUT=3.110e-02 (w=0.073)  DATA=3.867e-01 (w=0.578)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.10e-14 wpsi=2.02e-29
+[Adam-v2] ep=  820  total=7.074e-01  PDE=3.898e-01 (w=1.210)  OUT=2.464e-02 (w=0.071)  DATA=3.938e-01 (w=0.594)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.08e-14 wpsi=2.02e-29
+[Adam-v2] ep=  840  total=6.670e-01  PDE=3.645e-01 (w=1.190)  OUT=3.452e-02 (w=0.072)  DATA=3.828e-01 (w=0.603)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=8.59e-14 wpsi=1.91e-29
+[Adam-v2] ep=  860  total=5.853e-01  PDE=2.966e-01 (w=1.158)  OUT=3.353e-02 (w=0.073)  DATA=3.873e-01 (w=0.618)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=8.19e-14 wpsi=1.82e-29
+[Adam-v2] ep=  880  total=5.726e-01  PDE=2.934e-01 (w=1.133)  OUT=2.719e-02 (w=0.072)  DATA=3.782e-01 (w=0.630)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=7.69e-14 wpsi=1.71e-29
+[Adam-v2] ep=  900  total=5.531e-01  PDE=2.775e-01 (w=1.111)  OUT=2.591e-02 (w=0.070)  DATA=3.791e-01 (w=0.640)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=7.17e-14 wpsi=1.59e-29
+[Adam-v2] ep=  920  total=5.246e-01  PDE=2.483e-01 (w=1.087)  OUT=2.669e-02 (w=0.070)  DATA=3.883e-01 (w=0.651)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.79e-14 wpsi=1.51e-29
+[Adam-v2] ep=  940  total=5.365e-01  PDE=2.667e-01 (w=1.083)  OUT=2.792e-02 (w=0.070)  DATA=3.765e-01 (w=0.653)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.46e-14 wpsi=1.43e-29
+[Adam-v2] ep=  960  total=5.039e-01  PDE=2.381e-01 (w=1.081)  OUT=2.984e-02 (w=0.070)  DATA=3.738e-01 (w=0.654)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.41e-14 wpsi=1.42e-29
+[Adam-v2] ep=  980  total=5.077e-01  PDE=2.559e-01 (w=1.067)  OUT=2.674e-02 (w=0.070)  DATA=3.530e-01 (w=0.659)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.61e-14 wpsi=1.47e-29
+[Adam-v2] ep= 1000  total=4.750e-01  PDE=2.167e-01 (w=1.047)  OUT=2.345e-02 (w=0.069)  DATA=3.690e-01 (w=0.668)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.35e-14 wpsi=1.41e-29
+[Adam-v2] ep= 1020  total=4.405e-01  PDE=1.855e-01 (w=1.020)  OUT=2.034e-02 (w=0.070)  DATA=3.688e-01 (w=0.678)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.65e-14 wpsi=1.25e-29
+[Adam-v2] ep= 1040  total=4.337e-01  PDE=1.837e-01 (w=1.006)  OUT=1.986e-02 (w=0.066)  DATA=3.614e-01 (w=0.685)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.39e-14 wpsi=1.20e-29
+[Adam-v2] ep= 1060  total=4.248e-01  PDE=1.717e-01 (w=0.977)  OUT=2.055e-02 (w=0.065)  DATA=3.670e-01 (w=0.697)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.17e-14 wpsi=1.15e-29
+[Adam-v2] ep= 1080  total=4.297e-01  PDE=1.820e-01 (w=0.977)  OUT=1.968e-02 (w=0.064)  DATA=3.598e-01 (w=0.697)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=4.99e-14 wpsi=1.11e-29
+[Adam-v2] ep= 1100  total=4.093e-01  PDE=1.680e-01 (w=0.988)  OUT=1.935e-02 (w=0.065)  DATA=3.496e-01 (w=0.693)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.09e-14 wpsi=1.13e-29
+[Adam-v2] ep= 1120  total=3.975e-01  PDE=1.547e-01 (w=0.964)  OUT=1.530e-02 (w=0.063)  DATA=3.525e-01 (w=0.702)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=4.82e-14 wpsi=1.07e-29
+[Adam-v2] ep= 1140  total=3.913e-01  PDE=1.446e-01 (w=0.933)  OUT=1.555e-02 (w=0.063)  DATA=3.586e-01 (w=0.712)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=4.50e-14 wpsi=1.00e-29
+[Adam-v2] ep= 1160  total=3.689e-01  PDE=1.286e-01 (w=0.917)  OUT=1.516e-02 (w=0.062)  DATA=3.482e-01 (w=0.718)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=4.25e-14 wpsi=9.44e-30
+[Adam-v2] ep= 1180  total=3.603e-01  PDE=1.304e-01 (w=0.911)  OUT=1.315e-02 (w=0.060)  DATA=3.339e-01 (w=0.721)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.99e-14 wpsi=8.86e-30
+[Adam-v2] ep= 1200  total=3.699e-01  PDE=1.284e-01 (w=0.904)  OUT=1.346e-02 (w=0.061)  DATA=3.499e-01 (w=0.723)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.96e-14 wpsi=8.79e-30
+[Adam-v2] ep= 1220  total=3.635e-01  PDE=1.302e-01 (w=0.901)  OUT=1.189e-02 (w=0.059)  DATA=3.388e-01 (w=0.725)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.79e-14 wpsi=8.40e-30
+[Adam-v2] ep= 1240  total=3.705e-01  PDE=1.283e-01 (w=0.933)  OUT=1.241e-02 (w=0.057)  DATA=3.495e-01 (w=0.715)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.92e-14 wpsi=8.71e-30
+[Adam-v2] ep= 1260  total=3.627e-01  PDE=1.279e-01 (w=0.904)  OUT=1.220e-02 (w=0.059)  DATA=3.404e-01 (w=0.724)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.97e-14 wpsi=8.81e-30
+[Adam-v2] ep= 1280  total=3.567e-01  PDE=1.190e-01 (w=0.896)  OUT=1.163e-02 (w=0.058)  DATA=3.432e-01 (w=0.727)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.90e-14 wpsi=8.66e-30
+[Adam-v2] ep= 1300  total=3.372e-01  PDE=1.011e-01 (w=0.843)  OUT=1.046e-02 (w=0.057)  DATA=3.383e-01 (w=0.743)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.61e-14 wpsi=8.01e-30
+[Adam-v2] ep= 1320  total=3.383e-01  PDE=1.019e-01 (w=0.837)  OUT=1.227e-02 (w=0.056)  DATA=3.386e-01 (w=0.745)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.34e-14 wpsi=7.41e-30
+[Adam-v2] ep= 1340  total=3.564e-01  PDE=1.327e-01 (w=0.880)  OUT=1.265e-02 (w=0.057)  DATA=3.262e-01 (w=0.732)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.52e-14 wpsi=7.81e-30
+[Adam-v2] ep= 1360  total=3.340e-01  PDE=1.047e-01 (w=0.848)  OUT=1.501e-02 (w=0.057)  DATA=3.295e-01 (w=0.742)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.03e-14 wpsi=6.73e-30
+[Adam-v2] ep= 1380  total=3.498e-01  PDE=1.169e-01 (w=0.836)  OUT=1.293e-02 (w=0.056)  DATA=3.372e-01 (w=0.746)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.08e-14 wpsi=6.83e-30
+[Adam-v2] ep= 1400  total=3.411e-01  PDE=1.158e-01 (w=0.869)  OUT=1.168e-02 (w=0.055)  DATA=3.258e-01 (w=0.736)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.15e-14 wpsi=7.00e-30
+[Adam-v2] ep= 1420  total=3.273e-01  PDE=1.007e-01 (w=0.847)  OUT=1.037e-02 (w=0.055)  DATA=3.250e-01 (w=0.743)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=3.05e-14 wpsi=6.78e-30
+[Adam-v2] ep= 1440  total=3.322e-01  PDE=9.826e-02 (w=0.822)  OUT=1.036e-02 (w=0.054)  DATA=3.344e-01 (w=0.750)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.94e-14 wpsi=6.53e-30
+[Adam-v2] ep= 1460  total=3.150e-01  PDE=8.821e-02 (w=0.814)  OUT=1.029e-02 (w=0.053)  DATA=3.223e-01 (w=0.753)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.78e-14 wpsi=6.16e-30
+[Adam-v2] ep= 1480  total=3.218e-01  PDE=9.638e-02 (w=0.817)  OUT=9.966e-03 (w=0.052)  DATA=3.223e-01 (w=0.752)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.73e-14 wpsi=6.06e-30
+[Adam-v2] ep= 1500  total=3.166e-01  PDE=9.007e-02 (w=0.815)  OUT=8.880e-03 (w=0.051)  DATA=3.222e-01 (w=0.753)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.68e-14 wpsi=5.94e-30
+[Adam-v2] ep= 1520  total=3.143e-01  PDE=1.015e-01 (w=0.819)  OUT=1.118e-02 (w=0.052)  DATA=3.067e-01 (w=0.752)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.52e-14 wpsi=5.59e-30
+[Adam-v2] ep= 1540  total=3.134e-01  PDE=9.026e-02 (w=0.809)  OUT=8.217e-03 (w=0.052)  DATA=3.179e-01 (w=0.755)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.68e-14 wpsi=5.96e-30
+[Adam-v2] ep= 1560  total=3.169e-01  PDE=8.213e-02 (w=0.818)  OUT=8.691e-03 (w=0.051)  DATA=3.313e-01 (w=0.752)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.66e-14 wpsi=5.91e-30
+[Adam-v2] ep= 1580  total=3.181e-01  PDE=8.675e-02 (w=0.825)  OUT=1.108e-02 (w=0.055)  DATA=3.283e-01 (w=0.749)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.72e-14 wpsi=6.03e-30
+[Adam-v2] ep= 1600  total=3.146e-01  PDE=8.518e-02 (w=0.812)  OUT=9.787e-03 (w=0.053)  DATA=3.251e-01 (w=0.753)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.74e-14 wpsi=6.09e-30
+[Adam-v2] ep= 1620  total=3.070e-01  PDE=7.938e-02 (w=0.781)  OUT=1.021e-02 (w=0.054)  DATA=3.212e-01 (w=0.761)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.48e-14 wpsi=5.51e-30
+[Adam-v2] ep= 1640  total=3.102e-01  PDE=9.704e-02 (w=0.793)  OUT=9.017e-03 (w=0.052)  DATA=3.067e-01 (w=0.759)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.54e-14 wpsi=5.65e-30
+[Adam-v2] ep= 1660  total=3.094e-01  PDE=8.583e-02 (w=0.776)  OUT=9.522e-03 (w=0.052)  DATA=3.174e-01 (w=0.763)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.47e-14 wpsi=5.49e-30
+[Adam-v2] ep= 1680  total=3.016e-01  PDE=7.389e-02 (w=0.773)  OUT=7.888e-03 (w=0.051)  DATA=3.193e-01 (w=0.765)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.57e-14 wpsi=5.70e-30
+[Adam-v2] ep= 1700  total=3.091e-01  PDE=8.599e-02 (w=0.805)  OUT=8.373e-03 (w=0.052)  DATA=3.169e-01 (w=0.756)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.71e-14 wpsi=6.01e-30
+[Adam-v2] ep= 1720  total=2.986e-01  PDE=7.645e-02 (w=0.761)  OUT=9.855e-03 (w=0.051)  DATA=3.126e-01 (w=0.768)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.34e-14 wpsi=5.20e-30
+[Adam-v2] ep= 1740  total=2.882e-01  PDE=6.215e-02 (w=0.731)  OUT=7.218e-03 (w=0.049)  DATA=3.126e-01 (w=0.775)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.22e-14 wpsi=4.93e-30
+[Adam-v2] ep= 1760  total=2.839e-01  PDE=6.036e-02 (w=0.723)  OUT=6.618e-03 (w=0.047)  DATA=3.084e-01 (w=0.778)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.21e-14 wpsi=4.92e-30
+[Adam-v2] ep= 1780  total=2.838e-01  PDE=6.093e-02 (w=0.721)  OUT=7.020e-03 (w=0.049)  DATA=3.079e-01 (w=0.778)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.97e-14 wpsi=4.37e-30
+[Adam-v2] ep= 1800  total=2.881e-01  PDE=7.799e-02 (w=0.761)  OUT=9.095e-03 (w=0.050)  DATA=2.973e-01 (w=0.768)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.01e-14 wpsi=4.45e-30
+[Adam-v2] ep= 1820  total=2.965e-01  PDE=7.211e-02 (w=0.757)  OUT=6.427e-03 (w=0.049)  DATA=3.140e-01 (w=0.769)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.02e-14 wpsi=4.49e-30
+[Adam-v2] ep= 1840  total=2.847e-01  PDE=6.314e-02 (w=0.742)  OUT=7.905e-03 (w=0.049)  DATA=3.072e-01 (w=0.773)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.03e-14 wpsi=4.52e-30
+[Adam-v2] ep= 1860  total=2.858e-01  PDE=6.664e-02 (w=0.766)  OUT=8.286e-03 (w=0.050)  DATA=3.058e-01 (w=0.766)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.08e-14 wpsi=4.61e-30
+[Adam-v2] ep= 1880  total=2.981e-01  PDE=8.541e-02 (w=0.798)  OUT=8.352e-03 (w=0.054)  DATA=3.033e-01 (w=0.757)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.23e-14 wpsi=4.95e-30
+[Adam-v2] ep= 1900  total=2.851e-01  PDE=7.295e-02 (w=0.760)  OUT=7.455e-03 (w=0.050)  DATA=2.985e-01 (w=0.768)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.07e-14 wpsi=4.59e-30
+[Adam-v2] ep= 1920  total=2.844e-01  PDE=6.563e-02 (w=0.745)  OUT=7.022e-03 (w=0.049)  DATA=3.045e-01 (w=0.772)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.94e-14 wpsi=4.31e-30
+[Adam-v2] ep= 1940  total=2.874e-01  PDE=7.018e-02 (w=0.739)  OUT=6.862e-03 (w=0.049)  DATA=3.040e-01 (w=0.774)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.89e-14 wpsi=4.20e-30
+[Adam-v2] ep= 1960  total=2.791e-01  PDE=6.293e-02 (w=0.735)  OUT=7.178e-03 (w=0.048)  DATA=2.999e-01 (w=0.775)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.82e-14 wpsi=4.04e-30
+[Adam-v2] ep= 1980  total=2.740e-01  PDE=6.108e-02 (w=0.738)  OUT=6.157e-03 (w=0.048)  DATA=2.952e-01 (w=0.774)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.80e-14 wpsi=4.00e-30
+[Adam-v2] ep= 2000  total=2.851e-01  PDE=7.128e-02 (w=0.763)  OUT=5.939e-03 (w=0.046)  DATA=2.998e-01 (w=0.769)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.77e-14 wpsi=3.93e-30
+[Adam-v2] ep= 2020  total=2.702e-01  PDE=5.641e-02 (w=0.711)  OUT=6.049e-03 (w=0.046)  DATA=2.942e-01 (w=0.781)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.69e-14 wpsi=3.76e-30
+[Adam-v2] ep= 2040  total=2.714e-01  PDE=5.614e-02 (w=0.682)  OUT=5.239e-03 (w=0.045)  DATA=2.956e-01 (w=0.788)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.73e-14 wpsi=3.84e-30
+[Adam-v2] ep= 2060  total=2.846e-01  PDE=6.140e-02 (w=0.685)  OUT=6.312e-03 (w=0.045)  DATA=3.077e-01 (w=0.787)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.74e-14 wpsi=3.85e-30
+[Adam-v2] ep= 2080  total=2.785e-01  PDE=7.773e-02 (w=0.727)  OUT=7.860e-03 (w=0.047)  DATA=2.852e-01 (w=0.777)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.73e-14 wpsi=3.84e-30
+[Adam-v2] ep= 2100  total=2.754e-01  PDE=5.639e-02 (w=0.721)  OUT=5.968e-03 (w=0.048)  DATA=3.013e-01 (w=0.778)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.69e-14 wpsi=3.74e-30
+[Adam-v2] ep= 2120  total=2.813e-01  PDE=6.962e-02 (w=0.738)  OUT=8.330e-03 (w=0.047)  DATA=2.962e-01 (w=0.775)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.71e-14 wpsi=3.79e-30
+[Adam-v2] ep= 2140  total=2.765e-01  PDE=5.908e-02 (w=0.701)  OUT=6.726e-03 (w=0.047)  DATA=2.997e-01 (w=0.783)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.53e-14 wpsi=3.39e-30
+[Adam-v2] ep= 2160  total=2.756e-01  PDE=6.434e-02 (w=0.735)  OUT=6.543e-03 (w=0.047)  DATA=2.941e-01 (w=0.775)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.76e-14 wpsi=3.91e-30
+[Adam-v2] ep= 2180  total=2.806e-01  PDE=7.449e-02 (w=0.739)  OUT=6.411e-03 (w=0.047)  DATA=2.908e-01 (w=0.774)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.67e-14 wpsi=3.71e-30
+[Adam-v2] ep= 2200  total=2.633e-01  PDE=5.172e-02 (w=0.719)  OUT=5.612e-03 (w=0.047)  DATA=2.899e-01 (w=0.779)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.62e-14 wpsi=3.61e-30
+[Adam-v2] ep= 2220  total=2.751e-01  PDE=4.955e-02 (w=0.692)  OUT=5.981e-03 (w=0.046)  DATA=3.062e-01 (w=0.785)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.51e-14 wpsi=3.36e-30
+[Adam-v2] ep= 2240  total=2.752e-01  PDE=6.377e-02 (w=0.719)  OUT=6.126e-03 (w=0.048)  DATA=2.942e-01 (w=0.779)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.70e-14 wpsi=3.77e-30
+[Adam-v2] ep= 2260  total=2.674e-01  PDE=5.671e-02 (w=0.724)  OUT=6.266e-03 (w=0.047)  DATA=2.907e-01 (w=0.778)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.57e-14 wpsi=3.48e-30
+[Adam-v2] ep= 2280  total=2.561e-01  PDE=4.953e-02 (w=0.693)  OUT=5.959e-03 (w=0.047)  DATA=2.822e-01 (w=0.785)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.46e-14 wpsi=3.25e-30
+[Adam-v2] ep= 2300  total=2.783e-01  PDE=7.662e-02 (w=0.750)  OUT=9.067e-03 (w=0.050)  DATA=2.859e-01 (w=0.771)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.36e-14 wpsi=3.01e-30
+[Adam-v2] ep= 2320  total=2.779e-01  PDE=6.389e-02 (w=0.729)  OUT=5.945e-03 (w=0.049)  DATA=2.976e-01 (w=0.776)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.53e-14 wpsi=3.39e-30
+[Adam-v2] ep= 2340  total=2.786e-01  PDE=7.102e-02 (w=0.746)  OUT=1.137e-02 (w=0.055)  DATA=2.925e-01 (w=0.769)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.58e-14 wpsi=3.50e-30
+[Adam-v2] ep= 2360  total=2.735e-01  PDE=6.170e-02 (w=0.719)  OUT=8.448e-03 (w=0.054)  DATA=2.946e-01 (w=0.776)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.62e-14 wpsi=3.60e-30
+[Adam-v2] ep= 2380  total=2.661e-01  PDE=5.924e-02 (w=0.720)  OUT=6.932e-03 (w=0.048)  DATA=2.867e-01 (w=0.778)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.49e-14 wpsi=3.31e-30
+[Adam-v2] ep= 2400  total=2.623e-01  PDE=5.392e-02 (w=0.696)  OUT=5.973e-03 (w=0.047)  DATA=2.862e-01 (w=0.784)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.36e-14 wpsi=3.02e-30
+[Adam-v2] ep= 2420  total=2.596e-01  PDE=5.411e-02 (w=0.714)  OUT=6.429e-03 (w=0.046)  DATA=2.827e-01 (w=0.780)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.45e-14 wpsi=3.22e-30
+[Adam-v2] ep= 2440  total=2.632e-01  PDE=4.966e-02 (w=0.692)  OUT=6.283e-03 (w=0.047)  DATA=2.910e-01 (w=0.785)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.37e-14 wpsi=3.05e-30
+[Adam-v2] ep= 2460  total=2.684e-01  PDE=6.686e-02 (w=0.750)  OUT=5.979e-03 (w=0.051)  DATA=2.829e-01 (w=0.770)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.53e-14 wpsi=3.41e-30
+[Adam-v2] ep= 2480  total=2.697e-01  PDE=5.993e-02 (w=0.727)  OUT=6.719e-03 (w=0.050)  DATA=2.909e-01 (w=0.776)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.37e-14 wpsi=3.04e-30
+[Adam-v2] ep= 2500  total=2.633e-01  PDE=5.729e-02 (w=0.716)  OUT=6.649e-03 (w=0.048)  DATA=2.849e-01 (w=0.779)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.35e-14 wpsi=3.00e-30
+[Adam-v2] ep= 2520  total=2.605e-01  PDE=5.695e-02 (w=0.707)  OUT=6.169e-03 (w=0.048)  DATA=2.814e-01 (w=0.782)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.30e-14 wpsi=2.89e-30
+[Adam-v2] ep= 2540  total=2.740e-01  PDE=6.108e-02 (w=0.704)  OUT=7.044e-03 (w=0.046)  DATA=2.947e-01 (w=0.783)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.32e-14 wpsi=2.94e-30
+[Adam-v2] ep= 2560  total=2.648e-01  PDE=7.286e-02 (w=0.716)  OUT=5.591e-03 (w=0.047)  DATA=2.724e-01 (w=0.780)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.30e-14 wpsi=2.89e-30
+[Adam-v2] ep= 2580  total=2.562e-01  PDE=5.194e-02 (w=0.717)  OUT=5.586e-03 (w=0.046)  DATA=2.804e-01 (w=0.780)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.30e-14 wpsi=2.88e-30
+[Adam-v2] ep= 2600  total=2.647e-01  PDE=6.018e-02 (w=0.703)  OUT=5.776e-03 (w=0.046)  DATA=2.837e-01 (w=0.783)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.38e-14 wpsi=3.06e-30
+[Adam-v2] ep= 2620  total=2.510e-01  PDE=4.872e-02 (w=0.684)  OUT=6.588e-03 (w=0.046)  DATA=2.761e-01 (w=0.787)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.23e-14 wpsi=2.72e-30
+[Adam-v2] ep= 2640  total=2.566e-01  PDE=5.403e-02 (w=0.688)  OUT=5.947e-03 (w=0.048)  DATA=2.789e-01 (w=0.786)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.25e-14 wpsi=2.77e-30
+[Adam-v2] ep= 2660  total=2.596e-01  PDE=5.891e-02 (w=0.688)  OUT=6.357e-03 (w=0.048)  DATA=2.784e-01 (w=0.786)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.22e-14 wpsi=2.72e-30
+[Adam-v2] ep= 2680  total=2.540e-01  PDE=5.670e-02 (w=0.678)  OUT=6.772e-03 (w=0.047)  DATA=2.730e-01 (w=0.788)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.14e-14 wpsi=2.53e-30
+[Adam-v2] ep= 2700  total=2.602e-01  PDE=6.890e-02 (w=0.697)  OUT=7.029e-03 (w=0.048)  DATA=2.704e-01 (w=0.784)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.19e-14 wpsi=2.64e-30
+[Adam-v2] ep= 2720  total=2.501e-01  PDE=4.674e-02 (w=0.656)  OUT=5.820e-03 (w=0.046)  DATA=2.764e-01 (w=0.793)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.17e-14 wpsi=2.60e-30
+[Adam-v2] ep= 2740  total=2.511e-01  PDE=4.080e-02 (w=0.633)  OUT=5.046e-03 (w=0.045)  DATA=2.819e-01 (w=0.798)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.06e-14 wpsi=2.35e-30
+[Adam-v2] ep= 2760  total=2.485e-01  PDE=4.049e-02 (w=0.623)  OUT=5.228e-03 (w=0.044)  DATA=2.786e-01 (w=0.801)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.04e-14 wpsi=2.32e-30
+[Adam-v2] ep= 2780  total=2.475e-01  PDE=4.437e-02 (w=0.626)  OUT=5.902e-03 (w=0.044)  DATA=2.743e-01 (w=0.800)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.58e-15 wpsi=2.13e-30
+[Adam-v2] ep= 2800  total=2.484e-01  PDE=5.003e-02 (w=0.702)  OUT=5.311e-03 (w=0.045)  DATA=2.718e-01 (w=0.784)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.07e-14 wpsi=2.37e-30
+[Adam-v2] ep= 2820  total=2.648e-01  PDE=6.773e-02 (w=0.713)  OUT=6.295e-03 (w=0.048)  DATA=2.772e-01 (w=0.780)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.05e-14 wpsi=2.32e-30
+[Adam-v2] ep= 2840  total=2.659e-01  PDE=7.049e-02 (w=0.695)  OUT=8.949e-03 (w=0.047)  DATA=2.761e-01 (w=0.784)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.72e-15 wpsi=2.16e-30
+[Adam-v2] ep= 2860  total=2.450e-01  PDE=5.253e-02 (w=0.688)  OUT=7.547e-03 (w=0.050)  DATA=2.656e-01 (w=0.785)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.04e-14 wpsi=2.31e-30
+[Adam-v2] ep= 2880  total=2.541e-01  PDE=5.885e-02 (w=0.726)  OUT=8.988e-03 (w=0.054)  DATA=2.722e-01 (w=0.775)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.27e-14 wpsi=2.82e-30
+[Adam-v2] ep= 2900  total=2.449e-01  PDE=4.906e-02 (w=0.705)  OUT=7.071e-03 (w=0.057)  DATA=2.698e-01 (w=0.778)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.21e-14 wpsi=2.69e-30
+[Adam-v2] ep= 2920  total=2.496e-01  PDE=4.472e-02 (w=0.690)  OUT=4.613e-03 (w=0.051)  DATA=2.787e-01 (w=0.784)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.15e-14 wpsi=2.55e-30
+[Adam-v2] ep= 2940  total=2.543e-01  PDE=6.742e-02 (w=0.705)  OUT=7.326e-03 (w=0.048)  DATA=2.640e-01 (w=0.782)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.21e-14 wpsi=2.69e-30
+[Adam-v2] ep= 2960  total=2.488e-01  PDE=6.460e-02 (w=0.722)  OUT=6.808e-03 (w=0.046)  DATA=2.592e-01 (w=0.779)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.04e-14 wpsi=2.30e-30
+[Adam-v2] ep= 2980  total=2.424e-01  PDE=4.573e-02 (w=0.705)  OUT=5.122e-03 (w=0.047)  DATA=2.684e-01 (w=0.782)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.05e-14 wpsi=2.34e-30
+[Adam-v2] ep= 3000  total=2.466e-01  PDE=5.144e-02 (w=0.714)  OUT=6.452e-03 (w=0.049)  DATA=2.688e-01 (w=0.779)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.55e-15 wpsi=2.12e-30
+[Adam-v2] ep= 3020  total=2.507e-01  PDE=5.796e-02 (w=0.727)  OUT=6.472e-03 (w=0.050)  DATA=2.683e-01 (w=0.776)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.00e-14 wpsi=2.23e-30
+[Adam-v2] ep= 3040  total=2.553e-01  PDE=6.682e-02 (w=0.713)  OUT=6.775e-03 (w=0.049)  DATA=2.659e-01 (w=0.780)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.00e-14 wpsi=2.22e-30
+[Adam-v2] ep= 3060  total=2.460e-01  PDE=5.354e-02 (w=0.702)  OUT=6.943e-03 (w=0.049)  DATA=2.660e-01 (w=0.782)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.45e-15 wpsi=2.10e-30
+[Adam-v2] ep= 3080  total=2.456e-01  PDE=5.699e-02 (w=0.700)  OUT=6.366e-03 (w=0.048)  DATA=2.624e-01 (w=0.783)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.02e-15 wpsi=2.00e-30
+[Adam-v2] ep= 3100  total=2.548e-01  PDE=6.438e-02 (w=0.700)  OUT=6.660e-03 (w=0.047)  DATA=2.673e-01 (w=0.783)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.96e-15 wpsi=2.21e-30
+[Adam-v2] ep= 3120  total=2.465e-01  PDE=5.739e-02 (w=0.706)  OUT=5.731e-03 (w=0.047)  DATA=2.631e-01 (w=0.782)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.55e-15 wpsi=2.12e-30
+[Adam-v2] ep= 3140  total=2.428e-01  PDE=4.930e-02 (w=0.694)  OUT=6.290e-03 (w=0.048)  DATA=2.655e-01 (w=0.785)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.42e-15 wpsi=2.09e-30
+[Adam-v2] ep= 3160  total=2.398e-01  PDE=4.557e-02 (w=0.678)  OUT=5.282e-03 (w=0.047)  DATA=2.647e-01 (w=0.788)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.52e-15 wpsi=2.11e-30
+[Adam-v2] ep= 3180  total=2.415e-01  PDE=4.470e-02 (w=0.691)  OUT=5.107e-03 (w=0.048)  DATA=2.679e-01 (w=0.785)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.16e-15 wpsi=2.04e-30
+[Adam-v2] ep= 3200  total=2.416e-01  PDE=4.606e-02 (w=0.668)  OUT=5.611e-03 (w=0.047)  DATA=2.664e-01 (w=0.791)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.03e-14 wpsi=2.28e-30
+[Adam-v2] ep= 3220  total=2.366e-01  PDE=3.760e-02 (w=0.642)  OUT=4.526e-03 (w=0.045)  DATA=2.665e-01 (w=0.796)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=8.79e-15 wpsi=1.95e-30
+[Adam-v2] ep= 3240  total=2.335e-01  PDE=4.174e-02 (w=0.625)  OUT=4.780e-03 (w=0.044)  DATA=2.590e-01 (w=0.800)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=8.34e-15 wpsi=1.85e-30
+[Adam-v2] ep= 3260  total=2.341e-01  PDE=4.038e-02 (w=0.625)  OUT=4.573e-03 (w=0.044)  DATA=2.608e-01 (w=0.800)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=8.19e-15 wpsi=1.82e-30
+[Adam-v2] ep= 3280  total=2.299e-01  PDE=4.336e-02 (w=0.627)  OUT=5.865e-03 (w=0.044)  DATA=2.532e-01 (w=0.800)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=7.12e-15 wpsi=1.58e-30
+[Adam-v2] ep= 3300  total=2.477e-01  PDE=5.981e-02 (w=0.712)  OUT=7.790e-03 (w=0.050)  DATA=2.625e-01 (w=0.780)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.31e-15 wpsi=2.07e-30
+[Adam-v2] ep= 3320  total=2.379e-01  PDE=5.222e-02 (w=0.704)  OUT=4.382e-03 (w=0.048)  DATA=2.569e-01 (w=0.782)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=9.32e-15 wpsi=2.07e-30
+[Adam-v2] ep= 3340  total=2.404e-01  PDE=5.687e-02 (w=0.696)  OUT=7.268e-03 (w=0.049)  DATA=2.558e-01 (w=0.784)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=7.87e-15 wpsi=1.75e-30
+[Adam-v2] ep= 3360  total=2.303e-01  PDE=4.765e-02 (w=0.683)  OUT=5.246e-03 (w=0.048)  DATA=2.511e-01 (w=0.787)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=7.29e-15 wpsi=1.62e-30
+[Adam-v2] ep= 3380  total=2.387e-01  PDE=5.039e-02 (w=0.677)  OUT=4.352e-03 (w=0.045)  DATA=2.590e-01 (w=0.789)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=8.14e-15 wpsi=1.81e-30
+[Adam-v2] ep= 3400  total=2.263e-01  PDE=4.062e-02 (w=0.647)  OUT=4.527e-03 (w=0.045)  DATA=2.512e-01 (w=0.796)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=7.62e-15 wpsi=1.69e-30
+[Adam-v2] ep= 3420  total=2.289e-01  PDE=4.016e-02 (w=0.624)  OUT=4.608e-03 (w=0.044)  DATA=2.544e-01 (w=0.800)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=7.94e-15 wpsi=1.76e-30
+[Adam-v2] ep= 3440  total=2.490e-01  PDE=6.016e-02 (w=0.697)  OUT=9.019e-03 (w=0.050)  DATA=2.639e-01 (w=0.783)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.27e-15 wpsi=1.39e-30
+[Adam-v2] ep= 3460  total=2.342e-01  PDE=5.512e-02 (w=0.721)  OUT=6.968e-03 (w=0.050)  DATA=2.497e-01 (w=0.778)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.99e-15 wpsi=1.55e-30
+[Adam-v2] ep= 3480  total=2.294e-01  PDE=4.220e-02 (w=0.677)  OUT=4.986e-03 (w=0.047)  DATA=2.544e-01 (w=0.788)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=7.85e-15 wpsi=1.74e-30
+[Adam-v2] ep= 3500  total=2.342e-01  PDE=4.499e-02 (w=0.677)  OUT=5.803e-03 (w=0.047)  DATA=2.580e-01 (w=0.789)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=7.97e-15 wpsi=1.77e-30
+[Adam-v2] ep= 3520  total=2.267e-01  PDE=4.085e-02 (w=0.673)  OUT=5.026e-03 (w=0.046)  DATA=2.521e-01 (w=0.789)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=7.31e-15 wpsi=1.62e-30
+[Adam-v2] ep= 3540  total=2.248e-01  PDE=4.017e-02 (w=0.668)  OUT=4.271e-03 (w=0.045)  DATA=2.500e-01 (w=0.791)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=7.40e-15 wpsi=1.64e-30
+[Adam-v2] ep= 3560  total=2.246e-01  PDE=3.680e-02 (w=0.653)  OUT=4.441e-03 (w=0.045)  DATA=2.522e-01 (w=0.794)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.73e-15 wpsi=1.49e-30
+[Adam-v2] ep= 3580  total=2.199e-01  PDE=4.061e-02 (w=0.641)  OUT=4.585e-03 (w=0.044)  DATA=2.430e-01 (w=0.797)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.51e-15 wpsi=1.44e-30
+[Adam-v2] ep= 3600  total=2.221e-01  PDE=4.332e-02 (w=0.647)  OUT=5.354e-03 (w=0.045)  DATA=2.437e-01 (w=0.796)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.36e-15 wpsi=1.41e-30
+[Adam-v2] ep= 3620  total=2.260e-01  PDE=4.480e-02 (w=0.660)  OUT=5.120e-03 (w=0.045)  DATA=2.475e-01 (w=0.793)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.34e-15 wpsi=1.41e-30
+[Adam-v2] ep= 3640  total=2.295e-01  PDE=4.479e-02 (w=0.676)  OUT=5.173e-03 (w=0.045)  DATA=2.521e-01 (w=0.790)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.95e-15 wpsi=1.32e-30
+[Adam-v2] ep= 3660  total=2.240e-01  PDE=4.617e-02 (w=0.677)  OUT=4.891e-03 (w=0.046)  DATA=2.440e-01 (w=0.789)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=7.16e-15 wpsi=1.59e-30
+[Adam-v2] ep= 3680  total=2.275e-01  PDE=4.315e-02 (w=0.665)  OUT=5.226e-03 (w=0.046)  DATA=2.509e-01 (w=0.792)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.28e-15 wpsi=1.40e-30
+[Adam-v2] ep= 3700  total=2.243e-01  PDE=4.150e-02 (w=0.668)  OUT=5.048e-03 (w=0.045)  DATA=2.483e-01 (w=0.791)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.36e-15 wpsi=1.41e-30
+[Adam-v2] ep= 3720  total=2.156e-01  PDE=4.422e-02 (w=0.683)  OUT=5.651e-03 (w=0.048)  DATA=2.353e-01 (w=0.787)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.20e-15 wpsi=1.38e-30
+[Adam-v2] ep= 3740  total=2.221e-01  PDE=4.567e-02 (w=0.695)  OUT=6.466e-03 (w=0.047)  DATA=2.423e-01 (w=0.784)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.82e-15 wpsi=1.52e-30
+[Adam-v2] ep= 3760  total=2.254e-01  PDE=4.679e-02 (w=0.702)  OUT=6.659e-03 (w=0.048)  DATA=2.458e-01 (w=0.782)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.97e-15 wpsi=1.55e-30
+[Adam-v2] ep= 3780  total=2.287e-01  PDE=5.036e-02 (w=0.686)  OUT=5.328e-03 (w=0.047)  DATA=2.465e-01 (w=0.786)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.99e-15 wpsi=1.33e-30
+[Adam-v2] ep= 3800  total=2.186e-01  PDE=3.675e-02 (w=0.664)  OUT=4.525e-03 (w=0.045)  DATA=2.450e-01 (w=0.792)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.56e-15 wpsi=1.46e-30
+[Adam-v2] ep= 3820  total=2.221e-01  PDE=4.750e-02 (w=0.661)  OUT=4.858e-03 (w=0.045)  DATA=2.403e-01 (w=0.792)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=6.43e-15 wpsi=1.43e-30
+[Adam-v2] ep= 3840  total=2.155e-01  PDE=3.855e-02 (w=0.678)  OUT=4.205e-03 (w=0.045)  DATA=2.398e-01 (w=0.789)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.75e-15 wpsi=1.28e-30
+[Adam-v2] ep= 3860  total=2.135e-01  PDE=3.887e-02 (w=0.656)  OUT=3.989e-03 (w=0.045)  DATA=2.367e-01 (w=0.794)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.99e-15 wpsi=1.33e-30
+[Adam-v2] ep= 3880  total=2.197e-01  PDE=3.997e-02 (w=0.634)  OUT=4.280e-03 (w=0.043)  DATA=2.430e-01 (w=0.799)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.78e-15 wpsi=1.28e-30
+[Adam-v2] ep= 3900  total=2.176e-01  PDE=4.099e-02 (w=0.635)  OUT=4.361e-03 (w=0.043)  DATA=2.397e-01 (w=0.799)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.91e-15 wpsi=1.31e-30
+[Adam-v2] ep= 3920  total=2.133e-01  PDE=3.606e-02 (w=0.651)  OUT=3.806e-03 (w=0.043)  DATA=2.385e-01 (w=0.795)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.59e-15 wpsi=1.24e-30
+[Adam-v2] ep= 3940  total=2.179e-01  PDE=3.960e-02 (w=0.660)  OUT=4.329e-03 (w=0.044)  DATA=2.415e-01 (w=0.793)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.54e-15 wpsi=1.23e-30
+[Adam-v2] ep= 3960  total=2.123e-01  PDE=4.050e-02 (w=0.702)  OUT=4.214e-03 (w=0.046)  DATA=2.344e-01 (w=0.783)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.51e-15 wpsi=1.22e-30
+[Adam-v2] ep= 3980  total=2.261e-01  PDE=5.125e-02 (w=0.665)  OUT=6.494e-03 (w=0.045)  DATA=2.422e-01 (w=0.792)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.73e-15 wpsi=1.27e-30
+[Adam-v2] ep= 4000  total=2.267e-01  PDE=5.390e-02 (w=0.702)  OUT=6.311e-03 (w=0.047)  DATA=2.409e-01 (w=0.783)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=5.59e-15 wpsi=1.24e-30
+[v2] === Stage 2: Auto-normalized BFGS weights (from Adam EMA) ===
+        pde          weight=2.0963e+01    (Adam EMA=4.7702e-02)
+        outlet       weight=1.8509e+02    (Adam EMA=5.4028e-03)
+        wall_uv      weight=0.0000e+00    (Adam EMA=5.7453e-15)
+        wall_psi     weight=0.0000e+00    (Adam EMA=1.2757e-30)
+        inlet        weight=0.0000e+00    (Adam EMA=0.0000e+00)
+        top_bottom   weight=0.0000e+00    (Adam EMA=0.0000e+00)
+        data         weight=4.2191e+00    (Adam EMA=2.3702e-01)
+[v2] === Stage 3: SSBroyden (SSBroyden1) ===
+[BFGS] full data fitting: 7456 CFD points pinned per call
+[BFGS] using CUSTOM _optimize._minimize_bfgs (method_bfgs='SSBroyden1')
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=     5  total=2.646e+00  PDE=7.800e-02 [colloc=7.800e-02, cfd=0.000e+00]  WALL=6.044e-15  DATA=9.284e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=     7  total=2.457e+00  PDE=7.225e-02 [colloc=7.225e-02, cfd=0.000e+00]  WALL=6.127e-15  DATA=9.318e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=     8  total=2.418e+00  PDE=7.006e-02 [colloc=7.006e-02, cfd=0.000e+00]  WALL=6.215e-15  DATA=9.358e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=     9  total=2.351e+00  PDE=6.820e-02 [colloc=6.820e-02, cfd=0.000e+00]  WALL=6.166e-15  DATA=9.350e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    10  total=2.275e+00  PDE=6.586e-02 [colloc=6.586e-02, cfd=0.000e+00]  WALL=6.266e-15  DATA=9.390e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    12  total=2.255e+00  PDE=6.427e-02 [colloc=6.427e-02, cfd=0.000e+00]  WALL=6.317e-15  DATA=9.404e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    13  total=2.227e+00  PDE=6.347e-02 [colloc=6.347e-02, cfd=0.000e+00]  WALL=6.320e-15  DATA=9.404e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    14  total=2.174e+00  PDE=6.250e-02 [colloc=6.250e-02, cfd=0.000e+00]  WALL=6.335e-15  DATA=9.416e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    15  total=2.127e+00  PDE=6.092e-02 [colloc=6.092e-02, cfd=0.000e+00]  WALL=6.406e-15  DATA=9.434e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    16  total=2.061e+00  PDE=5.901e-02 [colloc=5.901e-02, cfd=0.000e+00]  WALL=6.410e-15  DATA=9.436e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    17  total=2.022e+00  PDE=5.730e-02 [colloc=5.730e-02, cfd=0.000e+00]  WALL=6.351e-15  DATA=9.444e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    18  total=1.980e+00  PDE=5.613e-02 [colloc=5.613e-02, cfd=0.000e+00]  WALL=6.370e-15  DATA=9.467e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    19  total=1.924e+00  PDE=5.527e-02 [colloc=5.527e-02, cfd=0.000e+00]  WALL=6.414e-15  DATA=9.494e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    20  total=1.868e+00  PDE=5.322e-02 [colloc=5.322e-02, cfd=0.000e+00]  WALL=6.427e-15  DATA=9.521e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    21  total=1.848e+00  PDE=5.296e-02 [colloc=5.296e-02, cfd=0.000e+00]  WALL=6.457e-15  DATA=9.531e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    22  total=1.817e+00  PDE=5.221e-02 [colloc=5.221e-02, cfd=0.000e+00]  WALL=6.510e-15  DATA=9.543e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    23  total=1.782e+00  PDE=5.075e-02 [colloc=5.075e-02, cfd=0.000e+00]  WALL=6.540e-15  DATA=9.544e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    24  total=1.742e+00  PDE=4.945e-02 [colloc=4.945e-02, cfd=0.000e+00]  WALL=6.592e-15  DATA=9.561e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    25  total=1.698e+00  PDE=4.821e-02 [colloc=4.821e-02, cfd=0.000e+00]  WALL=6.622e-15  DATA=9.579e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    26  total=1.676e+00  PDE=4.693e-02 [colloc=4.693e-02, cfd=0.000e+00]  WALL=6.829e-15  DATA=9.632e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    27  total=1.651e+00  PDE=4.611e-02 [colloc=4.611e-02, cfd=0.000e+00]  WALL=6.904e-15  DATA=9.651e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    28  total=1.618e+00  PDE=4.533e-02 [colloc=4.533e-02, cfd=0.000e+00]  WALL=6.899e-15  DATA=9.653e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    29  total=1.591e+00  PDE=4.448e-02 [colloc=4.448e-02, cfd=0.000e+00]  WALL=6.941e-15  DATA=9.670e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    30  total=1.560e+00  PDE=4.373e-02 [colloc=4.373e-02, cfd=0.000e+00]  WALL=6.946e-15  DATA=9.676e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    31  total=1.547e+00  PDE=4.316e-02 [colloc=4.316e-02, cfd=0.000e+00]  WALL=6.923e-15  DATA=9.701e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    32  total=1.522e+00  PDE=4.268e-02 [colloc=4.268e-02, cfd=0.000e+00]  WALL=6.909e-15  DATA=9.707e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    33  total=1.496e+00  PDE=4.181e-02 [colloc=4.181e-02, cfd=0.000e+00]  WALL=6.963e-15  DATA=9.725e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    34  total=1.483e+00  PDE=4.103e-02 [colloc=4.103e-02, cfd=0.000e+00]  WALL=7.062e-15  DATA=9.739e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    35  total=1.465e+00  PDE=4.041e-02 [colloc=4.041e-02, cfd=0.000e+00]  WALL=7.084e-15  DATA=9.745e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    36  total=1.440e+00  PDE=3.983e-02 [colloc=3.983e-02, cfd=0.000e+00]  WALL=7.141e-15  DATA=9.755e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    37  total=1.424e+00  PDE=3.936e-02 [colloc=3.936e-02, cfd=0.000e+00]  WALL=7.233e-15  DATA=9.772e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    38  total=1.402e+00  PDE=3.852e-02 [colloc=3.852e-02, cfd=0.000e+00]  WALL=7.279e-15  DATA=9.782e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    39  total=1.378e+00  PDE=3.769e-02 [colloc=3.769e-02, cfd=0.000e+00]  WALL=7.369e-15  DATA=9.795e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    40  total=1.374e+00  PDE=3.732e-02 [colloc=3.732e-02, cfd=0.000e+00]  WALL=7.389e-15  DATA=9.805e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    41  total=1.363e+00  PDE=3.706e-02 [colloc=3.706e-02, cfd=0.000e+00]  WALL=7.374e-15  DATA=9.804e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    42  total=1.350e+00  PDE=3.647e-02 [colloc=3.647e-02, cfd=0.000e+00]  WALL=7.365e-15  DATA=9.806e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    43  total=1.329e+00  PDE=3.580e-02 [colloc=3.580e-02, cfd=0.000e+00]  WALL=7.379e-15  DATA=9.816e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    44  total=1.321e+00  PDE=3.522e-02 [colloc=3.522e-02, cfd=0.000e+00]  WALL=7.447e-15  DATA=9.828e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    45  total=1.299e+00  PDE=3.485e-02 [colloc=3.485e-02, cfd=0.000e+00]  WALL=7.493e-15  DATA=9.840e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    46  total=1.293e+00  PDE=3.423e-02 [colloc=3.423e-02, cfd=0.000e+00]  WALL=7.537e-15  DATA=9.864e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    47  total=1.288e+00  PDE=3.396e-02 [colloc=3.396e-02, cfd=0.000e+00]  WALL=7.552e-15  DATA=9.864e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    48  total=1.276e+00  PDE=3.372e-02 [colloc=3.372e-02, cfd=0.000e+00]  WALL=7.558e-15  DATA=9.864e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    49  total=1.264e+00  PDE=3.312e-02 [colloc=3.312e-02, cfd=0.000e+00]  WALL=7.555e-15  DATA=9.863e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    50  total=1.250e+00  PDE=3.265e-02 [colloc=3.265e-02, cfd=0.000e+00]  WALL=7.581e-15  DATA=9.867e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    51  total=1.240e+00  PDE=3.225e-02 [colloc=3.225e-02, cfd=0.000e+00]  WALL=7.569e-15  DATA=9.878e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    52  total=1.230e+00  PDE=3.177e-02 [colloc=3.177e-02, cfd=0.000e+00]  WALL=7.563e-15  DATA=9.879e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    53  total=1.217e+00  PDE=3.147e-02 [colloc=3.147e-02, cfd=0.000e+00]  WALL=7.601e-15  DATA=9.885e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    54  total=1.204e+00  PDE=3.105e-02 [colloc=3.105e-02, cfd=0.000e+00]  WALL=7.626e-15  DATA=9.889e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    55  total=1.195e+00  PDE=3.081e-02 [colloc=3.081e-02, cfd=0.000e+00]  WALL=7.663e-15  DATA=9.904e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    56  total=1.180e+00  PDE=3.032e-02 [colloc=3.032e-02, cfd=0.000e+00]  WALL=7.700e-15  DATA=9.917e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    57  total=1.170e+00  PDE=2.994e-02 [colloc=2.994e-02, cfd=0.000e+00]  WALL=7.713e-15  DATA=9.918e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    58  total=1.164e+00  PDE=2.963e-02 [colloc=2.963e-02, cfd=0.000e+00]  WALL=7.755e-15  DATA=9.923e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    59  total=1.157e+00  PDE=2.933e-02 [colloc=2.933e-02, cfd=0.000e+00]  WALL=7.761e-15  DATA=9.928e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    60  total=1.142e+00  PDE=2.904e-02 [colloc=2.904e-02, cfd=0.000e+00]  WALL=7.763e-15  DATA=9.936e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    61  total=1.130e+00  PDE=2.845e-02 [colloc=2.845e-02, cfd=0.000e+00]  WALL=7.755e-15  DATA=9.950e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    62  total=1.124e+00  PDE=2.809e-02 [colloc=2.809e-02, cfd=0.000e+00]  WALL=7.777e-15  DATA=9.958e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    63  total=1.112e+00  PDE=2.781e-02 [colloc=2.781e-02, cfd=0.000e+00]  WALL=7.776e-15  DATA=9.961e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    64  total=1.107e+00  PDE=2.739e-02 [colloc=2.739e-02, cfd=0.000e+00]  WALL=7.754e-15  DATA=9.969e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    65  total=1.093e+00  PDE=2.709e-02 [colloc=2.709e-02, cfd=0.000e+00]  WALL=7.749e-15  DATA=9.967e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    66  total=1.093e+00  PDE=2.689e-02 [colloc=2.689e-02, cfd=0.000e+00]  WALL=7.832e-15  DATA=9.975e-02
+[BFGS] batch 1: H0 not PD — resetting to identity.
+[BFGS-END] batch=   1  last_total=1.095e+00  last_PDE=2.686e-02 [colloc=2.686e-02, cfd=0.000e+00]  last_WALL=7.834e-15  last_DATA=9.975e-02
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   2  call=    91  total=1.076e+00  PDE=2.651e-02 [colloc=2.651e-02, cfd=0.000e+00]  WALL=7.817e-15  DATA=9.968e-02
+Invoked: SSBroyden1 approach!
+============================================================
+ Stage A2 — data-free refinement (warm-start from A1)
+   goal: the PINN should HOLD the field with no CFD nudging
+============================================================
+[OK] _optimize._minimize_bfgs loaded — SSBroyden / SSBFGS variants available
+[v2-loader] Re40.vtk  cells=8234  velocity_array='UMean'  prefer_mean=True
+[v2] Model: width=96, depth=5, Fourier F=32 σ=2.0, params=43970
+[v2] resumed from checkpoints_v2_A1/pinn_Re40_single.pt
+[v2] === Stage 1: Adam with adaptive (variable) weights ===
+[Adam-v2] ep=   20  total=1.731e-01  PDE=1.309e-01 (w=1.308)  OUT=1.794e-02 (w=0.108)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.15e-14 wpsi=4.77e-30
+[Adam-v2] ep=   40  total=7.256e-02  PDE=5.424e-02 (w=1.327)  OUT=6.029e-03 (w=0.098)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.16e-14 wpsi=4.80e-30
+[Adam-v2] ep=   60  total=3.743e-02  PDE=2.771e-02 (w=1.340)  OUT=3.162e-03 (w=0.090)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.89e-14 wpsi=4.20e-30
+[Adam-v2] ep=   80  total=5.064e-02  PDE=3.730e-02 (w=1.350)  OUT=3.291e-03 (w=0.084)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.78e-14 wpsi=3.95e-30
+[Adam-v2] ep=  100  total=3.700e-02  PDE=2.719e-02 (w=1.354)  OUT=2.202e-03 (w=0.082)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.81e-14 wpsi=4.01e-30
+[Adam-v2] ep=  120  total=3.303e-02  PDE=2.424e-02 (w=1.356)  OUT=2.042e-03 (w=0.080)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.78e-14 wpsi=3.94e-30
+[Adam-v2] ep=  140  total=3.523e-02  PDE=2.588e-02 (w=1.354)  OUT=2.365e-03 (w=0.082)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.74e-14 wpsi=3.86e-30
+[Adam-v2] ep=  160  total=2.310e-02  PDE=1.696e-02 (w=1.355)  OUT=1.446e-03 (w=0.081)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.71e-14 wpsi=3.79e-30
+[Adam-v2] ep=  180  total=2.720e-02  PDE=1.990e-02 (w=1.358)  OUT=2.087e-03 (w=0.079)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.69e-14 wpsi=3.75e-30
+[Adam-v2] ep=  200  total=3.104e-02  PDE=2.281e-02 (w=1.351)  OUT=2.645e-03 (w=0.083)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.60e-14 wpsi=3.55e-30
+[Adam-v2] ep=  220  total=3.365e-02  PDE=2.470e-02 (w=1.355)  OUT=2.320e-03 (w=0.081)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.75e-14 wpsi=3.89e-30
+[Adam-v2] ep=  240  total=3.320e-02  PDE=2.437e-02 (w=1.354)  OUT=2.399e-03 (w=0.082)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.80e-14 wpsi=4.00e-30
+[Adam-v2] ep=  260  total=2.484e-02  PDE=1.822e-02 (w=1.353)  OUT=2.327e-03 (w=0.082)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.64e-14 wpsi=3.63e-30
+[Adam-v2] ep=  280  total=2.983e-02  PDE=2.188e-02 (w=1.357)  OUT=1.548e-03 (w=0.079)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.67e-14 wpsi=3.70e-30
+[Adam-v2] ep=  300  total=3.095e-02  PDE=2.272e-02 (w=1.355)  OUT=2.084e-03 (w=0.081)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.79e-14 wpsi=3.97e-30
+[Adam-v2] ep=  320  total=4.126e-02  PDE=3.039e-02 (w=1.349)  OUT=2.991e-03 (w=0.085)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.75e-14 wpsi=3.88e-30
+[Adam-v2] ep=  340  total=3.370e-02  PDE=2.471e-02 (w=1.355)  OUT=2.643e-03 (w=0.081)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.92e-14 wpsi=4.27e-30
+[Adam-v2] ep=  360  total=2.876e-02  PDE=2.110e-02 (w=1.355)  OUT=1.997e-03 (w=0.081)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.87e-14 wpsi=4.16e-30
+[Adam-v2] ep=  380  total=2.657e-02  PDE=1.948e-02 (w=1.357)  OUT=1.775e-03 (w=0.080)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.82e-14 wpsi=4.03e-30
+[Adam-v2] ep=  400  total=2.752e-02  PDE=2.020e-02 (w=1.354)  OUT=2.105e-03 (w=0.081)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.86e-14 wpsi=4.14e-30
+[Adam-v2] ep=  420  total=4.334e-02  PDE=3.163e-02 (w=1.366)  OUT=1.798e-03 (w=0.073)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.82e-14 wpsi=4.04e-30
+[Adam-v2] ep=  440  total=6.672e-02  PDE=4.884e-02 (w=1.361)  OUT=3.145e-03 (w=0.077)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.01e-14 wpsi=4.46e-30
+[Adam-v2] ep=  460  total=4.471e-02  PDE=3.270e-02 (w=1.362)  OUT=2.169e-03 (w=0.076)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.89e-14 wpsi=4.19e-30
+[Adam-v2] ep=  480  total=3.469e-02  PDE=2.534e-02 (w=1.362)  OUT=2.424e-03 (w=0.076)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.86e-14 wpsi=4.14e-30
+[Adam-v2] ep=  500  total=3.612e-02  PDE=2.640e-02 (w=1.361)  OUT=2.412e-03 (w=0.077)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.79e-14 wpsi=3.96e-30
+[Adam-v2] ep=  520  total=3.798e-02  PDE=2.774e-02 (w=1.363)  OUT=2.070e-03 (w=0.075)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.87e-14 wpsi=4.15e-30
+[Adam-v2] ep=  540  total=4.250e-02  PDE=3.106e-02 (w=1.363)  OUT=1.958e-03 (w=0.075)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.87e-14 wpsi=4.15e-30
+[Adam-v2] ep=  560  total=3.285e-02  PDE=2.401e-02 (w=1.362)  OUT=1.965e-03 (w=0.076)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.83e-14 wpsi=4.06e-30
+[Adam-v2] ep=  580  total=2.982e-02  PDE=2.179e-02 (w=1.361)  OUT=2.180e-03 (w=0.077)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.89e-14 wpsi=4.20e-30
+[Adam-v2] ep=  600  total=2.854e-02  PDE=2.094e-02 (w=1.356)  OUT=1.716e-03 (w=0.080)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.95e-14 wpsi=4.33e-30
+[Adam-v2] ep=  620  total=3.002e-02  PDE=2.211e-02 (w=1.348)  OUT=2.613e-03 (w=0.086)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.99e-14 wpsi=4.43e-30
+[Adam-v2] ep=  640  total=2.271e-02  PDE=1.662e-02 (w=1.359)  OUT=1.614e-03 (w=0.079)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.89e-14 wpsi=4.19e-30
+[Adam-v2] ep=  660  total=3.221e-02  PDE=2.347e-02 (w=1.366)  OUT=2.065e-03 (w=0.073)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.85e-14 wpsi=4.11e-30
+[Adam-v2] ep=  680  total=2.202e-02  PDE=1.609e-02 (w=1.362)  OUT=1.293e-03 (w=0.076)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.02e-14 wpsi=4.48e-30
+[Adam-v2] ep=  700  total=2.272e-02  PDE=1.663e-02 (w=1.360)  OUT=1.376e-03 (w=0.078)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=1.97e-14 wpsi=4.36e-30
+[Adam-v2] ep=  720  total=2.519e-02  PDE=1.848e-02 (w=1.357)  OUT=1.532e-03 (w=0.080)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.07e-14 wpsi=4.59e-30
+[Adam-v2] ep=  740  total=2.390e-02  PDE=1.752e-02 (w=1.356)  OUT=1.865e-03 (w=0.080)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.01e-14 wpsi=4.47e-30
+[Adam-v2] ep=  760  total=2.663e-02  PDE=1.952e-02 (w=1.357)  OUT=1.641e-03 (w=0.079)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.10e-14 wpsi=4.66e-30
+[Adam-v2] ep=  780  total=2.006e-02  PDE=1.466e-02 (w=1.361)  OUT=1.368e-03 (w=0.077)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.13e-14 wpsi=4.72e-30
+[Adam-v2] ep=  800  total=2.783e-02  PDE=2.046e-02 (w=1.353)  OUT=1.939e-03 (w=0.082)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.18e-14 wpsi=4.84e-30
+[Adam-v2] ep=  820  total=2.744e-02  PDE=2.016e-02 (w=1.355)  OUT=1.590e-03 (w=0.081)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.21e-14 wpsi=4.92e-30
+[Adam-v2] ep=  840  total=4.491e-02  PDE=3.285e-02 (w=1.361)  OUT=2.523e-03 (w=0.077)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.22e-14 wpsi=4.93e-30
+[Adam-v2] ep=  860  total=3.586e-02  PDE=2.626e-02 (w=1.360)  OUT=1.821e-03 (w=0.078)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.30e-14 wpsi=5.12e-30
+[Adam-v2] ep=  880  total=2.970e-02  PDE=2.172e-02 (w=1.361)  OUT=1.679e-03 (w=0.077)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.23e-14 wpsi=4.95e-30
+[Adam-v2] ep=  900  total=2.530e-02  PDE=1.848e-02 (w=1.362)  OUT=1.584e-03 (w=0.076)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.15e-14 wpsi=4.77e-30
+[Adam-v2] ep=  920  total=2.329e-02  PDE=1.706e-02 (w=1.359)  OUT=1.336e-03 (w=0.078)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.16e-14 wpsi=4.79e-30
+[Adam-v2] ep=  940  total=2.872e-02  PDE=2.102e-02 (w=1.361)  OUT=1.422e-03 (w=0.077)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.19e-14 wpsi=4.87e-30
+[Adam-v2] ep=  960  total=2.381e-02  PDE=1.744e-02 (w=1.359)  OUT=1.422e-03 (w=0.078)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.13e-14 wpsi=4.74e-30
+[Adam-v2] ep=  980  total=2.184e-02  PDE=1.598e-02 (w=1.360)  OUT=1.368e-03 (w=0.077)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.16e-14 wpsi=4.79e-30
+[Adam-v2] ep= 1000  total=2.318e-02  PDE=1.704e-02 (w=1.353)  OUT=1.498e-03 (w=0.082)  DATA=0.000e+00 (w=0.000)  |  hard-BC residuals: in=0.00e+00 tb=0.00e+00 wuv=2.17e-14 wpsi=4.82e-30
+[v2] === Stage 2: Auto-normalized BFGS weights (from Adam EMA) ===
+        pde          weight=5.3993e+01    (Adam EMA=1.8521e-02)
+        outlet       weight=5.8633e+02    (Adam EMA=1.7055e-03)
+        wall_uv      weight=0.0000e+00    (Adam EMA=2.1120e-14)
+        wall_psi     weight=0.0000e+00    (Adam EMA=4.6896e-30)
+        inlet        weight=0.0000e+00    (Adam EMA=0.0000e+00)
+        top_bottom   weight=0.0000e+00    (Adam EMA=0.0000e+00)
+        data         weight=0.0000e+00    (Adam EMA=0.0000e+00)
+[v2] === Stage 3: SSBroyden (SSBroyden1) ===
+[BFGS] using CUSTOM _optimize._minimize_bfgs (method_bfgs='SSBroyden1')
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=     5  total=1.320e+00  PDE=1.580e-02 [colloc=1.580e-02, cfd=0.000e+00]  WALL=2.117e-14  DATA=3.836e-01
+Invoked: SSBroyden1 approach!
+============================================================
+ Done. Compare:
+   viz_v2_A1/  (with data anchor — should already show wake)
+   viz_v2_A2/  (data-free refine — wake should survive)
+
+ Look for:
+   v2_speed.png      : recirculation bubble behind cylinder
+   v2_v.png          : antisymmetric ± lobes in the wake
+   v2_vorticity.png  : two parallel vorticity bands, peak ~±8
+============================================================
