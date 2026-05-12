@@ -60,12 +60,18 @@ N_F=50000
 # because the data anchor couldn't outpull PDE.
 N_DATA=10000
 
-# ---------- Fourier features (multi-scale) ----------
-# Single σ=2 only resolves λ ~ 0.5 — it captured the boundary layer fine but
-# the wake (λ ~ 3-5) never developed in the previous run. Multi-band gives
-# the network a basis from wake-scale (σ=0.5, λ~2) up to BL-scale (σ=4, λ~0.25).
+# ---------- Fourier features (multi-scale, low-freq biased) ----------
+# Run 2533795 with σ ∈ {0.5,1,2,4} produced a wake (good!) but with heavy
+# high-freq noise from σ=4 and a wake too short (only to x≈2 vs CFD's x≈4).
+# Shift the band centers DOWN: drop σ=4, add σ=0.25.
+#   σ=0.25 → λ≈4   wake extent  (NEW)
+#   σ=0.5  → λ≈2   recirculation bubble
+#   σ=1    → λ≈1   medium structure
+#   σ=2    → λ≈0.5 boundary-layer, cylinder curvature
+# This gives the network a basis biased toward the actual flow scales and
+# removes the σ=4 source of background noise.
 FOURIER_F=32
-FOURIER_SIGMAS="0.5 1.0 2.0 4.0"
+FOURIER_SIGMAS="0.25 0.5 1.0 2.0"
 
 # ---------- box (matches the sanity-check verdict) ----------
 XMIN=-8.0
@@ -87,8 +93,8 @@ python -u cfp40_v2.py --vtk-path Re40.vtk \
     --save-dir runs/v2_two_stage/A1/checkpoints \
     --viz-dir  runs/v2_two_stage/A1/viz \
     --width $WIDTH --depth $DEPTH \
-    --epochs-adam 4000 \
-    --maxiter-bfgs 8000 \
+    --epochs-adam 3000 \
+    --maxiter-bfgs 2500 \
     --iters-per-batch $ITERS_PER_BATCH \
     --n-f $N_F \
     --n-data $N_DATA \
@@ -117,7 +123,7 @@ python -u cfp40_v2.py --vtk-path Re40.vtk \
     --resume-from "$A1_CKPT" \
     --width $WIDTH --depth $DEPTH \
     --epochs-adam 1000 \
-    --maxiter-bfgs 8000 \
+    --maxiter-bfgs 4000 \
     --iters-per-batch $ITERS_PER_BATCH \
     --n-f $N_F \
     --fourier-features $FOURIER_F --fourier-sigmas "$FOURIER_SIGMAS" \
