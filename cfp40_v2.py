@@ -370,25 +370,33 @@ class AdaptiveLossWeightsV2:
     ACTIVE = ("pde", "outlet", "data")
 
     def __init__(self, alpha: float = 0.9, temp: float = 0.5, eps: float = 1e-12,
-                 use_data: bool = False):
+                 use_data: bool = False, data_only: bool = False):
         self.alpha = float(alpha)
         self.temp = float(temp)
         self.eps = float(eps)
         self.use_data = bool(use_data)
+        self.data_only = bool(data_only)
         self.ema: dict = {}
-        # Bias:
-        #   PDE   — physics we want to solve.
-        #   data  — strong anchor in the FIRST stage to break the trivial
-        #           u=1, v=0 attractor (cfp40.py phase-1 uses fixed w=50;
-        #           here we pick 5.0 with adaptive on top so the *effective*
-        #           weighted contribution dominates while data is still big).
-        #   outlet — 1-D anchor, kept small.
-        self.base = {
-            "pde": 1.0,
-            "outlet": 0.2,
-            "data": 5.0 if self.use_data else 0.0,
-        }
-        self.current = default_fixed_weights_v2(use_data=self.use_data)
+        if self.data_only:
+            # Mentor's Phase-1: fit the CFD field as a pure interpolator. NO PDE,
+            # NO outlet anchor — just data. We will pin the field with this stage
+            # then ask in Phase-2 "does PDE alone keep this field consistent?".
+            self.base = {"pde": 0.0, "outlet": 0.0, "data": 1.0}
+        else:
+            # Bias:
+            #   PDE   — physics we want to solve.
+            #   data  — strong anchor when used, to break the trivial
+            #           u=1, v=0 attractor (cfp40.py phase-1 uses fixed w=50;
+            #           here we pick 5.0 with adaptive on top so the *effective*
+            #           weighted contribution dominates while data is still big).
+            #   outlet — 1-D anchor, kept small.
+            self.base = {
+                "pde": 1.0,
+                "outlet": 0.2,
+                "data": 5.0 if self.use_data else 0.0,
+            }
+        self.current = default_fixed_weights_v2(use_data=self.use_data,
+                                                data_only=self.data_only)
 
     def update(self, raw_losses: dict):
         # update EMA over ALL tracked terms (so we can later inspect
@@ -422,12 +430,25 @@ class AdaptiveLossWeightsV2:
         return dict(self.ema)
 
 
-def default_fixed_weights_v2(use_data: bool = False) -> dict:
+def default_fixed_weights_v2(use_data: bool = False, data_only: bool = False) -> dict:
     """
     Defaults for the *hard-BC* setup. Anything that's hard-encoded gets weight 0.
 
+    data_only mode (mentor's Phase 1): only data has weight. Everything else
+    (PDE, outlet, etc) is OFF. Network is trained as a pure CFD interpolator.
+
     We keep all keys that run_scipy_bfgs expects so we don't have to fork it.
     """
+    if data_only:
+        return {
+            "pde": 0.0,
+            "outlet": 0.0,
+            "wall_uv": 0.0,
+            "wall_psi": 0.0,
+            "inlet": 0.0,
+            "top_bottom": 0.0,
+            "data": 1.0,
+        }
     return {
         "pde": 1.0,
         "outlet": 0.2,
@@ -524,19 +545,40 @@ def sample_collocation_v2(n_f, device, t_value, xlim, ylim,
 def compute_total_loss_v2(model, dataset, device, n_f, n_data, Re, t_value,
                           weight_manager: AdaptiveLossWeightsV2,
                           xlim, ylim,
-                          use_data: bool):
-    # PDE (interior collocation)
-    x_f, y_f, t_f = sample_collocation_v2(n_f, device=device, t_value=t_value,
-                                          xlim=xlim, ylim=ylim)
-    loss_pde = compute_pde_loss(model, x_f, y_f, t_f, Re=Re)
+                          use_data: bool,
+                          data_only: bool = False,
+                          use_all_cfd_data: bool = False):
+    """
+    data_only        : skip PDE entirely. Outlet loss also zeroed. The objective
+                       is pure CFD-point regression. Use for mentor's Phase 1.
+    use_all_cfd_data : pull every CFD point inside (xlim, ylim, outside cylinder)
+                       on every call instead of sampling n_data. Recommended in
+                       data_only mode so the interpolator gets the full field.
+    """
+    # PDE (interior collocation) — skipped entirely in data_only
+    if data_only:
+        loss_pde = torch.zeros((), device=device)
+    else:
+        x_f, y_f, t_f = sample_collocation_v2(n_f, device=device, t_value=t_value,
+                                              xlim=xlim, ylim=ylim)
+        loss_pde = compute_pde_loss(model, x_f, y_f, t_f, Re=Re)
 
     # BCs (hard-encoded; we evaluate them for monitoring + outlet anchor)
     bc = compute_bc_losses_for_monitoring(model, device, t_value, xlim, ylim)
 
-    # Optional data loss (CFD anchor)
-    if use_data and n_data > 0:
-        t_d, x_d, y_d, u_d, v_d = dataset.sample(n_data, wake_frac=0.5, xlim=xlim, ylim=ylim)
-        loss_data = compute_data_loss(model, t_d, x_d, y_d, u_d, v_d)
+    # Data loss
+    if (use_data or data_only):
+        if use_all_cfd_data:
+            t_d, x_d, y_d, u_d, v_d = dataset.all_points(xlim=xlim, ylim=ylim, radius=0.5)
+        elif n_data > 0:
+            t_d, x_d, y_d, u_d, v_d = dataset.sample(n_data, wake_frac=0.5,
+                                                     xlim=xlim, ylim=ylim)
+        else:
+            t_d = None
+        if t_d is not None:
+            loss_data = compute_data_loss(model, t_d, x_d, y_d, u_d, v_d)
+        else:
+            loss_data = torch.zeros((), device=device)
     else:
         loss_data = torch.zeros((), device=device)
 
@@ -609,13 +651,15 @@ def auto_normalize_from_ema(weight_manager: AdaptiveLossWeightsV2,
     Hard-encoded terms (inlet, top_bottom, wall_*) keep weight 0.
     """
     ema = weight_manager.get_ema()
-    weights = default_fixed_weights_v2(use_data=use_data)
+    data_only = getattr(weight_manager, "data_only", False)
+    weights = default_fixed_weights_v2(use_data=use_data, data_only=data_only)
     for k in ("pde", "outlet", "data"):
         if weights[k] == 0.0:
             continue
         e = max(ema.get(k, 1.0), ema_floor)
         weights[k] = 1.0 / (e + eps)
-    if use_data:
+    # data_priority only matters when data competes with PDE — not in pure modes.
+    if use_data and not data_only:
         weights["data"] *= data_priority
     return weights
 
@@ -626,11 +670,13 @@ def auto_normalize_from_ema(weight_manager: AdaptiveLossWeightsV2,
 
 def run_adam_v2(model, dataset, device, save_dir,
                 epochs_adam, n_f, n_data, lr_adam, Re, t_value,
-                xlim, ylim, use_data: bool):
+                xlim, ylim, use_data: bool,
+                data_only: bool = False,
+                use_all_cfd_data: bool = False):
     os.makedirs(save_dir, exist_ok=True)
     best_loss = float("inf")
     adam = torch.optim.Adam(model.parameters(), lr=lr_adam)
-    weight_manager = AdaptiveLossWeightsV2(use_data=use_data)
+    weight_manager = AdaptiveLossWeightsV2(use_data=use_data, data_only=data_only)
     frozen_weights = weight_manager.get()
 
     for epoch in range(1, epochs_adam + 1):
@@ -641,6 +687,8 @@ def run_adam_v2(model, dataset, device, save_dir,
             n_f=n_f, n_data=n_data, Re=Re, t_value=t_value,
             weight_manager=weight_manager,
             xlim=xlim, ylim=ylim, use_data=use_data,
+            data_only=data_only,
+            use_all_cfd_data=use_all_cfd_data,
         )
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
@@ -710,16 +758,24 @@ def train_re40_single_v2(model: nn.Module,
                          method_bfgs: str = "SSBroyden1",
                          full_data_bfgs: bool = True,
                          frozen_colloc_bfgs: bool = True,
-                         use_data: bool = False):
+                         use_data: bool = False,
+                         data_only: bool = False,
+                         use_all_cfd_data: bool = False):
     os.makedirs(save_dir, exist_ok=True)
     dataset = SingleSnapshotDataset(snapshot, device=device)
+
+    mode = "DATA-ONLY (mentor's Phase 1)" if data_only else (
+        "DATA + PDE" if use_data else "PDE-ONLY (mentor's Phase 2)")
+    print(f"[v2] training mode: {mode}")
 
     # ---------- 1) Adam stage with adaptive weights ----------
     print("[v2] === Stage 1: Adam with adaptive (variable) weights ===")
     best_adam, frozen_weights, wm = run_adam_v2(
         model=model, dataset=dataset, device=device, save_dir=save_dir,
         epochs_adam=epochs_adam, n_f=n_f, n_data=n_data, lr_adam=lr_adam,
-        Re=Re, t_value=t_value, xlim=xlim, ylim=ylim, use_data=use_data,
+        Re=Re, t_value=t_value, xlim=xlim, ylim=ylim,
+        use_data=use_data, data_only=data_only,
+        use_all_cfd_data=use_all_cfd_data,
     )
 
     # ---------- 2) Auto-normalize for BFGS ----------
@@ -740,11 +796,11 @@ def train_re40_single_v2(model: nn.Module,
             iters_per_batch=iters_per_batch, gtol=gtol_bfgs, disp=False,
             xlim=xlim, ylim=ylim, method_bfgs=method_bfgs,
             n_cfd_pde=0, lambda_pde_cfd=1.0,
-            full_data_bfgs=full_data_bfgs and use_data,
+            full_data_bfgs=full_data_bfgs and (use_data or data_only),
             frozen_colloc_bfgs=frozen_colloc_bfgs,
             cfd_pde_wall_buffer=0.0, cfd_pde_edge_buffer=0.0,
-            data_only=False,
-            use_all_cfd_data=False,
+            data_only=data_only,
+            use_all_cfd_data=use_all_cfd_data,
         )
 
     # ---------- 4) Save canonical name ----------
@@ -825,6 +881,13 @@ def build_argparser():
     p.add_argument("--use-data", action="store_true",
                    help="Include CFD points as a soft anchor. Default off — "
                         "the goal is data-free reconstruction.")
+    p.add_argument("--data-only", action="store_true",
+                   help="Mentor's Phase-1 mode: fit CFD field as a pure "
+                        "interpolator. PDE and outlet losses are skipped entirely. "
+                        "Pair with --use-all-cfd-data for the full 7456-point fit.")
+    p.add_argument("--use-all-cfd-data", action="store_true",
+                   help="Use every CFD point in the domain instead of random "
+                        "n_data subsampling. Recommended in --data-only mode.")
     # Domain defaults expanded to where CFD's free-stream BC actually holds.
     # sanity_check_re40.py confirmed:
     #   - CFD true inlet at x=-9.75: rmse(u-1)=2e-5, rmse(v)=5e-4   (clean)
@@ -921,6 +984,8 @@ def main():
             xlim=xlim, ylim=ylim,
             method_bfgs=args.method_bfgs,
             use_data=args.use_data,
+            data_only=args.data_only,
+            use_all_cfd_data=args.use_all_cfd_data,
         )
 
     visualize_v2(
