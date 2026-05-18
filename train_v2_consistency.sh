@@ -66,7 +66,7 @@ echo " Phase 1 — DATA-ONLY (all CFD pts, no PDE, no outlet)"
 echo "   goal: best possible CFD reproduction by v2 model class"
 echo "============================================================"
 
-python -u cfp40_v2.py --vtk-path Re40.vtk \
+python -u cfp40_v2_consistency.py --vtk-path Re40.vtk \
     --save-dir runs/v2_consistency/P1/checkpoints \
     --viz-dir  runs/v2_consistency/P1/viz \
     --width $WIDTH --depth $DEPTH \
@@ -78,7 +78,8 @@ python -u cfp40_v2.py --vtk-path Re40.vtk \
     --use-all-cfd-data \
     --fourier-features $FOURIER_F --fourier-sigmas "$FOURIER_SIGMAS" \
     --x-min $XMIN --x-max $XMAX --y-min $YMIN --y-max $YMAX \
-    --method-bfgs SSBroyden1
+    --method-bfgs SSBroyden1 \
+    --cfd-monitor-every 100
 
 # =================================================================
 # Phase 2 — warm-start, drop data, drive PDE only
@@ -94,7 +95,7 @@ if [[ ! -s "$P1_CKPT" ]]; then
     exit 1
 fi
 
-python -u cfp40_v2.py --vtk-path Re40.vtk \
+python -u cfp40_v2_consistency.py --vtk-path Re40.vtk \
     --save-dir runs/v2_consistency/P2/checkpoints \
     --viz-dir  runs/v2_consistency/P2/viz \
     --resume-from "$P1_CKPT" \
@@ -105,7 +106,8 @@ python -u cfp40_v2.py --vtk-path Re40.vtk \
     --n-f 20000 \
     --fourier-features $FOURIER_F --fourier-sigmas "$FOURIER_SIGMAS" \
     --x-min $XMIN --x-max $XMAX --y-min $YMIN --y-max $YMAX \
-    --method-bfgs SSBroyden1
+    --method-bfgs SSBroyden1 \
+    --cfd-monitor-every 50
     # NOTE: NO --use-data, NO --data-only.
     # The default is data weight = 0, PDE + outlet only → mentor's Phase 2.
 

@@ -664,6 +664,73 @@ def auto_normalize_from_ema(weight_manager: AdaptiveLossWeightsV2,
     return weights
 
 
+
+
+# ==========================================================
+# Consistency monitor — evaluate CFD closeness without training on data
+# ==========================================================
+
+def evaluate_cfd_velocity_metrics(model, dataset, device, xlim, ylim, radius=0.5, prefix="consistency"):
+    """
+    Evaluate how close the current PINN velocity field is to the CFD field.
+
+    Important: this is MONITORING ONLY. It never enters the loss.
+    In mentor's Phase 2, data loss is OFF, but we still print these metrics
+    to see whether PDE-only optimization keeps the field close to CFD or drifts
+    toward a trivial PDE solution.
+    """
+    was_training = model.training
+    model.eval()
+
+    # Use every CFD point inside the same training/eval box.
+    t_d, x_d, y_d, u_true, v_true = dataset.all_points(xlim=xlim, ylim=ylim, radius=radius)
+
+    # model_uvp computes u,v through derivatives of psi, so x/y must require grad.
+    x = x_d.detach().clone().to(device).requires_grad_(True)
+    y = y_d.detach().clone().to(device).requires_grad_(True)
+    t = t_d.detach().clone().to(device)
+    u_true = u_true.detach().to(device)
+    v_true = v_true.detach().to(device)
+
+    _, u_pred, v_pred, _ = model_uvp(model, x, y, t)
+
+    du = (u_pred.detach() - u_true).reshape(-1)
+    dv = (v_pred.detach() - v_true).reshape(-1)
+    ut = u_true.reshape(-1)
+    vt = v_true.reshape(-1)
+
+    mse_u = torch.mean(du ** 2).item()
+    mse_v = torch.mean(dv ** 2).item()
+    mae_u = torch.mean(torch.abs(du)).item()
+    mae_v = torch.mean(torch.abs(dv)).item()
+    rmse_u = math.sqrt(mse_u)
+    rmse_v = math.sqrt(mse_v)
+    rel_l2_u = torch.linalg.norm(du).item() / (torch.linalg.norm(ut).item() + 1e-12)
+    rel_l2_v = torch.linalg.norm(dv).item() / (torch.linalg.norm(vt).item() + 1e-12)
+    speed_err = torch.sqrt(du ** 2 + dv ** 2)
+    mae_speed_vec = torch.mean(speed_err).item()
+
+    msg = (
+        f"[{prefix}] CFD monitor | "
+        f"mae_u={mae_u:.4e} mae_v={mae_v:.4e} "
+        f"rmse_u={rmse_u:.4e} rmse_v={rmse_v:.4e} "
+        f"relL2_u={rel_l2_u:.4e} relL2_v={rel_l2_v:.4e} "
+        f"mean|duv|={mae_speed_vec:.4e} n={x.shape[0]}"
+    )
+    print(msg)
+
+    if was_training:
+        model.train()
+
+    return {
+        "mae_u": mae_u, "mae_v": mae_v,
+        "rmse_u": rmse_u, "rmse_v": rmse_v,
+        "rel_l2_u": rel_l2_u, "rel_l2_v": rel_l2_v,
+        "mean_speed_vector_error": mae_speed_vec,
+        "n_eval": int(x.shape[0]),
+    }
+
+
 # ==========================================================
 # Adam stage (v2)
 # ==========================================================
@@ -672,7 +739,8 @@ def run_adam_v2(model, dataset, device, save_dir,
                 epochs_adam, n_f, n_data, lr_adam, Re, t_value,
                 xlim, ylim, use_data: bool,
                 data_only: bool = False,
-                use_all_cfd_data: bool = False):
+                use_all_cfd_data: bool = False,
+                cfd_monitor_every: int = 100):
     os.makedirs(save_dir, exist_ok=True)
     best_loss = float("inf")
     adam = torch.optim.Adam(model.parameters(), lr=lr_adam)
@@ -733,6 +801,16 @@ def run_adam_v2(model, dataset, device, save_dir,
                 f"wpsi={logs['wall_psi'].item():.2e}"
             )
 
+        # Mentor consistency monitor:
+        # In Phase 2 this is the decisive diagnostic: data is NOT used in the
+        # objective, but we still check whether the PDE-only field stays close
+        # to CFD.
+        if cfd_monitor_every and (epoch % cfd_monitor_every == 0):
+            evaluate_cfd_velocity_metrics(
+                model, dataset, device, xlim=xlim, ylim=ylim,
+                prefix=f"Adam-v2 ep={epoch:05d}"
+            )
+
     return best_loss, frozen_weights, weight_manager
 
 
@@ -760,13 +838,16 @@ def train_re40_single_v2(model: nn.Module,
                          frozen_colloc_bfgs: bool = True,
                          use_data: bool = False,
                          data_only: bool = False,
-                         use_all_cfd_data: bool = False):
+                         use_all_cfd_data: bool = False,
+                         cfd_monitor_every: int = 100):
     os.makedirs(save_dir, exist_ok=True)
     dataset = SingleSnapshotDataset(snapshot, device=device)
 
     mode = "DATA-ONLY (mentor's Phase 1)" if data_only else (
         "DATA + PDE" if use_data else "PDE-ONLY (mentor's Phase 2)")
     print(f"[v2] training mode: {mode}")
+    print("[v2] initial CFD-error monitor before this phase starts:")
+    evaluate_cfd_velocity_metrics(model, dataset, device, xlim=xlim, ylim=ylim, prefix="phase-start")
 
     # ---------- 1) Adam stage with adaptive weights ----------
     print("[v2] === Stage 1: Adam with adaptive (variable) weights ===")
@@ -776,7 +857,11 @@ def train_re40_single_v2(model: nn.Module,
         Re=Re, t_value=t_value, xlim=xlim, ylim=ylim,
         use_data=use_data, data_only=data_only,
         use_all_cfd_data=use_all_cfd_data,
+        cfd_monitor_every=cfd_monitor_every,
     )
+
+    print("[v2] CFD-error monitor after Adam:")
+    evaluate_cfd_velocity_metrics(model, dataset, device, xlim=xlim, ylim=ylim, prefix="post-Adam")
 
     # ---------- 2) Auto-normalize for BFGS ----------
     bfgs_weights = auto_normalize_from_ema(wm, use_data=use_data)
@@ -802,6 +887,8 @@ def train_re40_single_v2(model: nn.Module,
             data_only=data_only,
             use_all_cfd_data=use_all_cfd_data,
         )
+        print("[v2] CFD-error monitor after BFGS:")
+        evaluate_cfd_velocity_metrics(model, dataset, device, xlim=xlim, ylim=ylim, prefix="post-BFGS")
 
     # ---------- 4) Save canonical name ----------
     final_path = os.path.join(save_dir, "pinn_Re40_single.pt")
@@ -914,6 +1001,9 @@ def build_argparser():
                         "covers wake-scale through boundary-layer-scale features. "
                         "Pass an empty string to fall back to single-σ mode.")
     p.add_argument("--fourier-seed", type=int, default=0)
+    p.add_argument("--cfd-monitor-every", type=int, default=100,
+                   help="Print CFD velocity error every N Adam epochs. This is monitor-only; "
+                        "it never enters the loss. Use it to check mentor's consistency criterion.")
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--device", type=str, default="cuda")
     p.add_argument("--viz-only", action="store_true")
@@ -986,6 +1076,7 @@ def main():
             use_data=args.use_data,
             data_only=args.data_only,
             use_all_cfd_data=args.use_all_cfd_data,
+            cfd_monitor_every=args.cfd_monitor_every,
         )
 
     visualize_v2(
