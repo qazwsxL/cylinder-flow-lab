@@ -1,0 +1,11 @@
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1102: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1102: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1102: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1102: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/cfp40.py:1102: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[2026-05-17T23:56:04.028] error: *** JOB 2664314 ON gpu2106 CANCELLED AT 2026-05-17T23:56:04 DUE TO TIME LIMIT ***
