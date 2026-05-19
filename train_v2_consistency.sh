@@ -79,7 +79,11 @@ python -u cfp40_v2_consistency.py --vtk-path Re40.vtk \
     --fourier-features $FOURIER_F --fourier-sigmas "$FOURIER_SIGMAS" \
     --x-min $XMIN --x-max $XMAX --y-min $YMIN --y-max $YMAX \
     --method-bfgs SSBroyden1 \
+<<<<<<< HEAD
     --cfd-monitor-every 100
+=======
+    
+>>>>>>> db59cb7 (mm)
 
 # =================================================================
 # Phase 2 — warm-start, drop data, drive PDE only
@@ -107,7 +111,11 @@ python -u cfp40_v2_consistency.py --vtk-path Re40.vtk \
     --fourier-features $FOURIER_F --fourier-sigmas "$FOURIER_SIGMAS" \
     --x-min $XMIN --x-max $XMAX --y-min $YMIN --y-max $YMAX \
     --method-bfgs SSBroyden1 \
+<<<<<<< HEAD
     --cfd-monitor-every 50
+=======
+    
+>>>>>>> db59cb7 (mm)
     # NOTE: NO --use-data, NO --data-only.
     # The default is data weight = 0, PDE + outlet only → mentor's Phase 2.
 
