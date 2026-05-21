@@ -839,7 +839,8 @@ def train_re40_single_v2(model: nn.Module,
                          use_data: bool = False,
                          data_only: bool = False,
                          use_all_cfd_data: bool = False,
-                         cfd_monitor_every: int = 100):
+                         cfd_monitor_every: int = 100,
+                         data_priority: float = 5.0):
     os.makedirs(save_dir, exist_ok=True)
     dataset = SingleSnapshotDataset(snapshot, device=device)
 
@@ -864,8 +865,9 @@ def train_re40_single_v2(model: nn.Module,
     evaluate_cfd_velocity_metrics(model, dataset, device, xlim=xlim, ylim=ylim, prefix="post-Adam")
 
     # ---------- 2) Auto-normalize for BFGS ----------
-    bfgs_weights = auto_normalize_from_ema(wm, use_data=use_data)
-    print("[v2] === Stage 2: Auto-normalized BFGS weights (from Adam EMA) ===")
+    bfgs_weights = auto_normalize_from_ema(wm, use_data=use_data,
+                                           data_priority=data_priority)
+    print(f"[v2] === Stage 2: Auto-normalized BFGS weights (data_priority={data_priority}) ===")
     for k, v in bfgs_weights.items():
         ema = wm.get_ema().get(k, float("nan"))
         print(f"        {k:12s} weight={v:.4e}    (Adam EMA={ema:.4e})")
@@ -975,6 +977,12 @@ def build_argparser():
     p.add_argument("--use-all-cfd-data", action="store_true",
                    help="Use every CFD point in the domain instead of random "
                         "n_data subsampling. Recommended in --data-only mode.")
+    p.add_argument("--data-priority", type=float, default=5.0,
+                   help="Multiplier on the auto-normalized data weight in BFGS. "
+                        "5.0 (default) = data dominates (anti-trivial). "
+                        "1.0 = balanced with PDE. "
+                        "<<1 (e.g. 0.1) = WEAK ANCHOR — PDE drives, data just prevents "
+                        "drift away from CFD field. Only takes effect with --use-data.")
     # Domain defaults expanded to where CFD's free-stream BC actually holds.
     # sanity_check_re40.py confirmed:
     #   - CFD true inlet at x=-9.75: rmse(u-1)=2e-5, rmse(v)=5e-4   (clean)
@@ -1077,6 +1085,7 @@ def main():
             data_only=args.data_only,
             use_all_cfd_data=args.use_all_cfd_data,
             cfd_monitor_every=args.cfd_monitor_every,
+            data_priority=args.data_priority,
         )
 
     visualize_v2(
