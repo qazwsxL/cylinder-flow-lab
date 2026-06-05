@@ -45,19 +45,32 @@ from cfp40 import evaluate_on_grid                                      # noqa
 OUT = os.path.join(ROOT, "reports", "figs_v2", "pinn_vorticity_matched")
 os.makedirs(OUT, exist_ok=True)
 
+# Model kwargs MUST match what the run was trained with — otherwise
+# load_state_dict raises "size mismatch for B / net.0.weight".
+# These come from train_v2_consistency_quick.sh / train_v2_pde_weight_sweep_quick.sh /
+# train_v2_alldata_p2_sweep_quick.sh :
+#     WIDTH=32 DEPTH=3 FOURIER_F=8 FOURIER_SIGMAS="0.25 0.5 1.0 2.0"
+#     XMIN=-8 XMAX=12 YMIN=-8 YMAX=8
+SMALL_NET_KW = dict(
+    width=32, depth=3,
+    fourier_features=8,
+    fourier_sigmas=[0.25, 0.5, 1.0, 2.0],
+    x_min=-8.0, y_min=-8.0, y_max=8.0,
+)
+
 # (label, ckpt_dir, model_kwargs)
 RUNS = [
     ("P1_baseline",
      "runs/v2_alldata_p2_sweep_quick/P1/checkpoints",
-     dict(width=32, depth=3)),
+     SMALL_NET_KW),
 
     ("P2_strict_consist",
      "runs/v2_consistency_quick/P2/checkpoints",
-     dict(width=32, depth=3)),
+     SMALL_NET_KW),
 
     ("P2_allCFD_prio2",
      "runs/v2_alldata_p2_sweep_quick/P2_prio2/checkpoints",
-     dict(width=32, depth=3)),
+     SMALL_NET_KW),
 ]
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
