@@ -1,0 +1,8 @@
+[rerender] project root = /oscar/home/jchen790/cylinder flow lab
+[rerender]   cfp40_v2.py: OK
+[rerender]   cfp40.py: OK
+[rerender]   Re40.vtk: OK
+[OK] _optimize._minimize_bfgs loaded — SSBroyden / SSBFGS variants available
+[rerender] device = cuda
+
+[rerender] === P1_baseline ===  ckpt_dir = /oscar/home/jchen790/cylinder flow lab/runs/v2_alldata_p2_sweep_quick/P1/checkpoints

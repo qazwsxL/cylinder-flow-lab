@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/oscar/home/jchen790/cylinder flow lab/reports/rerender_vorticity_matched.py", line 105, in <module>
+    render_one(label, save_dir, mk)
+  File "/oscar/home/jchen790/cylinder flow lab/reports/rerender_vorticity_matched.py", line 73, in render_one
+    model = v2.load_model_for_viz_v2(save_dir, device, **model_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/oscar/home/jchen790/cylinder flow lab/cfp40_v2.py", line 918, in load_model_for_viz_v2
+    model.load_state_dict(state["model"])
+  File "/users/jchen790/.local/lib/python3.11/site-packages/torch/nn/modules/module.py", line 2593, in load_state_dict
+    raise RuntimeError(
+RuntimeError: Error(s) in loading state_dict for MLPStreamPressureHardBC:
+	size mismatch for B: copying a param with shape torch.Size([8, 2]) from checkpoint, the shape in current model is torch.Size([32, 2]).
+	size mismatch for net.0.weight: copying a param with shape torch.Size([32, 19]) from checkpoint, the shape in current model is torch.Size([32, 67]).
