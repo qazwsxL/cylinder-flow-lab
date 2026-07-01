@@ -162,42 +162,55 @@ print(f"\nCFD truth: mean_speed={mean_speed:.4f}  rms_speed={rms_speed:.4f}  "
 
 
 # -----------------------------------------------------------------
-# 4. FIGURE 1 — loss curves
+# 4. FIGURE 1 — loss curves   (all three runs on both subplots)
 # -----------------------------------------------------------------
-# Plot only the loss terms that are actually in each run's objective:
-#   P1 baseline      → DATA (PDE term is hard-zero by --data-only)
-#   P2 strict consis → PDE  (DATA term is hard-zero by --pde-only)
-#   P2 all-CFD prio2 → DATA + PDE  (both active)
-# Solid = Adam phase, dashed = BFGS phase.  Iteration axis = Adam ep then
-# (max Adam ep) + BFGS call so the two phases sit side-by-side.
+# Every BFGS log line prints BOTH the DATA loss and the PDE loss, regardless
+# of which term is actually in the optimizer's objective.  Use solid line
+# for "this term is in the loss and being optimized" and a faded thin line
+# for "this term is only being monitored, not optimized".
+# Iteration axis: Adam epoch, then (max Adam ep) + BFGS call.
 
 fig, axes = plt.subplots(1, 2, figsize=(13.5, 4.5))
 ax_d, ax_p = axes
 
-# Track what's actually active in the loss
 ACTIVE = {
     "P1 baseline (data-only)":            {"data": True,  "pde": False},
     "P2 strict consistency (no data)":    {"data": False, "pde": True},
     "P2 all-CFD anchor, prio=2.0":        {"data": True,  "pde": True},
 }
 
+def _plot_term(ax, x_adam, x_bfgs, y_adam, y_bfgs, color, active):
+    """Plot a (run, term) pair.  Solid = active, faded thin = monitor-only."""
+    # Replace exact zeros with NaN so log-scale doesn't clip them off-axis.
+    # Exact zero only happens when the term is hard-disabled (e.g. PDE in
+    # --data-only), which is handled by the `active` flag below.
+    def _clean(y):
+        y = np.asarray(y, dtype=float)
+        y[y <= 0] = np.nan
+        return y
+
+    style = dict(lw=1.6,   alpha=1.0) if active else \
+            dict(lw=0.9,   alpha=0.55, ls=":")
+    if x_adam.size:
+        ax.plot(x_adam, _clean(y_adam), color=color, **style)
+    if x_bfgs.size:
+        # BFGS uses dashed for "active" or shifted dotted for "monitor"
+        bfgs_style = dict(style)
+        bfgs_style["ls"] = "--" if active else ":"
+        ax.plot(x_bfgs, _clean(y_bfgs), color=color, **bfgs_style)
+
+
 for r in RUNS_SPEC:
     d = r["data"]
-    if d["adam_ep"].size:
-        adam_x = d["adam_ep"]
-        bfgs_offset = d["adam_ep"].max()
-    else:
-        adam_x = np.array([])
-        bfgs_offset = 0
+    adam_x = d["adam_ep"] if d["adam_ep"].size else np.array([])
+    bfgs_offset = d["adam_ep"].max() if d["adam_ep"].size else 0
     bfgs_x = bfgs_offset + d["bfgs_call"]
 
     act = ACTIVE[r["name"]]
-    if act["data"]:
-        ax_d.plot(adam_x,  d["adam_data"],  color=r["color"], lw=1.6)
-        ax_d.plot(bfgs_x,  d["bfgs_data"],  color=r["color"], lw=1.6, ls="--")
-    if act["pde"]:
-        ax_p.plot(adam_x,  d["adam_pde"],   color=r["color"], lw=1.6)
-        ax_p.plot(bfgs_x,  d["bfgs_pde"],   color=r["color"], lw=1.6, ls="--")
+    _plot_term(ax_d, adam_x, bfgs_x, d["adam_data"], d["bfgs_data"],
+               r["color"], act["data"])
+    _plot_term(ax_p, adam_x, bfgs_x, d["adam_pde"],  d["bfgs_pde"],
+               r["color"], act["pde"])
 
 for ax, title in [(ax_d, "DATA loss   (mean (u_pred − u_cfd)²+(v_pred − v_cfd)²)"),
                   (ax_p, "PDE residual loss  (collocation Navier–Stokes momentum)")]:
@@ -207,19 +220,22 @@ for ax, title in [(ax_d, "DATA loss   (mean (u_pred − u_cfd)²+(v_pred − v_c
     ax.grid(True, which="both", ls=":", alpha=0.5)
     ax.set_title(title, fontsize=10.5)
 
-# Clean legend
-handles = [plt.Line2D([0], [0], color=r["color"], lw=2.0, label=r["name"])
+# Legend: 3 runs + line-style key.  Solid = in optimizer's loss; dotted =
+# monitor only (term was disabled but value is still logged each step).
+handles = [plt.Line2D([0], [0], color=r["color"], lw=2.2, label=r["name"])
            for r in RUNS_SPEC]
-handles.append(plt.Line2D([0], [0], color="0.3", lw=2.0, ls="-",  label="Adam stage"))
-handles.append(plt.Line2D([0], [0], color="0.3", lw=2.0, ls="--", label="BFGS stage"))
+handles.append(plt.Line2D([0], [0], color="0.3", lw=2.0, ls="-",
+                          label="solid (Adam) / dashed (BFGS):  active in loss"))
+handles.append(plt.Line2D([0], [0], color="0.3", lw=1.0, ls=":",
+                          label="dotted:  monitor only (term hard-disabled)"))
 ax_d.legend(handles=handles, fontsize=8.5, loc="upper right", framealpha=0.95)
 
-# Annotate the runs that don't have one of the loss terms
+# Per-axis note: which run only contributes a monitor line on this panel.
 ax_d.text(0.02, 0.04,
-          "P2 strict consistency: DATA term is OFF in the loss (not plotted)",
+          "P2 strict consistency: DATA is monitor-only (--pde-only)  →  shown dotted, still rises ⇒ trivial-attractor drift",
           transform=ax_d.transAxes, fontsize=8, color="tab:red", style="italic")
 ax_p.text(0.02, 0.04,
-          "P1 baseline: PDE term is OFF in the loss (not plotted)",
+          "P1 baseline: PDE not computed (--data-only)  →  no line on this panel",
           transform=ax_p.transAxes, fontsize=8, color="tab:blue", style="italic")
 
 fig.suptitle("v2 (small net, width=32 / depth=3) — training loss curves for the three runs",

@@ -5,6 +5,7 @@ import math
 import argparse
 import warnings
 from dataclasses import dataclass
+from typing import Optional
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -145,6 +146,108 @@ class MLPStreamPressure(nn.Module):
         psi = self.wall_lift(x, y) * psi_raw
 
         return torch.cat([psi, p], dim=1)
+
+
+# ==========================================================
+# Pseudo-Time Stepper  (Wang et al. 2026, arXiv:2604.23528)
+# ==========================================================
+
+class PseudoTimeStepper:
+    """
+    Adds a pseudo-time (PT) correction to the PDE residual:
+
+        R_PT = R(u) + w * (u_curr − u_prev)
+
+    where u_prev is the network output cached at the START of each outer
+    optimisation batch (= one pseudo-time step), and
+
+        w = ‖R(curr) − R(prev)‖ / ‖u(curr) − u(prev)‖
+
+    is a finite-difference estimate of the spectral radius of ∂R/∂u.
+
+    Usage in the BFGS loop
+    ----------------------
+    Call  stepper.cache_prev(model, Re, x_ref, y_ref, t_ref)
+    before each minimize() call, then pass `stepper` to the loss function.
+    After each batch, call stepper.update_weight(model, Re, x_ref, y_ref, t_ref).
+    """
+
+    def __init__(self,
+                 w_init: float = 1.0,
+                 w_min:  float = 1e-2,
+                 w_max:  float = 1e2,
+                 ema:    float = 0.9):
+        self.w     = float(w_init)
+        self.w_min = float(w_min)
+        self.w_max = float(w_max)
+        self.ema   = float(ema)
+
+        # Cached previous outputs (set by cache_prev)
+        self.u_prev:  Optional[torch.Tensor] = None
+        self.v_prev:  Optional[torch.Tensor] = None
+        self.Ru_prev: Optional[torch.Tensor] = None
+        self.Rv_prev: Optional[torch.Tensor] = None
+
+    @torch.no_grad()
+    def cache_prev(self, model: nn.Module, Re: float,
+                   x_ref: torch.Tensor, y_ref: torch.Tensor, t_ref: torch.Tensor):
+        """Snapshot u_prev and R_prev at reference collocation points."""
+        model.eval()
+        x = x_ref.detach().clone().requires_grad_(True)
+        y = y_ref.detach().clone().requires_grad_(True)
+        t = t_ref.detach().clone().requires_grad_(True)
+        with torch.enable_grad():
+            f_u, f_v, _ = compute_pde_residuals(model, x, y, t, Re=Re)
+            _, u, v, _  = model_uvp(model, x, y, t)
+        self.u_prev  = u.detach()
+        self.v_prev  = v.detach()
+        self.Ru_prev = f_u.detach()
+        self.Rv_prev = f_v.detach()
+
+    @torch.no_grad()
+    def update_weight(self, model: nn.Module, Re: float,
+                      x_ref: torch.Tensor, y_ref: torch.Tensor, t_ref: torch.Tensor):
+        """Recompute adaptive w = ‖ΔR‖/‖Δu‖ after an inner optimisation batch."""
+        if self.u_prev is None:
+            return
+        model.eval()
+        x = x_ref.detach().clone().requires_grad_(True)
+        y = y_ref.detach().clone().requires_grad_(True)
+        t = t_ref.detach().clone().requires_grad_(True)
+        with torch.enable_grad():
+            f_u, f_v, _ = compute_pde_residuals(model, x, y, t, Re=Re)
+            _, u_c, v_c, _ = model_uvp(model, x, y, t)
+
+        dR = torch.cat([f_u.detach() - self.Ru_prev,
+                        f_v.detach() - self.Rv_prev]).norm().item()
+        du = torch.cat([u_c.detach() - self.u_prev,
+                        v_c.detach() - self.v_prev]).norm().item()
+
+        w_new = float(np.clip(dR / (du + 1e-8), self.w_min, self.w_max))
+        self.w = self.ema * self.w + (1.0 - self.ema) * w_new
+        print(f"  [PT] w={self.w:.4f}  (raw={w_new:.4f}  ‖ΔR‖={dR:.3e}  ‖Δu‖={du:.3e})")
+
+    def pt_pde_loss(self, model: nn.Module,
+                    x: torch.Tensor, y: torch.Tensor, t: torch.Tensor,
+                    Re: float) -> torch.Tensor:
+        """
+        PDE loss with PT correction.  Replaces compute_pde_loss() when enabled.
+
+            L_PT = ‖R_u + w*(u_curr − u_prev)‖² + ‖R_v + w*(v_curr − v_prev)‖² + ‖div‖²
+        """
+        f_u, f_v, div = compute_pde_residuals(model, x, y, t, Re=Re)
+
+        if self.u_prev is not None:
+            # u_prev / v_prev must be evaluated at the SAME (x,y,t) that were
+            # passed here.  In BFGS we freeze the collocation set, so these
+            # tensors were cached on those exact points.
+            _, u_c, v_c, _ = model_uvp(model, x, y, t)
+            f_u = f_u + self.w * (u_c - self.u_prev)
+            f_v = f_v + self.w * (v_c - self.v_prev)
+
+        return (f_u ** 2).mean() + (f_v ** 2).mean() + (div ** 2).mean()
+
+
 
 
 # ==========================================================
@@ -699,7 +802,8 @@ def compute_total_loss(model, dataset, device, epoch, n_f, n_data, Re, t_value,
                        n_cfd_pde=0, lambda_pde_cfd=1.0,
                        cfd_pde_wall_buffer=0.0, cfd_pde_edge_buffer=0.0,
                        data_only: bool = False,
-                       use_all_cfd_data: bool = False):
+                       use_all_cfd_data: bool = False,
+                       stepper: Optional[PseudoTimeStepper] = None):
     """
     data_only         : if True, skip the PDE residual term entirely (n_f and
                         n_cfd_pde are ignored). Only data + BC losses contribute.
@@ -743,14 +847,22 @@ def compute_total_loss(model, dataset, device, epoch, n_f, n_data, Re, t_value,
             else:
                 t_d, x_d, y_d, u_d, v_d = dataset.sample(n_data, wake_frac=0.8, xlim=xlim, ylim=ylim)
 
-        loss_pde_colloc = compute_pde_loss(model, x_f, y_f, t_f, Re=Re)
+        if stepper is not None:
+            loss_pde_colloc = stepper.pt_pde_loss(model, x_f, y_f, t_f, Re=Re)
+        else:
+            loss_pde_colloc = compute_pde_loss(model, x_f, y_f, t_f, Re=Re)
 
         if n_cfd_pde > 0:
             t_cfd_pde, x_cfd_pde, y_cfd_pde = dataset.sample_domain_xy(
                 n_cfd_pde, xlim=xlim, ylim=ylim, radius=0.5,
                 wall_buffer=cfd_pde_wall_buffer, edge_buffer=cfd_pde_edge_buffer,
             )
-            loss_pde_cfd = compute_pde_loss(model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
+            if stepper is not None:
+                loss_pde_cfd = stepper.pt_pde_loss(
+                    model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
+            else:
+                loss_pde_cfd = compute_pde_loss(
+                    model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
         else:
             loss_pde_cfd = torch.zeros((), device=device)
 
@@ -831,15 +943,26 @@ def run_adam(model, dataset, device, save_dir,
              xlim=(-3.0, 12.0), ylim=(-4.0, 4.0),
              n_cfd_pde=0, lambda_pde_cfd=1.0,
              cfd_pde_wall_buffer=0.0, cfd_pde_edge_buffer=0.0,
-             data_only=False, use_all_cfd_data=False):
+             data_only=False, use_all_cfd_data=False,
+             stepper: Optional[PseudoTimeStepper] = None):
     os.makedirs(save_dir, exist_ok=True)
     best_loss = float("inf")
     adam = torch.optim.Adam(model.parameters(), lr=lr_adam)
     weight_manager = AdaptiveLossWeights()
     frozen_weights = default_fixed_weights()
 
+    # PT: reference collocation set for Adam (sampled once, then fixed)
+    if stepper is not None and not data_only:
+        _xf_pt, _yf_pt, _tf_pt = sample_collocation(
+            n_f=n_f, device=device, t_value=t_value, xlim=xlim, ylim=ylim, radius=0.5)
+
     for epoch in range(1, epochs_adam + 1):
         model.train()
+
+        # PT: cache before step, then update after
+        if stepper is not None and not data_only:
+            stepper.cache_prev(model, Re, _xf_pt, _yf_pt, _tf_pt)
+
         adam.zero_grad()
 
         loss, logs = compute_total_loss(
@@ -860,10 +983,15 @@ def run_adam(model, dataset, device, save_dir,
             cfd_pde_edge_buffer=cfd_pde_edge_buffer,
             data_only=data_only,
             use_all_cfd_data=use_all_cfd_data,
+            stepper=stepper,
         )
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
         adam.step()
+
+        # PT: update adaptive weight after the optimizer step
+        if stepper is not None and not data_only:
+            stepper.update_weight(model, Re, _xf_pt, _yf_pt, _tf_pt)
 
         cur = float(loss.detach().cpu().item())
         frozen_weights = logs["weights"]
@@ -930,7 +1058,8 @@ def run_scipy_bfgs(model: nn.Module,
                    cfd_pde_wall_buffer: float = 0.0,
                    cfd_pde_edge_buffer: float = 0.0,
                    data_only: bool = False,
-                   use_all_cfd_data: bool = False):
+                   use_all_cfd_data: bool = False,
+                   stepper: Optional[PseudoTimeStepper] = None):
     os.makedirs(save_dir, exist_ok=True)
 
     best = {"loss": float("inf")}
@@ -1013,7 +1142,11 @@ def run_scipy_bfgs(model: nn.Module,
                     n_f=n_f, device=device, t_value=t_value,
                     xlim=xlim, ylim=ylim, radius=0.5,
                 )
-            loss_pde_colloc = compute_pde_loss(model, x_f, y_f, t_f, Re=Re)
+            # Use PT-modified residual when stepper is active
+            if stepper is not None:
+                loss_pde_colloc = stepper.pt_pde_loss(model, x_f, y_f, t_f, Re=Re)
+            else:
+                loss_pde_colloc = compute_pde_loss(model, x_f, y_f, t_f, Re=Re)
             if n_cfd_pde > 0:
                 if frozen_colloc_bfgs:
                     t_cfd_pde, x_cfd_pde, y_cfd_pde = t_cfd_fix, x_cfd_fix, y_cfd_fix
@@ -1022,7 +1155,12 @@ def run_scipy_bfgs(model: nn.Module,
                         n_cfd_pde, xlim=xlim, ylim=ylim, radius=0.5,
                         wall_buffer=cfd_pde_wall_buffer, edge_buffer=cfd_pde_edge_buffer,
                     )
-                loss_pde_cfd = compute_pde_loss(model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
+                if stepper is not None:
+                    loss_pde_cfd = stepper.pt_pde_loss(
+                        model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
+                else:
+                    loss_pde_cfd = compute_pde_loss(
+                        model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
             else:
                 loss_pde_cfd = torch.zeros((), device=device)
             loss_pde = loss_pde_colloc + lambda_pde_cfd * loss_pde_cfd
@@ -1099,6 +1237,10 @@ def run_scipy_bfgs(model: nn.Module,
     while total_calls["n"] < maxiter:
         batch_no["i"] += 1
 
+        # PT: snapshot u_prev / R_prev before each BFGS mini-batch
+        if stepper is not None:
+            stepper.cache_prev(model, Re, x_f_fix, y_f_fix, t_f_fix)
+
         result = minimize(
             loss_and_gradient,
             initial_weights,
@@ -1116,6 +1258,12 @@ def run_scipy_bfgs(model: nn.Module,
         )
 
         initial_weights = result.x
+
+        # PT: update adaptive weight w after each mini-batch
+        if stepper is not None:
+            stepper.update_weight(model, Re, x_f_fix, y_f_fix, t_f_fix)
+            if batch_no["i"] % 10 == 0:
+                print(f"[PT] batch={batch_no['i']:4d}  w={stepper.w:.4e}")
 
         H0 = np.array(result.hess_inv, dtype=np.float64)
         H0 = 0.5 * (H0 + H0.T)
@@ -1179,9 +1327,18 @@ def train_re40_single(model: nn.Module,
                       cfd_pde_wall_buffer: float = 0.0,
                       cfd_pde_edge_buffer: float = 0.0,
                       data_only: bool = False,
-                      use_all_cfd_data: bool = False):
+                      use_all_cfd_data: bool = False,
+                      use_pt: bool = False,
+                      pt_w_init: float = 1.0,
+                      pt_ema: float = 0.9):
 
     os.makedirs(save_dir, exist_ok=True)
+
+    # Build pseudo-time stepper if requested
+    stepper: Optional[PseudoTimeStepper] = None
+    if use_pt:
+        stepper = PseudoTimeStepper(w_init=pt_w_init, ema=pt_ema)
+        print(f"[PT  ] pseudo-time stepping ENABLED  w_init={pt_w_init}  ema={pt_ema}")
     dataset = SingleSnapshotDataset(snapshot, device=device)
     if data_only:
         print("[mode] data-only — PDE loss term DISABLED. Only data + BC.")
@@ -1270,6 +1427,7 @@ def train_re40_single(model: nn.Module,
         cfd_pde_edge_buffer=cfd_pde_edge_buffer,
         data_only=data_only,
         use_all_cfd_data=use_all_cfd_data,
+        stepper=stepper,
     )
 
     if maxiter_bfgs > 0:
@@ -1303,6 +1461,7 @@ def train_re40_single(model: nn.Module,
             cfd_pde_edge_buffer=cfd_pde_edge_buffer,
             data_only=data_only,
             use_all_cfd_data=use_all_cfd_data,
+            stepper=stepper,
         )
 
     print(f"[train] Saved -> {os.path.join(save_dir, 'pinn_Re40_single.pt')}")
@@ -1473,6 +1632,15 @@ def parse_args():
     p.add_argument("--use-all-cfd-data", action="store_true",
                    help="Use ALL CFD points (no random subsample, no wake bias) for "
                         "data fitting in both Adam and BFGS phases.")
+    # ---- Pseudo-time stepping ----
+    p.add_argument("--use-pt", action="store_true",
+                   help="Enable pseudo-time stepping (Wang et al. 2025) to avoid "
+                        "spurious solutions. Adds w*(u_curr - u_prev) to the PDE "
+                        "residual; w is updated adaptively after each batch.")
+    p.add_argument("--pt-w-init", type=float, default=1.0,
+                   help="Initial pseudo-time weight w (default 1.0).")
+    p.add_argument("--pt-ema", type=float, default=0.9,
+                   help="EMA factor for updating w (default 0.9).")
     p.add_argument("--resume-from", type=str, default=None,
                    help="Path to a checkpoint .pt to load BEFORE training. Used to "
                         "continue from Phase-1 into Phase-2.")
@@ -1564,6 +1732,9 @@ def main():
             cfd_pde_edge_buffer=args.cfd_pde_edge_buffer,
             data_only=args.data_only,
             use_all_cfd_data=args.use_all_cfd_data,
+            use_pt=args.use_pt,
+            pt_w_init=args.pt_w_init,
+            pt_ema=args.pt_ema,
         )
 
     visualize_re40_single(
