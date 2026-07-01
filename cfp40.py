@@ -857,12 +857,10 @@ def compute_total_loss(model, dataset, device, epoch, n_f, n_data, Re, t_value,
                 n_cfd_pde, xlim=xlim, ylim=ylim, radius=0.5,
                 wall_buffer=cfd_pde_wall_buffer, edge_buffer=cfd_pde_edge_buffer,
             )
-            if stepper is not None:
-                loss_pde_cfd = stepper.pt_pde_loss(
-                    model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
-            else:
-                loss_pde_cfd = compute_pde_loss(
-                    model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
+            # PT is NOT applied to cfd points — they are resampled each call so
+            # their count differs from the cached u_prev reference set.
+            loss_pde_cfd = compute_pde_loss(
+                model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
         else:
             loss_pde_cfd = torch.zeros((), device=device)
 
@@ -1159,12 +1157,9 @@ def run_scipy_bfgs(model: nn.Module,
                         n_cfd_pde, xlim=xlim, ylim=ylim, radius=0.5,
                         wall_buffer=cfd_pde_wall_buffer, edge_buffer=cfd_pde_edge_buffer,
                     )
-                if stepper is not None:
-                    loss_pde_cfd = stepper.pt_pde_loss(
-                        model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
-                else:
-                    loss_pde_cfd = compute_pde_loss(
-                        model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
+                # PT not applied to cfd points (resampled → count differs from u_prev cache)
+                loss_pde_cfd = compute_pde_loss(
+                    model, x_cfd_pde, y_cfd_pde, t_cfd_pde, Re=Re)
             else:
                 loss_pde_cfd = torch.zeros((), device=device)
             loss_pde = loss_pde_colloc + lambda_pde_cfd * loss_pde_cfd
