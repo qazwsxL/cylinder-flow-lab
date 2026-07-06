@@ -2,7 +2,7 @@
 #SBATCH -J pinn_re40_pt
 #SBATCH -p gpu
 #SBATCH --gres=gpu:1
-#SBATCH --mem=64G
+#SBATCH --mem=128G
 #SBATCH -c 4
 #SBATCH -t 24:00:00
 #SBATCH -o pinn_re40_pt_%j.out
