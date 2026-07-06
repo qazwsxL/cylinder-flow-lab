@@ -13,11 +13,11 @@ module load cuda/11.8.0-kuhf
 source /oscar/rt/9.6/25/spack/x86_64_v3/anaconda3-2023.09-0-aqbcryind6ewgctu7wijluakv5mo3lo5/etc/profile.d/conda.sh
 conda activate pinn
 
-cd "/oscar/home/jchen790/cylinder flow lab"
+cd "/oscar/home/jchen790/cylinder flow lab/src"
 
-python -u cfp40.py --vtk-path Re40.vtk \
-    --save-dir checkpoints_pt \
-    --viz-dir  viz_pt \
+python -u cfp40.py --vtk-path ../Re40.vtk \
+    --save-dir ../runs/pt/checkpoints \
+    --viz-dir  ../runs/pt/viz \
     --width 96 --depth 5 \
     --epochs-adam 2000 \
     --maxiter-bfgs 6000 --iters-per-batch 150 \

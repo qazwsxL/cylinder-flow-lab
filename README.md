@@ -9,63 +9,68 @@ fitting the CFD.
 ```
 cylinder-flow-lab/
 ├── README.md
+├── Re40.vtk                         primary CFD reference (UMean / pMean)
+├── Re60/                            Re=60 vtks + v_t.csv + README
 │
-├── Source code (root)
-│   ├── cfp.py                       earlier general PINN
-│   ├── cfp40.py                     Re=40 trainer (instantaneous-U loader, soft BCs)
-│   ├── cfp40_v2.py                  Re=40 v2: hard BCs + Fourier features +
-│   │                                auto-normalized BFGS weights, reads UMean
+├── src/                             Python source files
+│   ├── cfp40.py                     Re=40 trainer — PRIMARY (--use-pt flag)
+│   ├── cfp_pt.py                    PT reference impl for Re=60 curriculum
+│   ├── cfp.py                       Re=5→60 curriculum trainer
+│   ├── cfp40_v2.py                  Re=40 v2: hard BCs + Fourier features
 │   ├── cfp60.py                     Re=60 variant
 │   ├── _optimize.py                 custom SSBroyden / SSBFGS BFGS variants
+│   ├── plot_mentor_style.py         mentor's 6-panel figure style
 │   ├── diagnose_cfd_pde.py          CFD-vs-PDE residual diagnostic
-│   ├── run_analysis_re40.py         post-training analysis (used by phase1/phase2)
+│   ├── run_analysis_re40.py         post-training analysis
 │   └── sanity_check_re40.py         pre-training CFD-PINN consistency check
 │
-├── Notebooks (root)
+├── scripts/                         SLURM / run scripts
+│   ├── run_pt_oscar.sh              ← current: PT job on Oscar
+│   ├── run_pt_local.sh              ← current: PT job on local Linux
+│   ├── train_two_phase.sh
+│   ├── train_v2_two_stage.sh
+│   └── ...
+│
+├── notebooks/
 │   ├── analysis_updated_re40_clean.ipynb
 │   └── re40_domain_residual_check.ipynb
 │
-├── Scripts (root)
-│   ├── run_pinn.sh
-│   ├── train_two_phase.sh           original 2-phase: data-only -> data+PDE
-│   └── train_v2_two_stage.sh        v2 2-stage: data-anchored -> data-free refine
+├── runs/                            experiment outputs
+│   ├── pt/                          pseudo-time stepping runs (checkpoints + viz)
+│   ├── re40_single/
+│   ├── phase1/, phase2/
+│   ├── v2_two_stage/
+│   └── ...
 │
-├── Data (root)
-│   ├── Re40.vtk                     primary reference (UMean / pMean inside)
-│   └── Re60/                        Re=60 vtks + summary CSV
-│
-├── runs/                            all experiment outputs, organized by experiment
-│   ├── re_curriculum/checkpoints/   Re10..Re45 curriculum ckpts
-│   ├── re40_single/                 single-snapshot Re=40 baseline (ckpt + viz)
-│   ├── cfd_pde/                     CFD-aware PDE residual experiments
-│   ├── phase1/                      data-only fit (interpolator)
-│   │   ├── checkpoints_phase1/
-│   │   ├── analysis_phase1/
-│   │   └── analysis_runA/
-│   ├── phase2/                      phase1 + PDE turned back on
-│   ├── sanity_checks/               sanity_check_re40.py outputs
-│   │   ├── sanity_check_re40/       (old box -3..12 / -4..4)
-│   │   └── sanity_check_re40_v2/    (new box -8..12 / -8..8)
-│   ├── v2_smoke/                    200-epoch v2 smoke test (May 10)
-│   └── v2_two_stage/                v2 full two-stage run (created by sbatch)
-│       ├── A1/{checkpoints,viz}/    data-anchored
-│       └── A2/{checkpoints,viz}/    data-free refine
-│
-├── logs/                            slurm .out / .err / .log
-├── reports/                         pptx + 汇报稿
-├── archive/                         retired smoke / sanity / wake / duplicate _optimize
-└── .git/, .gitignore
+├── reports/                         pptx slides + figs
+├── logs/                            SLURM .out / .err
+└── archive/                         retired checkpoints / old code
 ```
 
-## Sequence of work
+## Current focus — pseudo-time stepping (Wang et al. 2025)
 
-1. `python sanity_check_re40.py --vtk-path Re40.vtk --x-min -8 --x-max 12 --y-min -8 --y-max 8`
-   — confirm CFD ↔ PINN setup consistency. Outputs go to
-   `runs/sanity_checks/sanity_check_re40_v2/`.
-2. `sbatch train_v2_two_stage.sh` — run A1 (data-anchored) then A2 (data-free
-   refine). Outputs in `runs/v2_two_stage/`.
-3. Inspect `runs/v2_two_stage/A2/viz/v2_vorticity.png` — wake should show two
-   parallel vorticity bands at peak ~±8 (matching CFD's `UMean`).
+`src/cfp40.py` supports `--use-pt` to avoid spurious solutions.
+Outputs land in `runs/pt/`.
+
+```bash
+# Oscar
+sbatch scripts/run_pt_oscar.sh
+
+# Local Linux
+bash scripts/run_pt_local.sh
+```
+
+The PT weight `w` is logged every 10 BFGS batches as `[PT] batch=... w=...`.
+
+## Running from src/
+
+All Python files live in `src/`; run them from there so `_optimize.py` is importable:
+
+```bash
+cd src/
+python sanity_check_re40.py --vtk-path ../Re40.vtk ...
+python cfp40.py --vtk-path ../Re40.vtk --save-dir ../runs/... ...
+```
 
 ## Key v2 design choices (vs cfp40.py)
 
