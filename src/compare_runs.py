@@ -28,9 +28,16 @@ from cfp40 import (
     MLPStreamPressure,
     load_single_vtk,
     compute_pde_residuals,
-    uvp_from_psip,
     safe_load_checkpoint,
 )
+
+
+def uvp_from_psip(model, x, y, t):
+    """Derive u, v from stream-function ψ via autograd. p returned directly."""
+    psi, p = model(x, y, t)
+    u = torch.autograd.grad(psi.sum(), y, create_graph=True)[0]
+    v = -torch.autograd.grad(psi.sum(), x, create_graph=True)[0]
+    return u, v, p
 
 
 # =============================================================================
