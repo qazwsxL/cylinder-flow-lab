@@ -34,7 +34,11 @@ from cfp40 import (
 
 def uvp_from_psip(model, x, y, t):
     """Derive u, v from stream-function ψ via autograd. p returned directly."""
-    psi, p = model(x, y, t)
+    # MLPStreamPressure.forward expects a single [N,3] tensor and returns a
+    # single [N,2] tensor (psi, p) — not three args / a tuple.
+    out = model(torch.cat([x.reshape(-1, 1), y.reshape(-1, 1), t.reshape(-1, 1)], dim=1))
+    psi = out[:, 0:1]
+    p = out[:, 1:2]
     u = torch.autograd.grad(psi.sum(), y, create_graph=True)[0]
     v = -torch.autograd.grad(psi.sum(), x, create_graph=True)[0]
     return u, v, p
