@@ -1,0 +1,11 @@
+baseline: ../runs/phase2/checkpoints_phase2/pinn_Re40_single.pt
+pt model: ../checkpoints_pt/pinn_Re40_single.pt
+
+Metric             Baseline           PT            Δ
+------------------------------------------------------------
+rmse_u              0.04585      0.02636     -0.01948
+rmse_v              0.02315      0.01926     -0.00390
+mae_fu              0.03075      0.05183     +0.02109
+mae_fv              0.02721      0.04262     +0.01541
+mae_div             0.00000      0.00000     +0.00000
+pde_total           0.05796      0.09445     +0.03649
