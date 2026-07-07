@@ -319,7 +319,7 @@ def main():
 
     # Save metrics to txt
     metrics_path = os.path.join(args.out_dir, "metrics.txt")
-    with open(metrics_path, "w") as f:
+    with open(metrics_path, "w", encoding="utf-8") as f:
         f.write(f"baseline: {args.ckpt_base}\n")
         f.write(f"pt model: {args.ckpt_pt}\n\n")
         f.write(f"{'Metric':<14} {'Baseline':>12} {'PT':>12} {'Δ':>12}\n")
