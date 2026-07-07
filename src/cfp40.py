@@ -942,12 +942,23 @@ def run_adam(model, dataset, device, save_dir,
              n_cfd_pde=0, lambda_pde_cfd=1.0,
              cfd_pde_wall_buffer=0.0, cfd_pde_edge_buffer=0.0,
              data_only=False, use_all_cfd_data=False,
+             use_data_anchor: bool = True,
              stepper: Optional[PseudoTimeStepper] = None):
     os.makedirs(save_dir, exist_ok=True)
     best_loss = float("inf")
     adam = torch.optim.Adam(model.parameters(), lr=lr_adam)
     weight_manager = AdaptiveLossWeights()
     frozen_weights = default_fixed_weights()
+
+    # Data-free PINN: zero the data weight everywhere. Keeping the "data" key
+    # (value 0) avoids KeyErrors in compute_total_loss; the data loss is still
+    # computed on sampled points but contributes exactly 0 to the total, and
+    # this 0 propagates into frozen_weights -> BFGS.
+    if not use_data_anchor:
+        weight_manager.base["data"] = 0.0
+        weight_manager.current["data"] = 0.0
+        frozen_weights["data"] = 0.0
+        print("[mode] data anchor DISABLED (data-free PINN: PDE + BC only)")
 
     # PT: reference collocation set for Adam (sampled once, then fixed)
     if stepper is not None and not data_only:
@@ -1061,8 +1072,14 @@ def run_scipy_bfgs(model: nn.Module,
                    cfd_pde_edge_buffer: float = 0.0,
                    data_only: bool = False,
                    use_all_cfd_data: bool = False,
+                   use_data_anchor: bool = True,
                    stepper: Optional[PseudoTimeStepper] = None):
     os.makedirs(save_dir, exist_ok=True)
+
+    # Data-free PINN: force the frozen BFGS data weight to 0 (guard in case the
+    # incoming frozen_weights still carries a nonzero data weight).
+    if not use_data_anchor:
+        fixed_weights = {**fixed_weights, "data": 0.0}
 
     best = {"loss": float("inf")}
     total_calls = {"n": 0}
@@ -1329,7 +1346,8 @@ def train_re40_single(model: nn.Module,
                       use_all_cfd_data: bool = False,
                       use_pt: bool = False,
                       pt_w_init: float = 1.0,
-                      pt_ema: float = 0.9):
+                      pt_ema: float = 0.9,
+                      use_data_anchor: bool = True):
 
     os.makedirs(save_dir, exist_ok=True)
 
@@ -1426,6 +1444,7 @@ def train_re40_single(model: nn.Module,
         cfd_pde_edge_buffer=cfd_pde_edge_buffer,
         data_only=data_only,
         use_all_cfd_data=use_all_cfd_data,
+        use_data_anchor=use_data_anchor,
         stepper=stepper,
     )
 
@@ -1460,6 +1479,7 @@ def train_re40_single(model: nn.Module,
             cfd_pde_edge_buffer=cfd_pde_edge_buffer,
             data_only=data_only,
             use_all_cfd_data=use_all_cfd_data,
+            use_data_anchor=use_data_anchor,
             stepper=stepper,
         )
 
@@ -1640,6 +1660,13 @@ def parse_args():
                    help="Initial pseudo-time weight w (default 1.0).")
     p.add_argument("--pt-ema", type=float, default=0.9,
                    help="EMA factor for updating w (default 0.9).")
+    p.add_argument("--data-anchor", dest="use_data_anchor", action="store_true",
+                   default=True,
+                   help="Use CFD velocity data supervision (default: on).")
+    p.add_argument("--no-data-anchor", dest="use_data_anchor", action="store_false",
+                   help="Disable the CFD velocity data anchor: data-free PINN "
+                        "(PDE + BC only). Used for the no-anchor cells of the "
+                        "PT x anchor 2x2 ablation.")
     p.add_argument("--resume-from", type=str, default=None,
                    help="Path to a checkpoint .pt to load BEFORE training. Used to "
                         "continue from Phase-1 into Phase-2.")
@@ -1734,6 +1761,7 @@ def main():
             use_pt=args.use_pt,
             pt_w_init=args.pt_w_init,
             pt_ema=args.pt_ema,
+            use_data_anchor=args.use_data_anchor,
         )
 
     visualize_re40_single(
