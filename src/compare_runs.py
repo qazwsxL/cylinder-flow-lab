@@ -56,9 +56,12 @@ def load_model(ckpt_path, width, depth, device):
     return model
 
 
-@torch.no_grad()
 def eval_on_grid(model, xs, ys, t_val, device):
-    """Evaluate model on meshgrid (xs, ys). Returns u, v, p, omega (vorticity)."""
+    """Evaluate model on meshgrid (xs, ys). Returns u, v, p, omega (vorticity).
+
+    NOTE: no @torch.no_grad() here — u, v and vorticity are autograd
+    derivatives of the stream function ψ, so the graph must be built.
+    """
     X, Y = np.meshgrid(xs, ys)
     xf = torch.tensor(X.ravel(), dtype=torch.float32, device=device)
     yf = torch.tensor(Y.ravel(), dtype=torch.float32, device=device)
@@ -79,19 +82,23 @@ def eval_on_grid(model, xs, ys, t_val, device):
     return X, Y, u, v, p, omega
 
 
-@torch.no_grad()
 def pde_residual_on_grid(model, xs, ys, t_val, Re, device):
-    """Mean |f_u|, |f_v|, |div| on a grid (inside domain, outside cylinder)."""
+    """Mean |f_u|, |f_v|, |div| on a grid (inside domain, outside cylinder).
+
+    NOTE: no @torch.no_grad() — compute_pde_residuals differentiates ψ.
+    """
     X, Y = np.meshgrid(xs, ys)
     mask = X**2 + Y**2 > 0.5**2          # outside cylinder
-    xf = torch.tensor(X[mask], dtype=torch.float32, device=device).requires_grad_(True)
-    yf = torch.tensor(Y[mask], dtype=torch.float32, device=device).requires_grad_(True)
+    # compute_pde_residuals -> model_uvp does torch.cat([x,y,t], dim=1),
+    # so inputs must be column tensors [M,1], not 1-D.
+    xf = torch.tensor(X[mask], dtype=torch.float32, device=device).reshape(-1, 1).requires_grad_(True)
+    yf = torch.tensor(Y[mask], dtype=torch.float32, device=device).reshape(-1, 1).requires_grad_(True)
     tf = torch.full_like(xf, t_val)
 
     f_u, f_v, div = compute_pde_residuals(model, xf, yf, tf, Re=Re)
-    f_u = f_u.detach().cpu().numpy()
-    f_v = f_v.detach().cpu().numpy()
-    div = div.detach().cpu().numpy()
+    f_u = f_u.detach().cpu().numpy().reshape(-1)
+    f_v = f_v.detach().cpu().numpy().reshape(-1)
+    div = div.detach().cpu().numpy().reshape(-1)
 
     # Map back to full grid
     fu_grid = np.full(X.shape, np.nan)
@@ -114,9 +121,12 @@ def cfd_on_grid(snapshot, xs, ys):
     """Bilinear interpolation of CFD data onto the eval grid."""
     from scipy.interpolate import griddata
     X, Y = np.meshgrid(xs, ys)
-    pts = np.stack([snapshot.x.numpy(), snapshot.y.numpy()], axis=1)
-    u_cfd = griddata(pts, snapshot.u.numpy(), (X, Y), method="linear")
-    v_cfd = griddata(pts, snapshot.v.numpy(), (X, Y), method="linear")
+    # Snapshot.x/y/u/v are numpy arrays (from load_single_vtk), not tensors.
+    sx = np.asarray(snapshot.x); sy = np.asarray(snapshot.y)
+    su = np.asarray(snapshot.u); sv = np.asarray(snapshot.v)
+    pts = np.stack([sx, sy], axis=1)
+    u_cfd = griddata(pts, su, (X, Y), method="linear")
+    v_cfd = griddata(pts, sv, (X, Y), method="linear")
     return X, Y, u_cfd, v_cfd
 
 
