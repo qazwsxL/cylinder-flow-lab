@@ -72,7 +72,9 @@ def eval_on_grid(model, xs, ys, t_val, device):
     u, v, p = uvp_from_psip(model, xf, yf, tf)
 
     # vorticity = dv/dx - du/dy
-    du_dy = torch.autograd.grad(u.sum(), yf, create_graph=False)[0]
+    # u and v share the same ψ graph; the first grad() must retain it so the
+    # second grad() can still traverse it (the last one frees it).
+    du_dy = torch.autograd.grad(u.sum(), yf, create_graph=False, retain_graph=True)[0]
     dv_dx = torch.autograd.grad(v.sum(), xf, create_graph=False)[0]
     omega = (dv_dx - du_dy).cpu().numpy().reshape(X.shape)
 
