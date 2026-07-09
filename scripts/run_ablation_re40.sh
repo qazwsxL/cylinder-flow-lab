@@ -66,7 +66,9 @@ run () {  # $1=key  $2...=extra flags
         2>&1 | tee "$ROOT/$key/train.log"
 }
 
-PT="--use-pt --pt-w-init 1.0 --pt-ema 0.9"
+# Faithful PT (Wang et al. 2026): adaptive component-wise tau + gamma shrink
+# (in cfp40.py PseudoTimeStepper) plus per-batch collocation resampling.
+PT="--use-pt --pt-w-init 1.0 --pt-ema 0.9 --pt-resample"
 ANCHOR_ON="--use-all-cfd-data"
 ANCHOR_OFF="--no-data-anchor"
 

@@ -154,39 +154,69 @@ class MLPStreamPressure(nn.Module):
 
 class PseudoTimeStepper:
     """
-    Adds a pseudo-time (PT) correction to the PDE residual:
+    Adaptive pseudo-time stepping, faithful to Wang et al. (2026), Algorithm 1.
 
-        R_PT = R(u) + w * (u_curr − u_prev)
+    Relaxed residual (Eq 2.64), component-wise:
+        R_pts_u = R_u + (1/tau_u) * (u - u_prev)
+        R_pts_v = R_v + (1/tau_v) * (v - v_prev)
+    and the PT loss is the mean square of these plus the (structural) continuity
+    residual div (enforced by the stream function, hence carries no tau_p).
 
-    where u_prev is the network output cached at the START of each outer
-    optimisation batch (= one pseudo-time step), and
+    Adaptive step size (Eq 2.62, squared BB-style finite difference):
+        tau_hat = gamma * ||du||^2 / (||dR||^2 + eps)     (per component)
+    EMA-smoothed on tau every m batches (Eq 2.63):
+        tau <- (1-beta) tau + beta tau_hat
+    with a cosine-decay shrink factor gamma in [gamma_min, 1] driven by the log
+    reduction of the interior residual loss (Eq 2.67-2.68). The coefficient used
+    in the loss is w = 1/tau, kept in [w_min, w_max] for optimizer stability.
 
-        w = ‖R(curr) − R(prev)‖ / ‖u(curr) − u(prev)‖
-
-    is a finite-difference estimate of the spectral radius of ∂R/∂u.
-
-    Usage in the BFGS loop
-    ----------------------
-    Call  stepper.cache_prev(model, Re, x_ref, y_ref, t_ref)
-    before each minimize() call, then pass `stepper` to the loss function.
-    After each batch, call stepper.update_weight(model, Re, x_ref, y_ref, t_ref).
+    NOTE (differences from the paper that are deliberate here):
+      * Continuity has no relaxation term (stream-function => div ~ 0 by design).
+      * The paper's Algorithm 1 uses first-order GD with per-iteration collocation
+        resampling. Here PT runs inside batched (SS)BFGS; enable --pt-resample to
+        resample the collocation set once per BFGS batch (= one pseudo-time step),
+        which is the closest faithful analogue.
     """
 
     def __init__(self,
                  w_init: float = 1.0,
                  w_min:  float = 1e-2,
                  w_max:  float = 1e2,
-                 ema:    float = 0.9):
-        self.w     = float(w_init)
-        self.w_min = float(w_min)
+                 ema:    float = 0.9,
+                 gamma_min: float = 0.1,
+                 s_start:   float = 2.0,
+                 s_end:     float = 6.0,
+                 eps:       float = 1e-8):
+        tau0 = 1.0 / float(w_init)
+        self.tau_u = tau0                       # component-wise step sizes
+        self.tau_v = tau0
+        self.w_min = float(w_min)               # bounds on coefficient w = 1/tau
         self.w_max = float(w_max)
-        self.ema   = float(ema)
+        self.beta  = 1.0 - float(ema)           # paper's beta (weight on new est.)
+        self.gamma_min = float(gamma_min)
+        self.s_start = float(s_start)
+        self.s_end   = float(s_end)
+        self.eps     = float(eps)
+        self.L0_int = None                      # initial interior residual loss
 
         # Cached previous outputs (set by cache_prev)
         self.u_prev:  Optional[torch.Tensor] = None
         self.v_prev:  Optional[torch.Tensor] = None
         self.Ru_prev: Optional[torch.Tensor] = None
         self.Rv_prev: Optional[torch.Tensor] = None
+
+    # coefficients w = 1/tau (per component + mean, the last for logging/compat)
+    @property
+    def w_u(self):
+        return 1.0 / self.tau_u
+
+    @property
+    def w_v(self):
+        return 1.0 / self.tau_v
+
+    @property
+    def w(self):
+        return 0.5 * (self.w_u + self.w_v)
 
     @torch.no_grad()
     def cache_prev(self, model: nn.Module, Re: float,
@@ -203,11 +233,24 @@ class PseudoTimeStepper:
         self.v_prev  = v.detach()
         self.Ru_prev = f_u.detach()
         self.Rv_prev = f_v.detach()
+        # Initial interior residual loss for the shrink schedule (set once).
+        if self.L0_int is None:
+            self.L0_int = float((f_u.detach() ** 2).mean()
+                                + (f_v.detach() ** 2).mean())
+
+    def _gamma(self, L_int: float) -> float:
+        """Cosine-decay shrink factor gamma in [gamma_min, 1] (Eq 2.67-2.68)."""
+        if self.L0_int is None or self.s_end <= self.s_start:
+            return 1.0
+        red = np.log10((self.L0_int + self.eps) / (L_int + self.eps))
+        p = (red - self.s_start) / (self.s_end - self.s_start)
+        p = float(np.clip(p, 0.0, 1.0))
+        return self.gamma_min + (1.0 - self.gamma_min) * (1.0 + np.cos(np.pi * p)) / 2.0
 
     @torch.no_grad()
     def update_weight(self, model: nn.Module, Re: float,
                       x_ref: torch.Tensor, y_ref: torch.Tensor, t_ref: torch.Tensor):
-        """Recompute adaptive w = ‖ΔR‖/‖Δu‖ after an inner optimisation batch."""
+        """Adaptive per-component tau update (Eqs 2.62-2.63 + gamma)."""
         if self.u_prev is None:
             return
         model.eval()
@@ -218,32 +261,48 @@ class PseudoTimeStepper:
             f_u, f_v, _ = compute_pde_residuals(model, x, y, t, Re=Re)
             _, u_c, v_c, _ = model_uvp(model, x, y, t)
 
-        dR = torch.cat([f_u.detach() - self.Ru_prev,
-                        f_v.detach() - self.Rv_prev]).norm().item()
-        du = torch.cat([u_c.detach() - self.u_prev,
-                        v_c.detach() - self.v_prev]).norm().item()
+        duu = (u_c.detach() - self.u_prev).norm().item()
+        dvv = (v_c.detach() - self.v_prev).norm().item()
+        dRu = (f_u.detach() - self.Ru_prev).norm().item()
+        dRv = (f_v.detach() - self.Rv_prev).norm().item()
 
-        w_new = float(np.clip(dR / (du + 1e-8), self.w_min, self.w_max))
-        self.w = self.ema * self.w + (1.0 - self.ema) * w_new
-        print(f"  [PT] w={self.w:.4f}  (raw={w_new:.4f}  ‖ΔR‖={dR:.3e}  ‖Δu‖={du:.3e})")
+        L_int = float((f_u.detach() ** 2).mean() + (f_v.detach() ** 2).mean())
+        gamma = self._gamma(L_int)
+
+        # Eq 2.62: squared finite-difference (BB-style) step-size estimate.
+        tau_hat_u = gamma * (duu ** 2) / (dRu ** 2 + self.eps)
+        tau_hat_v = gamma * (dvv ** 2) / (dRv ** 2 + self.eps)
+
+        # Eq 2.63: EMA smoothing on the step size tau (not on w = 1/tau).
+        self.tau_u = (1.0 - self.beta) * self.tau_u + self.beta * tau_hat_u
+        self.tau_v = (1.0 - self.beta) * self.tau_v + self.beta * tau_hat_v
+
+        # Keep coefficient w = 1/tau within [w_min, w_max] for stability.
+        tau_lo, tau_hi = 1.0 / self.w_max, 1.0 / self.w_min
+        self.tau_u = float(np.clip(self.tau_u, tau_lo, tau_hi))
+        self.tau_v = float(np.clip(self.tau_v, tau_lo, tau_hi))
+
+        print(f"  [PT] w_u={self.w_u:.4f} w_v={self.w_v:.4f} gamma={gamma:.3f} "
+              f"(tau_u={self.tau_u:.3e} tau_v={self.tau_v:.3e} "
+              f"|Du|={duu:.2e} |DRu|={dRu:.2e})")
 
     def pt_pde_loss(self, model: nn.Module,
                     x: torch.Tensor, y: torch.Tensor, t: torch.Tensor,
                     Re: float) -> torch.Tensor:
         """
-        PDE loss with PT correction.  Replaces compute_pde_loss() when enabled.
+        PDE loss with component-wise PT correction (Eq 2.64):
 
-            L_PT = ‖R_u + w*(u_curr − u_prev)‖² + ‖R_v + w*(v_curr − v_prev)‖² + ‖div‖²
+            L_PT = ||R_u + w_u*(u - u_prev)||^2
+                 + ||R_v + w_v*(v - v_prev)||^2 + ||div||^2
         """
         f_u, f_v, div = compute_pde_residuals(model, x, y, t, Re=Re)
 
         if self.u_prev is not None:
             # u_prev / v_prev must be evaluated at the SAME (x,y,t) that were
-            # passed here.  In BFGS we freeze the collocation set, so these
-            # tensors were cached on those exact points.
+            # cached (same collocation set), so the difference is pointwise.
             _, u_c, v_c, _ = model_uvp(model, x, y, t)
-            f_u = f_u + self.w * (u_c - self.u_prev)
-            f_v = f_v + self.w * (v_c - self.v_prev)
+            f_u = f_u + self.w_u * (u_c - self.u_prev)
+            f_v = f_v + self.w_v * (v_c - self.v_prev)
 
         return (f_u ** 2).mean() + (f_v ** 2).mean() + (div ** 2).mean()
 
@@ -943,6 +1002,7 @@ def run_adam(model, dataset, device, save_dir,
              cfd_pde_wall_buffer=0.0, cfd_pde_edge_buffer=0.0,
              data_only=False, use_all_cfd_data=False,
              use_data_anchor: bool = True,
+             pt_resample: bool = False,
              stepper: Optional[PseudoTimeStepper] = None):
     os.makedirs(save_dir, exist_ok=True)
     best_loss = float("inf")
@@ -970,6 +1030,12 @@ def run_adam(model, dataset, device, save_dir,
 
         # PT: cache before step, then update after
         if stepper is not None and not data_only:
+            # Faithful PT (Alg 1 line 2): resample the interior collocation each
+            # epoch (Adam tolerates the stochasticity, unlike frozen-set BFGS).
+            if pt_resample:
+                _xf_pt, _yf_pt, _tf_pt = sample_collocation(
+                    n_f=n_f, device=device, t_value=t_value,
+                    xlim=xlim, ylim=ylim, radius=0.5)
             stepper.cache_prev(model, Re, _xf_pt, _yf_pt, _tf_pt)
 
         adam.zero_grad()
@@ -1073,6 +1139,7 @@ def run_scipy_bfgs(model: nn.Module,
                    data_only: bool = False,
                    use_all_cfd_data: bool = False,
                    use_data_anchor: bool = True,
+                   pt_resample: bool = False,
                    stepper: Optional[PseudoTimeStepper] = None):
     os.makedirs(save_dir, exist_ok=True)
 
@@ -1253,6 +1320,21 @@ def run_scipy_bfgs(model: nn.Module,
     while total_calls["n"] < maxiter:
         batch_no["i"] += 1
 
+        # PT (faithful): resample the frozen collocation set once per batch
+        # (= one pseudo-time step), so each pseudo-time step sees fresh interior
+        # points — Algorithm 1 line 2. Only valid with frozen collocation within
+        # the batch (otherwise the loss would resample per call and u_prev would
+        # not align). Data anchor points (t_d_fix ...) are intentionally kept.
+        if (stepper is not None and pt_resample and not data_only
+                and frozen_colloc_bfgs):
+            x_f_fix, y_f_fix, t_f_fix = sample_collocation(
+                n_f=n_f, device=device, t_value=t_value,
+                xlim=xlim, ylim=ylim, radius=0.5)
+            if n_cfd_pde > 0:
+                t_cfd_fix, x_cfd_fix, y_cfd_fix = dataset.sample_domain_xy(
+                    n_cfd_pde, xlim=xlim, ylim=ylim, radius=0.5,
+                    wall_buffer=cfd_pde_wall_buffer, edge_buffer=cfd_pde_edge_buffer)
+
         # PT: snapshot u_prev / R_prev before each BFGS mini-batch
         if stepper is not None:
             stepper.cache_prev(model, Re, x_f_fix, y_f_fix, t_f_fix)
@@ -1347,6 +1429,7 @@ def train_re40_single(model: nn.Module,
                       use_pt: bool = False,
                       pt_w_init: float = 1.0,
                       pt_ema: float = 0.9,
+                      pt_resample: bool = False,
                       use_data_anchor: bool = True):
 
     os.makedirs(save_dir, exist_ok=True)
@@ -1445,6 +1528,7 @@ def train_re40_single(model: nn.Module,
         data_only=data_only,
         use_all_cfd_data=use_all_cfd_data,
         use_data_anchor=use_data_anchor,
+        pt_resample=pt_resample,
         stepper=stepper,
     )
 
@@ -1480,6 +1564,7 @@ def train_re40_single(model: nn.Module,
             data_only=data_only,
             use_all_cfd_data=use_all_cfd_data,
             use_data_anchor=use_data_anchor,
+            pt_resample=pt_resample,
             stepper=stepper,
         )
 
@@ -1660,6 +1745,11 @@ def parse_args():
                    help="Initial pseudo-time weight w (default 1.0).")
     p.add_argument("--pt-ema", type=float, default=0.9,
                    help="EMA factor for updating w (default 0.9).")
+    p.add_argument("--pt-resample", action="store_true", default=False,
+                   help="Resample the PT collocation set once per BFGS batch "
+                        "(= one pseudo-time step), the faithful analogue of "
+                        "Algorithm 1 line 2 in Wang et al. 2026. Requires frozen "
+                        "collocation within a batch (the default).")
     p.add_argument("--data-anchor", dest="use_data_anchor", action="store_true",
                    default=True,
                    help="Use CFD velocity data supervision (default: on).")
@@ -1761,6 +1851,7 @@ def main():
             use_pt=args.use_pt,
             pt_w_init=args.pt_w_init,
             pt_ema=args.pt_ema,
+            pt_resample=args.pt_resample,
             use_data_anchor=args.use_data_anchor,
         )
 
