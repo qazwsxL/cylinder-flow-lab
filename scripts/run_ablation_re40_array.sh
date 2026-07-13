@@ -2,7 +2,7 @@
 #SBATCH -J pinn_re40_abl
 #SBATCH -p gpu
 #SBATCH --gres=gpu:1
-#SBATCH --mem=64G
+#SBATCH --mem=100G
 #SBATCH -c 4
 #SBATCH -t 24:00:00
 #SBATCH --array=0-3
@@ -10,9 +10,13 @@
 #SBATCH -e pinn_re40_ablation_%A_%a.err
 # ============================================================================
 # 2x2 ablation (PT x CFD anchor) as a JOB ARRAY: each of the 4 cells runs as an
-# independent task, in parallel, each with its own 24h wall clock and 64G — so
-# the four cells no longer share one wall-time budget (the sequential version
-# was getting cut off at the time limit).
+# independent task, in parallel, each with its own 24h wall clock and 100G — so
+# the four cells no longer share one wall-time budget.
+#
+# MEMORY: 96/5 SSBroyden keeps a dense NxN float64 inverse Hessian (H0 ~ 11.6 GB)
+# and the update peaks at ~6-8x H0. 64G OOM-killed every cell at BFGS batch 2;
+# 100G clears the pre-flight soft minimum (~83 GB). If a cell still OOMs, raise
+# to 128G (sbatch --mem=128G ...).
 #
 #   task 0: baseline       (no PT, no anchor)
 #   task 1: pt             (PT,    no anchor)
