@@ -1,0 +1,436 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 3780634
+##  Job Name : pinn_re40_abl
+##  Nodelist : gpu3102
+##      CPUs : 
+##  Mem/Node : 65536 MB
+## Directory : /oscar/home/jchen790/cylinder flow lab
+##   Job Started : Thu Jul  9 06:39:11 AM EDT 2026
+###############################################################################
+############################################################
+# array task 2  ->  cell 'cfd_anchor'
+#   flags: --use-all-cfd-data
+############################################################
+[OK] _optimize._minimize_bfgs loaded — SSBroyden / SSBFGS variants available
+Loaded Re40.vtk  cells=8234
+Model: width=96, depth=5, params=38018
+Loss weights: adaptive during Adam, frozen during BFGS
+Cylinder no-slip: enforced hard through stream-function lifting
+CFD-aware PDE residual: n_cfd_pde=8000, lambda_pde_cfd=1.0
+[mem ] params=38018  H0 (NxN float64) = 10.77 GB  available ~ 64.0 GB
+[mem ] WARNING: budget 64.0 GB < soft min 83.4 GB. SSBroyden update peaks 3-4x H0 due to NxN outer products; you may OOM mid-batch.
+============================================================
+Phase 1 — Adam (2000 epochs)
+Goal: match CFD while improving PDE and enforcing wall no-slip exactly
+============================================================
+[Adam] ep=   20  total=4.577e+00  PDE=3.256e-01 [colloc=3.200e-01, cfd=5.664e-03] (w=2.169)  IN=6.333e-01 (w=1.271)  TB=7.903e-01 (w=1.339)  WALL=9.706e-15 (w=0.200)  OUT=1.174e-01 (w=0.598)  DATA=4.531e-01 (w=4.277)
+[Adam] ep=   40  total=1.997e+00  PDE=1.751e-01 [colloc=1.580e-01, cfd=1.707e-02] (w=1.582)  IN=1.798e-01 (w=1.333)  TB=4.035e-01 (w=1.623)  WALL=5.303e-15 (w=0.200)  OUT=3.826e-03 (w=0.348)  DATA=1.770e-01 (w=4.653)
+[Adam] ep=   60  total=8.578e-01  PDE=1.554e-01 [colloc=1.424e-01, cfd=1.296e-02] (w=2.512)  IN=3.458e-02 (w=0.948)  TB=1.246e-01 (w=1.459)  WALL=3.125e-15 (w=0.200)  OUT=2.714e-03 (w=0.356)  DATA=6.172e-02 (w=4.084)
+[Adam] ep=   80  total=9.944e-01  PDE=2.411e-01 [colloc=2.340e-01, cfd=7.112e-03] (w=2.821)  IN=2.766e-02 (w=0.810)  TB=6.277e-02 (w=1.288)  WALL=2.500e-15 (w=0.200)  OUT=1.385e-03 (w=0.249)  DATA=5.054e-02 (w=4.168)
+[Adam] ep=  100  total=1.943e+00  PDE=4.447e-01 [colloc=4.381e-01, cfd=6.558e-03] (w=3.286)  IN=3.423e-02 (w=0.640)  TB=5.665e-02 (w=0.894)  WALL=1.594e-14 (w=0.200)  OUT=3.081e-03 (w=0.200)  DATA=1.043e-01 (w=3.921)
+[Adam] ep=  120  total=2.150e+00  PDE=5.631e-01 [colloc=5.579e-01, cfd=5.160e-03] (w=3.316)  IN=3.434e-02 (w=0.682)  TB=6.138e-02 (w=0.858)  WALL=4.462e-15 (w=0.200)  OUT=3.095e-03 (w=0.200)  DATA=5.518e-02 (w=3.743)
+[Adam] ep=  140  total=1.192e+00  PDE=2.601e-01 [colloc=2.571e-01, cfd=3.001e-03] (w=3.132)  IN=4.525e-02 (w=0.790)  TB=7.217e-02 (w=1.007)  WALL=4.965e-15 (w=0.200)  OUT=2.651e-03 (w=0.200)  DATA=6.839e-02 (w=3.921)
+[Adam] ep=  160  total=6.336e-01  PDE=1.006e-01 [colloc=9.753e-02, cfd=3.112e-03] (w=2.991)  IN=4.435e-02 (w=0.854)  TB=7.766e-02 (w=1.119)  WALL=1.406e-15 (w=0.200)  OUT=2.661e-03 (w=0.205)  DATA=5.180e-02 (w=4.000)
+[Adam] ep=  180  total=1.739e+00  PDE=4.508e-01 [colloc=4.475e-01, cfd=3.245e-03] (w=3.017)  IN=4.327e-02 (w=0.834)  TB=7.724e-02 (w=1.134)  WALL=7.240e-15 (w=0.200)  OUT=2.389e-03 (w=0.205)  DATA=6.610e-02 (w=3.860)
+[Adam] ep=  200  total=6.035e-01  PDE=1.030e-01 [colloc=9.985e-02, cfd=3.120e-03] (w=2.962)  IN=4.053e-02 (w=0.867)  TB=7.207e-02 (w=1.166)  WALL=1.736e-15 (w=0.200)  OUT=2.266e-03 (w=0.210)  DATA=4.596e-02 (w=3.893)
+[Adam] ep=  220  total=4.328e-01  PDE=5.470e-02 [colloc=5.175e-02, cfd=2.953e-03] (w=2.935)  IN=3.958e-02 (w=0.889)  TB=6.523e-02 (w=1.170)  WALL=7.292e-16 (w=0.200)  OUT=1.963e-03 (w=0.206)  DATA=4.072e-02 (w=3.938)
+[Adam] ep=  240  total=1.672e+00  PDE=4.474e-01 [colloc=4.441e-01, cfd=3.284e-03] (w=3.063)  IN=3.534e-02 (w=0.850)  TB=5.940e-02 (w=1.084)  WALL=7.992e-15 (w=0.200)  OUT=1.873e-03 (w=0.200)  DATA=5.475e-02 (w=3.786)
+[Adam] ep=  260  total=5.122e-01  PDE=8.803e-02 [colloc=8.534e-02, cfd=2.694e-03] (w=3.029)  IN=3.756e-02 (w=0.887)  TB=5.317e-02 (w=1.084)  WALL=1.801e-15 (w=0.200)  OUT=1.744e-03 (w=0.200)  DATA=4.016e-02 (w=3.842)
+[Adam] ep=  280  total=3.951e-01  PDE=5.703e-02 [colloc=5.450e-02, cfd=2.530e-03] (w=2.974)  IN=3.714e-02 (w=0.929)  TB=4.931e-02 (w=1.093)  WALL=8.257e-16 (w=0.200)  OUT=1.755e-03 (w=0.205)  DATA=3.473e-02 (w=3.935)
+[Adam] ep=  300  total=1.407e+00  PDE=3.720e-01 [colloc=3.691e-01, cfd=2.893e-03] (w=3.057)  IN=3.488e-02 (w=0.900)  TB=4.781e-02 (w=1.039)  WALL=6.613e-15 (w=0.200)  OUT=1.716e-03 (w=0.200)  DATA=4.905e-02 (w=3.836)
+[Adam] ep=  320  total=4.197e-01  PDE=7.062e-02 [colloc=6.823e-02, cfd=2.394e-03] (w=3.016)  IN=3.596e-02 (w=0.932)  TB=4.239e-02 (w=1.049)  WALL=1.257e-15 (w=0.200)  OUT=1.618e-03 (w=0.203)  DATA=3.299e-02 (w=3.891)
+[Adam] ep=  340  total=3.493e-01  PDE=4.750e-02 [colloc=4.527e-02, cfd=2.234e-03] (w=2.973)  IN=3.592e-02 (w=0.968)  TB=3.904e-02 (w=1.049)  WALL=7.289e-16 (w=0.200)  OUT=1.542e-03 (w=0.204)  DATA=3.312e-02 (w=3.985)
+[Adam] ep=  360  total=1.043e+00  PDE=2.654e-01 [colloc=2.626e-01, cfd=2.802e-03] (w=3.015)  IN=3.351e-02 (w=0.957)  TB=3.771e-02 (w=1.013)  WALL=4.960e-15 (w=0.200)  OUT=1.488e-03 (w=0.200)  DATA=4.344e-02 (w=3.961)
+[Adam] ep=  380  total=4.136e-01  PDE=7.443e-02 [colloc=7.217e-02, cfd=2.258e-03] (w=2.969)  IN=3.210e-02 (w=0.981)  TB=3.667e-02 (w=1.038)  WALL=1.369e-15 (w=0.200)  OUT=1.377e-03 (w=0.204)  DATA=3.069e-02 (w=4.003)
+[Adam] ep=  400  total=3.164e-01  PDE=4.519e-02 [colloc=4.287e-02, cfd=2.324e-03] (w=2.930)  IN=3.193e-02 (w=1.007)  TB=3.350e-02 (w=1.042)  WALL=7.839e-16 (w=0.200)  OUT=1.280e-03 (w=0.206)  DATA=2.856e-02 (w=4.086)
+[Adam] ep=  420  total=1.002e+00  PDE=2.635e-01 [colloc=2.606e-01, cfd=2.880e-03] (w=3.020)  IN=2.936e-02 (w=0.969)  TB=3.122e-02 (w=0.983)  WALL=5.069e-15 (w=0.200)  OUT=1.301e-03 (w=0.200)  DATA=3.667e-02 (w=4.000)
+[Adam] ep=  440  total=4.965e-01  PDE=1.078e-01 [colloc=1.053e-01, cfd=2.494e-03] (w=2.934)  IN=3.063e-02 (w=1.022)  TB=2.897e-02 (w=1.000)  WALL=1.805e-15 (w=0.200)  OUT=1.051e-03 (w=0.200)  DATA=2.870e-02 (w=4.173)
+[Adam] ep=  460  total=3.220e-01  PDE=5.313e-02 [colloc=5.085e-02, cfd=2.277e-03] (w=2.896)  IN=2.887e-02 (w=1.035)  TB=2.905e-02 (w=1.018)  WALL=9.456e-16 (w=0.200)  OUT=1.118e-03 (w=0.204)  DATA=2.558e-02 (w=4.241)
+[Adam] ep=  480  total=6.289e-01  PDE=1.565e-01 [colloc=1.539e-01, cfd=2.606e-03] (w=2.938)  IN=2.400e-02 (w=1.014)  TB=2.703e-02 (w=0.990)  WALL=4.037e-15 (w=0.200)  OUT=1.429e-03 (w=0.208)  DATA=2.792e-02 (w=4.219)
+[Adam] ep=  500  total=2.836e-01  PDE=3.603e-02 [colloc=3.344e-02, cfd=2.593e-03] (w=2.745)  IN=2.735e-02 (w=1.104)  TB=2.109e-02 (w=1.020)  WALL=3.883e-16 (w=0.200)  OUT=9.075e-04 (w=0.239)  DATA=2.875e-02 (w=4.620)
+[Adam] ep=  520  total=4.329e-01  PDE=1.068e-01 [colloc=1.027e-01, cfd=4.072e-03] (w=2.737)  IN=1.689e-02 (w=1.096)  TB=1.155e-02 (w=0.917)  WALL=2.306e-15 (w=0.200)  OUT=7.018e-04 (w=0.350)  DATA=2.267e-02 (w=4.911)
+[Adam] ep=  540  total=3.210e-01  PDE=6.775e-02 [colloc=6.491e-02, cfd=2.833e-03] (w=2.824)  IN=1.500e-02 (w=0.987)  TB=1.394e-02 (w=0.855)  WALL=1.553e-15 (w=0.200)  OUT=2.866e-03 (w=0.555)  DATA=2.110e-02 (w=4.803)
+[Adam] ep=  560  total=3.000e-01  PDE=5.711e-02 [colloc=5.446e-02, cfd=2.648e-03] (w=2.844)  IN=1.519e-02 (w=0.997)  TB=1.167e-02 (w=0.872)  WALL=1.251e-15 (w=0.200)  OUT=2.037e-03 (w=0.436)  DATA=2.303e-02 (w=4.835)
+[Adam] ep=  580  total=2.794e-01  PDE=5.117e-02 [colloc=4.887e-02, cfd=2.298e-03] (w=2.866)  IN=1.455e-02 (w=1.014)  TB=1.053e-02 (w=0.868)  WALL=8.507e-16 (w=0.200)  OUT=4.692e-04 (w=0.238)  DATA=2.211e-02 (w=4.917)
+[Adam] ep=  600  total=2.787e-01  PDE=5.556e-02 [colloc=5.321e-02, cfd=2.349e-03] (w=2.904)  IN=1.299e-02 (w=1.002)  TB=9.887e-03 (w=0.846)  WALL=1.231e-15 (w=0.200)  OUT=5.107e-04 (w=0.200)  DATA=1.958e-02 (w=4.896)
+[Adam] ep=  620  total=2.913e-01  PDE=5.684e-02 [colloc=5.457e-02, cfd=2.274e-03] (w=2.905)  IN=1.409e-02 (w=1.004)  TB=9.218e-03 (w=0.830)  WALL=1.101e-15 (w=0.200)  OUT=3.884e-04 (w=0.200)  DATA=2.113e-02 (w=4.935)
+[Adam] ep=  640  total=2.909e-01  PDE=5.678e-02 [colloc=5.450e-02, cfd=2.279e-03] (w=2.924)  IN=1.348e-02 (w=0.997)  TB=8.506e-03 (w=0.811)  WALL=1.052e-15 (w=0.200)  OUT=3.595e-04 (w=0.200)  DATA=2.117e-02 (w=4.933)
+[Adam] ep=  660  total=2.805e-01  PDE=5.512e-02 [colloc=5.277e-02, cfd=2.347e-03] (w=2.928)  IN=1.233e-02 (w=0.993)  TB=7.989e-03 (w=0.797)  WALL=1.165e-15 (w=0.200)  OUT=3.351e-04 (w=0.200)  DATA=2.022e-02 (w=4.966)
+[Adam] ep=  680  total=2.733e-01  PDE=5.517e-02 [colloc=5.267e-02, cfd=2.497e-03] (w=2.938)  IN=1.173e-02 (w=0.987)  TB=7.909e-03 (w=0.786)  WALL=1.173e-15 (w=0.200)  OUT=3.304e-04 (w=0.200)  DATA=1.877e-02 (w=4.973)
+[Adam] ep=  700  total=2.586e-01  PDE=4.926e-02 [colloc=4.695e-02, cfd=2.313e-03] (w=2.941)  IN=1.159e-02 (w=0.988)  TB=7.482e-03 (w=0.771)  WALL=9.775e-16 (w=0.200)  OUT=3.800e-04 (w=0.200)  DATA=1.930e-02 (w=4.997)
+[Adam] ep=  720  total=2.564e-01  PDE=4.603e-02 [colloc=4.386e-02, cfd=2.171e-03] (w=2.945)  IN=1.229e-02 (w=0.984)  TB=7.048e-03 (w=0.762)  WALL=8.130e-16 (w=0.200)  OUT=3.299e-04 (w=0.200)  DATA=2.062e-02 (w=5.011)
+[Adam] ep=  740  total=2.558e-01  PDE=4.519e-02 [colloc=4.293e-02, cfd=2.260e-03] (w=2.951)  IN=1.242e-02 (w=0.980)  TB=6.441e-03 (w=0.747)  WALL=8.027e-16 (w=0.200)  OUT=3.215e-04 (w=0.200)  DATA=2.094e-02 (w=5.033)
+[Adam] ep=  760  total=2.561e-01  PDE=4.754e-02 [colloc=4.527e-02, cfd=2.270e-03] (w=2.946)  IN=1.167e-02 (w=0.980)  TB=6.458e-03 (w=0.739)  WALL=9.275e-16 (w=0.200)  OUT=3.150e-04 (w=0.200)  DATA=1.967e-02 (w=5.075)
+[Adam] ep=  780  total=2.576e-01  PDE=5.285e-02 [colloc=5.051e-02, cfd=2.345e-03] (w=2.981)  IN=9.554e-03 (w=0.957)  TB=6.227e-03 (w=0.727)  WALL=1.205e-15 (w=0.200)  OUT=3.817e-04 (w=0.200)  DATA=1.718e-02 (w=5.025)
+[Adam] ep=  800  total=2.516e-01  PDE=4.664e-02 [colloc=4.424e-02, cfd=2.403e-03] (w=2.970)  IN=1.115e-02 (w=0.963)  TB=5.686e-03 (w=0.715)  WALL=7.825e-16 (w=0.200)  OUT=3.109e-04 (w=0.200)  DATA=1.936e-02 (w=5.077)
+[Adam] ep=  820  total=2.464e-01  PDE=4.889e-02 [colloc=4.642e-02, cfd=2.468e-03] (w=2.993)  IN=9.741e-03 (w=0.949)  TB=5.503e-03 (w=0.701)  WALL=1.042e-15 (w=0.200)  OUT=4.339e-04 (w=0.200)  DATA=1.719e-02 (w=5.054)
+[Adam] ep=  840  total=2.466e-01  PDE=4.724e-02 [colloc=4.494e-02, cfd=2.302e-03] (w=2.981)  IN=1.008e-02 (w=0.955)  TB=5.411e-03 (w=0.693)  WALL=8.642e-16 (w=0.200)  OUT=4.503e-04 (w=0.200)  DATA=1.810e-02 (w=5.096)
+[Adam] ep=  860  total=2.229e-01  PDE=3.631e-02 [colloc=3.448e-02, cfd=1.824e-03] (w=2.994)  IN=1.031e-02 (w=0.940)  TB=4.745e-03 (w=0.681)  WALL=6.970e-16 (w=0.200)  OUT=3.293e-04 (w=0.200)  DATA=1.977e-02 (w=5.118)
+[Adam] ep=  880  total=2.411e-01  PDE=4.793e-02 [colloc=4.523e-02, cfd=2.698e-03] (w=3.011)  IN=8.961e-03 (w=0.936)  TB=4.710e-03 (w=0.654)  WALL=1.067e-15 (w=0.200)  OUT=4.893e-04 (w=0.200)  DATA=1.671e-02 (w=5.101)
+[Adam] ep=  900  total=2.539e-01  PDE=5.051e-02 [colloc=4.832e-02, cfd=2.190e-03] (w=2.990)  IN=7.792e-03 (w=0.918)  TB=5.725e-03 (w=0.668)  WALL=1.477e-15 (w=0.200)  OUT=7.290e-04 (w=0.220)  DATA=1.765e-02 (w=5.197)
+[Adam] ep=  920  total=2.220e-01  PDE=4.284e-02 [colloc=4.050e-02, cfd=2.342e-03] (w=2.991)  IN=8.698e-03 (w=0.905)  TB=5.073e-03 (w=0.694)  WALL=9.834e-16 (w=0.200)  OUT=4.887e-04 (w=0.210)  DATA=1.589e-02 (w=5.185)
+[Adam] ep=  940  total=2.432e-01  PDE=5.510e-02 [colloc=5.206e-02, cfd=3.039e-03] (w=3.002)  IN=6.757e-03 (w=0.939)  TB=4.173e-03 (w=0.642)  WALL=1.236e-15 (w=0.200)  OUT=8.737e-04 (w=0.213)  DATA=1.332e-02 (w=5.149)
+[Adam] ep=  960  total=2.422e-01  PDE=5.331e-02 [colloc=5.104e-02, cfd=2.268e-03] (w=3.011)  IN=6.168e-03 (w=0.911)  TB=3.755e-03 (w=0.608)  WALL=1.626e-15 (w=0.200)  OUT=1.490e-03 (w=0.297)  DATA=1.413e-02 (w=5.193)
+[Adam] ep=  980  total=2.906e-01  PDE=4.399e-02 [colloc=4.183e-02, cfd=2.169e-03] (w=3.114)  IN=1.279e-02 (w=0.816)  TB=6.912e-03 (w=0.560)  WALL=6.119e-16 (w=0.200)  OUT=6.935e-04 (w=0.295)  DATA=2.728e-02 (w=5.098)
+[Adam] ep= 1000  total=2.014e-01  PDE=3.920e-02 [colloc=3.711e-02, cfd=2.091e-03] (w=3.022)  IN=6.117e-03 (w=0.863)  TB=5.487e-03 (w=0.684)  WALL=1.121e-15 (w=0.200)  OUT=1.053e-03 (w=0.309)  DATA=1.439e-02 (w=5.109)
+[Adam] ep= 1020  total=2.471e-01  PDE=4.371e-02 [colloc=4.038e-02, cfd=3.328e-03] (w=3.005)  IN=8.384e-03 (w=0.864)  TB=4.037e-03 (w=0.660)  WALL=6.789e-16 (w=0.200)  OUT=5.771e-04 (w=0.257)  DATA=2.004e-02 (w=5.275)
+[Adam] ep= 1040  total=2.216e-01  PDE=4.033e-02 [colloc=3.849e-02, cfd=1.839e-03] (w=3.019)  IN=7.519e-03 (w=0.873)  TB=3.215e-03 (w=0.620)  WALL=7.714e-16 (w=0.200)  OUT=4.838e-04 (w=0.223)  DATA=1.721e-02 (w=5.298)
+[Adam] ep= 1060  total=2.070e-01  PDE=3.875e-02 [colloc=3.533e-02, cfd=3.419e-03] (w=3.047)  IN=7.290e-03 (w=0.888)  TB=2.821e-03 (w=0.573)  WALL=7.029e-16 (w=0.200)  OUT=4.163e-04 (w=0.209)  DATA=1.542e-02 (w=5.236)
+[Adam] ep= 1080  total=2.011e-01  PDE=3.854e-02 [colloc=3.537e-02, cfd=3.173e-03] (w=3.050)  IN=6.064e-03 (w=0.872)  TB=3.119e-03 (w=0.578)  WALL=7.630e-16 (w=0.200)  OUT=4.127e-04 (w=0.207)  DATA=1.452e-02 (w=5.259)
+[Adam] ep= 1100  total=1.965e-01  PDE=3.662e-02 [colloc=3.390e-02, cfd=2.719e-03] (w=3.042)  IN=5.540e-03 (w=0.850)  TB=2.977e-03 (w=0.591)  WALL=8.663e-16 (w=0.200)  OUT=4.559e-04 (w=0.217)  DATA=1.476e-02 (w=5.317)
+[Adam] ep= 1120  total=3.955e-01  PDE=6.095e-02 [colloc=5.263e-02, cfd=8.315e-03] (w=3.100)  IN=1.606e-02 (w=0.767)  TB=3.503e-03 (w=0.498)  WALL=1.254e-15 (w=0.200)  OUT=2.206e-03 (w=0.540)  DATA=3.779e-02 (w=5.063)
+[Adam] ep= 1140  total=1.909e-01  PDE=3.606e-02 [colloc=3.170e-02, cfd=4.360e-03] (w=2.997)  IN=4.793e-03 (w=0.786)  TB=4.215e-03 (w=0.629)  WALL=6.126e-16 (w=0.200)  OUT=8.606e-04 (w=0.548)  DATA=1.458e-02 (w=5.208)
+[Adam] ep= 1160  total=2.135e-01  PDE=4.222e-02 [colloc=4.025e-02, cfd=1.963e-03] (w=2.976)  IN=4.431e-03 (w=0.742)  TB=3.006e-03 (w=0.561)  WALL=1.149e-15 (w=0.200)  OUT=1.892e-03 (w=0.723)  DATA=1.575e-02 (w=5.177)
+[Adam] ep= 1180  total=1.883e-01  PDE=3.844e-02 [colloc=3.683e-02, cfd=1.609e-03] (w=3.052)  IN=4.378e-03 (w=0.767)  TB=2.503e-03 (w=0.534)  WALL=1.080e-15 (w=0.200)  OUT=4.627e-04 (w=0.488)  DATA=1.250e-02 (w=5.289)
+[Adam] ep= 1200  total=1.873e-01  PDE=3.277e-02 [colloc=3.143e-02, cfd=1.331e-03] (w=3.059)  IN=5.663e-03 (w=0.813)  TB=2.187e-03 (w=0.532)  WALL=8.115e-16 (w=0.200)  OUT=2.561e-04 (w=0.276)  DATA=1.505e-02 (w=5.396)
+[Adam] ep= 1220  total=1.831e-01  PDE=3.087e-02 [colloc=2.906e-02, cfd=1.805e-03] (w=3.062)  IN=5.986e-03 (w=0.836)  TB=1.746e-03 (w=0.500)  WALL=7.093e-16 (w=0.200)  OUT=2.613e-04 (w=0.217)  DATA=1.525e-02 (w=5.421)
+[Adam] ep= 1240  total=1.726e-01  PDE=2.664e-02 [colloc=2.503e-02, cfd=1.607e-03] (w=3.065)  IN=6.246e-03 (w=0.839)  TB=1.714e-03 (w=0.483)  WALL=5.699e-16 (w=0.200)  OUT=2.847e-04 (w=0.233)  DATA=1.566e-02 (w=5.418)
+[Adam] ep= 1260  total=1.585e-01  PDE=2.364e-02 [colloc=2.212e-02, cfd=1.521e-03] (w=3.078)  IN=5.472e-03 (w=0.811)  TB=1.762e-03 (w=0.486)  WALL=5.138e-16 (w=0.200)  OUT=2.485e-04 (w=0.253)  DATA=1.485e-02 (w=5.413)
+[Adam] ep= 1280  total=2.195e-01  PDE=2.653e-02 [colloc=2.456e-02, cfd=1.963e-03] (w=3.072)  IN=7.567e-03 (w=0.752)  TB=1.696e-03 (w=0.428)  WALL=2.292e-16 (w=0.200)  OUT=2.936e-03 (w=0.499)  DATA=2.420e-02 (w=5.376)
+[Adam] ep= 1300  total=1.992e-01  PDE=4.383e-02 [colloc=4.039e-02, cfd=3.436e-03] (w=2.972)  IN=2.634e-03 (w=0.759)  TB=2.079e-03 (w=0.463)  WALL=1.270e-15 (w=0.200)  OUT=1.509e-02 (w=0.785)  DATA=1.048e-02 (w=5.167)
+[Adam] ep= 1320  total=2.144e-01  PDE=3.652e-02 [colloc=3.106e-02, cfd=5.458e-03] (w=2.982)  IN=7.644e-03 (w=0.751)  TB=1.855e-03 (w=0.451)  WALL=4.151e-16 (w=0.200)  OUT=3.281e-03 (w=0.816)  DATA=1.894e-02 (w=5.083)
+[Adam] ep= 1340  total=1.574e-01  PDE=2.593e-02 [colloc=2.331e-02, cfd=2.615e-03] (w=3.031)  IN=4.211e-03 (w=0.766)  TB=2.107e-03 (w=0.515)  WALL=7.128e-16 (w=0.200)  OUT=7.716e-04 (w=0.499)  DATA=1.375e-02 (w=5.391)
+[Adam] ep= 1360  total=2.150e-01  PDE=4.746e-02 [colloc=4.322e-02, cfd=4.238e-03] (w=3.103)  IN=2.826e-03 (w=0.710)  TB=1.552e-03 (w=0.430)  WALL=1.593e-15 (w=0.200)  OUT=8.352e-03 (w=0.615)  DATA=1.165e-02 (w=5.142)
+[Adam] ep= 1380  total=1.865e-01  PDE=3.848e-02 [colloc=3.499e-02, cfd=3.485e-03] (w=3.032)  IN=2.089e-03 (w=0.679)  TB=1.820e-03 (w=0.486)  WALL=9.506e-16 (w=0.200)  OUT=1.225e-02 (w=0.736)  DATA=1.130e-02 (w=5.177)
+[Adam] ep= 1400  total=2.204e-01  PDE=4.117e-02 [colloc=3.629e-02, cfd=4.877e-03] (w=2.914)  IN=3.805e-03 (w=0.676)  TB=1.847e-03 (w=0.459)  WALL=5.494e-16 (w=0.200)  OUT=2.054e-02 (w=0.957)  DATA=1.509e-02 (w=5.126)
+[Adam] ep= 1420  total=1.468e-01  PDE=2.245e-02 [colloc=2.043e-02, cfd=2.022e-03] (w=3.033)  IN=3.581e-03 (w=0.682)  TB=1.714e-03 (w=0.495)  WALL=4.533e-16 (w=0.200)  OUT=4.934e-04 (w=0.663)  DATA=1.414e-02 (w=5.309)
+[Adam] ep= 1440  total=2.753e-01  PDE=6.426e-02 [colloc=5.240e-02, cfd=1.187e-02] (w=3.211)  IN=3.030e-03 (w=0.674)  TB=1.894e-03 (w=0.445)  WALL=1.284e-15 (w=0.200)  OUT=1.001e-03 (w=0.421)  DATA=1.302e-02 (w=5.041)
+[Adam] ep= 1460  total=2.236e-01  PDE=4.773e-02 [colloc=3.999e-02, cfd=7.738e-03] (w=3.225)  IN=4.040e-03 (w=0.705)  TB=2.013e-03 (w=0.437)  WALL=1.101e-15 (w=0.200)  OUT=2.415e-04 (w=0.252)  DATA=1.292e-02 (w=5.102)
+[Adam] ep= 1480  total=2.406e-01  PDE=5.685e-02 [colloc=5.443e-02, cfd=2.419e-03] (w=3.153)  IN=2.027e-03 (w=0.670)  TB=2.106e-03 (w=0.493)  WALL=1.969e-15 (w=0.200)  OUT=3.164e-04 (w=0.305)  DATA=1.098e-02 (w=5.361)
+[Adam] ep= 1500  total=1.644e-01  PDE=3.637e-02 [colloc=3.446e-02, cfd=1.913e-03] (w=3.146)  IN=1.969e-03 (w=0.659)  TB=1.724e-03 (w=0.524)  WALL=1.290e-15 (w=0.200)  OUT=1.007e-03 (w=0.305)  DATA=8.842e-03 (w=5.364)
+[Adam] ep= 1520  total=1.817e-01  PDE=3.679e-02 [colloc=2.922e-02, cfd=7.562e-03] (w=3.173)  IN=2.955e-03 (w=0.699)  TB=1.777e-03 (w=0.481)  WALL=7.481e-16 (w=0.200)  OUT=2.132e-04 (w=0.256)  DATA=1.176e-02 (w=5.276)
+[Adam] ep= 1540  total=1.720e-01  PDE=2.807e-02 [colloc=2.318e-02, cfd=4.895e-03] (w=3.183)  IN=5.690e-03 (w=0.690)  TB=2.070e-03 (w=0.499)  WALL=6.071e-16 (w=0.200)  OUT=5.468e-04 (w=0.256)  DATA=1.484e-02 (w=5.222)
+[Adam] ep= 1560  total=1.474e-01  PDE=2.239e-02 [colloc=2.009e-02, cfd=2.303e-03] (w=3.109)  IN=4.048e-03 (w=0.673)  TB=1.870e-03 (w=0.498)  WALL=6.031e-16 (w=0.200)  OUT=2.526e-03 (w=0.462)  DATA=1.364e-02 (w=5.352)
+[Adam] ep= 1580  total=1.488e-01  PDE=2.443e-02 [colloc=2.168e-02, cfd=2.745e-03] (w=3.091)  IN=2.588e-03 (w=0.700)  TB=1.444e-03 (w=0.478)  WALL=5.368e-16 (w=0.200)  OUT=9.068e-04 (w=0.463)  DATA=1.304e-02 (w=5.399)
+[Adam] ep= 1600  total=1.480e-01  PDE=3.018e-02 [colloc=2.892e-02, cfd=1.261e-03] (w=3.131)  IN=2.438e-03 (w=0.711)  TB=1.423e-03 (w=0.480)  WALL=1.146e-15 (w=0.200)  OUT=3.749e-04 (w=0.319)  DATA=9.472e-03 (w=5.376)
+[Adam] ep= 1620  total=1.432e-01  PDE=2.650e-02 [colloc=2.526e-02, cfd=1.231e-03] (w=3.111)  IN=3.590e-03 (w=0.759)  TB=1.290e-03 (w=0.478)  WALL=9.783e-16 (w=0.200)  OUT=2.284e-04 (w=0.241)  DATA=1.058e-02 (w=5.419)
+[Adam] ep= 1640  total=1.323e-01  PDE=2.601e-02 [colloc=2.469e-02, cfd=1.323e-03] (w=3.102)  IN=2.782e-03 (w=0.764)  TB=1.324e-03 (w=0.478)  WALL=1.036e-15 (w=0.200)  OUT=3.014e-04 (w=0.220)  DATA=8.928e-03 (w=5.459)
+[Adam] ep= 1660  total=1.316e-01  PDE=2.173e-02 [colloc=2.052e-02, cfd=1.205e-03] (w=3.084)  IN=3.652e-03 (w=0.761)  TB=1.386e-03 (w=0.492)  WALL=7.749e-16 (w=0.200)  OUT=2.619e-04 (w=0.234)  DATA=1.109e-02 (w=5.509)
+[Adam] ep= 1680  total=1.253e-01  PDE=1.856e-02 [colloc=1.735e-02, cfd=1.209e-03] (w=3.061)  IN=3.730e-03 (w=0.774)  TB=1.354e-03 (w=0.499)  WALL=5.890e-16 (w=0.200)  OUT=2.450e-04 (w=0.233)  DATA=1.167e-02 (w=5.561)
+[Adam] ep= 1700  total=1.231e-01  PDE=1.677e-02 [colloc=1.565e-02, cfd=1.117e-03] (w=3.064)  IN=3.884e-03 (w=0.761)  TB=1.354e-03 (w=0.504)  WALL=5.655e-16 (w=0.200)  OUT=2.572e-04 (w=0.243)  DATA=1.222e-02 (w=5.564)
+[Adam] ep= 1720  total=1.246e-01  PDE=1.556e-02 [colloc=1.449e-02, cfd=1.064e-03] (w=3.060)  IN=4.192e-03 (w=0.757)  TB=1.438e-03 (w=0.517)  WALL=4.455e-16 (w=0.200)  OUT=2.613e-04 (w=0.251)  DATA=1.311e-02 (w=5.567)
+[Adam] ep= 1740  total=1.113e-01  PDE=1.513e-02 [colloc=1.405e-02, cfd=1.085e-03] (w=3.042)  IN=3.172e-03 (w=0.759)  TB=1.464e-03 (w=0.530)  WALL=5.540e-16 (w=0.200)  OUT=2.860e-04 (w=0.263)  DATA=1.108e-02 (w=5.602)
+[Adam] ep= 1760  total=1.068e-01  PDE=1.644e-02 [colloc=1.545e-02, cfd=9.968e-04] (w=3.123)  IN=3.506e-03 (w=0.730)  TB=1.593e-03 (w=0.532)  WALL=8.461e-16 (w=0.200)  OUT=2.697e-04 (w=0.249)  DATA=9.732e-03 (w=5.344)
+[Adam] ep= 1780  total=1.383e-01  PDE=2.944e-02 [colloc=2.524e-02, cfd=4.206e-03] (w=3.137)  IN=2.398e-03 (w=0.685)  TB=1.929e-03 (w=0.555)  WALL=1.075e-15 (w=0.200)  OUT=8.391e-04 (w=0.321)  DATA=8.132e-03 (w=5.287)
+[Adam] ep= 1800  total=2.055e-01  PDE=3.715e-02 [colloc=2.846e-02, cfd=8.684e-03] (w=3.080)  IN=4.053e-03 (w=0.597)  TB=1.873e-03 (w=0.456)  WALL=5.729e-16 (w=0.200)  OUT=1.481e-02 (w=0.952)  DATA=1.609e-02 (w=4.583)
+[Adam] ep= 1820  total=9.350e-02  PDE=1.578e-02 [colloc=1.453e-02, cfd=1.252e-03] (w=3.034)  IN=2.229e-03 (w=0.676)  TB=1.679e-03 (w=0.556)  WALL=8.018e-16 (w=0.200)  OUT=6.857e-04 (w=0.696)  DATA=8.294e-03 (w=5.149)
+[Adam] ep= 1840  total=1.190e-01  PDE=2.764e-02 [colloc=2.588e-02, cfd=1.755e-03] (w=3.088)  IN=1.004e-03 (w=0.684)  TB=1.806e-03 (w=0.552)  WALL=1.363e-15 (w=0.200)  OUT=1.071e-03 (w=0.600)  DATA=6.137e-03 (w=5.104)
+[Adam] ep= 1860  total=1.278e-01  PDE=3.063e-02 [colloc=2.958e-02, cfd=1.055e-03] (w=3.101)  IN=1.113e-03 (w=0.714)  TB=1.821e-03 (w=0.566)  WALL=1.670e-15 (w=0.200)  OUT=2.234e-04 (w=0.405)  DATA=5.870e-03 (w=5.263)
+[Adam] ep= 1880  total=1.154e-01  PDE=2.722e-02 [colloc=2.591e-02, cfd=1.316e-03] (w=3.112)  IN=1.511e-03 (w=0.712)  TB=1.772e-03 (w=0.587)  WALL=1.630e-15 (w=0.200)  OUT=2.942e-04 (w=0.318)  DATA=5.380e-03 (w=5.282)
+[Adam] ep= 1900  total=1.111e-01  PDE=2.422e-02 [colloc=2.278e-02, cfd=1.440e-03] (w=3.098)  IN=1.626e-03 (w=0.734)  TB=1.751e-03 (w=0.592)  WALL=1.489e-15 (w=0.200)  OUT=5.531e-04 (w=0.309)  DATA=6.360e-03 (w=5.291)
+[Adam] ep= 1920  total=2.192e-01  PDE=5.820e-02 [colloc=5.659e-02, cfd=1.609e-03] (w=3.259)  IN=1.097e-03 (w=0.674)  TB=1.913e-03 (w=0.509)  WALL=2.964e-15 (w=0.200)  OUT=9.142e-04 (w=0.330)  DATA=5.691e-03 (w=4.830)
+[Adam] ep= 1940  total=1.193e-01  PDE=1.421e-02 [colloc=1.303e-02, cfd=1.179e-03] (w=3.217)  IN=4.129e-03 (w=0.642)  TB=1.849e-03 (w=0.540)  WALL=3.996e-16 (w=0.200)  OUT=5.120e-04 (w=0.394)  DATA=1.405e-02 (w=4.965)
+[Adam] ep= 1960  total=1.194e-01  PDE=2.113e-02 [colloc=1.866e-02, cfd=2.465e-03] (w=3.127)  IN=3.202e-03 (w=0.673)  TB=1.993e-03 (w=0.558)  WALL=9.021e-16 (w=0.200)  OUT=6.902e-04 (w=0.474)  DATA=9.638e-03 (w=5.159)
+[Adam] ep= 1980  total=1.314e-01  PDE=2.957e-02 [colloc=2.785e-02, cfd=1.727e-03] (w=3.159)  IN=1.545e-03 (w=0.705)  TB=1.938e-03 (w=0.579)  WALL=1.488e-15 (w=0.200)  OUT=2.910e-04 (w=0.348)  DATA=7.019e-03 (w=5.080)
+[Adam] ep= 2000  total=1.035e-01  PDE=1.788e-02 [colloc=1.698e-02, cfd=9.084e-04] (w=3.044)  IN=5.595e-03 (w=0.861)  TB=1.611e-03 (w=0.588)  WALL=1.329e-15 (w=0.200)  OUT=2.927e-04 (w=0.307)  DATA=8.274e-03 (w=5.216)
+============================================================
+Phase 2 — BFGS (6000 total calls, 150 iters/batch)
+Adaptive weights are frozen for BFGS stability | method=SSBroyden1
+============================================================
+[BFGS] full data fitting: 4869 CFD points pinned per call
+[BFGS] using CUSTOM _optimize._minimize_bfgs (method_bfgs='SSBroyden1')
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1342: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=     5  total=7.323e-02  PDE=1.221e-02 [colloc=1.138e-02, cfd=8.277e-04]  WALL=1.114e-15  DATA=6.225e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=     7  total=7.233e-02  PDE=1.153e-02 [colloc=1.070e-02, cfd=8.309e-04]  WALL=1.021e-15  DATA=6.464e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=     9  total=7.229e-02  PDE=1.154e-02 [colloc=1.071e-02, cfd=8.368e-04]  WALL=1.025e-15  DATA=6.442e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    10  total=7.223e-02  PDE=1.158e-02 [colloc=1.075e-02, cfd=8.345e-04]  WALL=1.029e-15  DATA=6.411e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    11  total=7.204e-02  PDE=1.145e-02 [colloc=1.062e-02, cfd=8.320e-04]  WALL=1.014e-15  DATA=6.473e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    12  total=7.189e-02  PDE=1.152e-02 [colloc=1.068e-02, cfd=8.367e-04]  WALL=1.027e-15  DATA=6.379e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    13  total=7.163e-02  PDE=1.157e-02 [colloc=1.073e-02, cfd=8.379e-04]  WALL=1.031e-15  DATA=6.316e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    14  total=7.141e-02  PDE=1.206e-02 [colloc=1.121e-02, cfd=8.489e-04]  WALL=1.030e-15  DATA=6.018e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    15  total=7.103e-02  PDE=1.196e-02 [colloc=1.110e-02, cfd=8.522e-04]  WALL=1.040e-15  DATA=6.012e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    16  total=7.038e-02  PDE=1.182e-02 [colloc=1.096e-02, cfd=8.530e-04]  WALL=1.055e-15  DATA=5.991e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    17  total=6.935e-02  PDE=1.155e-02 [colloc=1.069e-02, cfd=8.596e-04]  WALL=1.058e-15  DATA=5.974e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    18  total=6.831e-02  PDE=1.147e-02 [colloc=1.057e-02, cfd=9.030e-04]  WALL=1.120e-15  DATA=5.790e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    19  total=6.694e-02  PDE=1.138e-02 [colloc=1.043e-02, cfd=9.507e-04]  WALL=1.125e-15  DATA=5.594e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    20  total=6.529e-02  PDE=1.103e-02 [colloc=1.005e-02, cfd=9.847e-04]  WALL=1.182e-15  DATA=5.480e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    21  total=6.377e-02  PDE=1.102e-02 [colloc=9.884e-03, cfd=1.134e-03]  WALL=1.242e-15  DATA=5.213e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    22  total=6.334e-02  PDE=1.117e-02 [colloc=1.001e-02, cfd=1.162e-03]  WALL=1.303e-15  DATA=5.030e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    23  total=6.260e-02  PDE=1.108e-02 [colloc=9.910e-03, cfd=1.169e-03]  WALL=1.324e-15  DATA=4.952e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    24  total=6.160e-02  PDE=1.106e-02 [colloc=9.936e-03, cfd=1.127e-03]  WALL=1.352e-15  DATA=4.750e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    25  total=6.005e-02  PDE=1.089e-02 [colloc=9.782e-03, cfd=1.109e-03]  WALL=1.420e-15  DATA=4.552e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    26  total=5.759e-02  PDE=1.085e-02 [colloc=9.755e-03, cfd=1.099e-03]  WALL=1.491e-15  DATA=4.091e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    27  total=5.546e-02  PDE=1.061e-02 [colloc=9.441e-03, cfd=1.165e-03]  WALL=1.551e-15  DATA=3.775e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    28  total=5.411e-02  PDE=1.042e-02 [colloc=9.270e-03, cfd=1.151e-03]  WALL=1.567e-15  DATA=3.573e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    29  total=5.301e-02  PDE=1.024e-02 [colloc=9.132e-03, cfd=1.108e-03]  WALL=1.658e-15  DATA=3.482e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    30  total=5.179e-02  PDE=1.022e-02 [colloc=9.125e-03, cfd=1.099e-03]  WALL=1.728e-15  DATA=3.286e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    31  total=5.008e-02  PDE=9.537e-03 [colloc=8.484e-03, cfd=1.053e-03]  WALL=1.684e-15  DATA=3.321e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    32  total=4.792e-02  PDE=9.063e-03 [colloc=7.970e-03, cfd=1.093e-03]  WALL=1.688e-15  DATA=3.165e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    33  total=4.520e-02  PDE=8.483e-03 [colloc=7.373e-03, cfd=1.110e-03]  WALL=1.719e-15  DATA=2.976e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    34  total=4.391e-02  PDE=8.146e-03 [colloc=6.986e-03, cfd=1.160e-03]  WALL=1.783e-15  DATA=2.836e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    35  total=4.236e-02  PDE=8.072e-03 [colloc=6.894e-03, cfd=1.178e-03]  WALL=1.848e-15  DATA=2.684e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    36  total=4.084e-02  PDE=7.760e-03 [colloc=6.526e-03, cfd=1.234e-03]  WALL=1.837e-15  DATA=2.603e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    37  total=3.942e-02  PDE=7.738e-03 [colloc=6.491e-03, cfd=1.247e-03]  WALL=2.029e-15  DATA=2.295e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    38  total=3.771e-02  PDE=6.942e-03 [colloc=5.843e-03, cfd=1.099e-03]  WALL=1.979e-15  DATA=2.428e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    39  total=3.662e-02  PDE=7.118e-03 [colloc=6.001e-03, cfd=1.116e-03]  WALL=2.216e-15  DATA=2.143e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    40  total=3.520e-02  PDE=6.907e-03 [colloc=5.834e-03, cfd=1.074e-03]  WALL=2.199e-15  DATA=2.058e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    41  total=3.354e-02  PDE=6.644e-03 [colloc=5.690e-03, cfd=9.542e-04]  WALL=2.221e-15  DATA=1.973e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    42  total=3.141e-02  PDE=6.273e-03 [colloc=5.394e-03, cfd=8.785e-04]  WALL=2.255e-15  DATA=1.837e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    43  total=3.025e-02  PDE=5.963e-03 [colloc=5.098e-03, cfd=8.654e-04]  WALL=2.148e-15  DATA=1.779e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    44  total=2.880e-02  PDE=5.645e-03 [colloc=4.839e-03, cfd=8.063e-04]  WALL=2.150e-15  DATA=1.698e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    45  total=2.695e-02  PDE=5.362e-03 [colloc=4.618e-03, cfd=7.446e-04]  WALL=2.215e-15  DATA=1.519e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    47  total=2.611e-02  PDE=5.406e-03 [colloc=4.661e-03, cfd=7.447e-04]  WALL=2.318e-15  DATA=1.352e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    48  total=2.540e-02  PDE=5.231e-03 [colloc=4.476e-03, cfd=7.547e-04]  WALL=2.427e-15  DATA=1.314e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    49  total=2.431e-02  PDE=5.110e-03 [colloc=4.378e-03, cfd=7.315e-04]  WALL=2.476e-15  DATA=1.190e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    50  total=2.324e-02  PDE=4.961e-03 [colloc=4.244e-03, cfd=7.173e-04]  WALL=2.510e-15  DATA=1.066e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    51  total=2.240e-02  PDE=4.814e-03 [colloc=4.156e-03, cfd=6.588e-04]  WALL=2.661e-15  DATA=1.002e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    52  total=2.146e-02  PDE=4.593e-03 [colloc=3.960e-03, cfd=6.332e-04]  WALL=2.629e-15  DATA=9.180e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    53  total=2.044e-02  PDE=4.405e-03 [colloc=3.844e-03, cfd=5.604e-04]  WALL=2.727e-15  DATA=8.277e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    54  total=1.965e-02  PDE=4.225e-03 [colloc=3.658e-03, cfd=5.665e-04]  WALL=2.712e-15  DATA=7.550e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    55  total=1.900e-02  PDE=4.158e-03 [colloc=3.614e-03, cfd=5.444e-04]  WALL=2.744e-15  DATA=7.082e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    56  total=1.820e-02  PDE=3.984e-03 [colloc=3.455e-03, cfd=5.290e-04]  WALL=2.842e-15  DATA=6.692e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    57  total=1.754e-02  PDE=3.758e-03 [colloc=3.244e-03, cfd=5.138e-04]  WALL=2.847e-15  DATA=6.595e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    58  total=1.693e-02  PDE=3.758e-03 [colloc=3.264e-03, cfd=4.941e-04]  WALL=2.881e-15  DATA=5.920e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    59  total=1.619e-02  PDE=3.581e-03 [colloc=3.115e-03, cfd=4.659e-04]  WALL=2.964e-15  DATA=5.568e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    60  total=1.575e-02  PDE=3.399e-03 [colloc=2.937e-03, cfd=4.620e-04]  WALL=2.992e-15  DATA=5.581e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    61  total=1.520e-02  PDE=3.225e-03 [colloc=2.778e-03, cfd=4.469e-04]  WALL=2.988e-15  DATA=5.538e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    62  total=1.463e-02  PDE=3.089e-03 [colloc=2.664e-03, cfd=4.246e-04]  WALL=2.992e-15  DATA=5.268e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    63  total=1.427e-02  PDE=2.935e-03 [colloc=2.530e-03, cfd=4.056e-04]  WALL=2.987e-15  DATA=5.224e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    64  total=1.396e-02  PDE=2.883e-03 [colloc=2.488e-03, cfd=3.947e-04]  WALL=3.082e-15  DATA=5.117e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    65  total=1.364e-02  PDE=2.834e-03 [colloc=2.450e-03, cfd=3.839e-04]  WALL=3.062e-15  DATA=4.923e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    66  total=1.320e-02  PDE=2.724e-03 [colloc=2.357e-03, cfd=3.671e-04]  WALL=3.026e-15  DATA=4.741e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    67  total=1.286e-02  PDE=2.591e-03 [colloc=2.250e-03, cfd=3.410e-04]  WALL=3.034e-15  DATA=5.087e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    68  total=1.254e-02  PDE=2.508e-03 [colloc=2.191e-03, cfd=3.177e-04]  WALL=3.055e-15  DATA=4.868e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    69  total=1.220e-02  PDE=2.450e-03 [colloc=2.138e-03, cfd=3.115e-04]  WALL=3.028e-15  DATA=4.823e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    70  total=1.192e-02  PDE=2.373e-03 [colloc=2.084e-03, cfd=2.891e-04]  WALL=3.034e-15  DATA=4.816e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    71  total=1.159e-02  PDE=2.285e-03 [colloc=2.010e-03, cfd=2.753e-04]  WALL=3.015e-15  DATA=4.878e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    72  total=1.134e-02  PDE=2.251e-03 [colloc=2.005e-03, cfd=2.462e-04]  WALL=3.008e-15  DATA=4.527e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    73  total=1.103e-02  PDE=2.168e-03 [colloc=1.931e-03, cfd=2.371e-04]  WALL=3.006e-15  DATA=4.447e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    74  total=1.080e-02  PDE=2.107e-03 [colloc=1.868e-03, cfd=2.385e-04]  WALL=3.051e-15  DATA=4.471e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    75  total=1.059e-02  PDE=2.016e-03 [colloc=1.785e-03, cfd=2.312e-04]  WALL=2.971e-15  DATA=4.570e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    76  total=1.026e-02  PDE=1.955e-03 [colloc=1.738e-03, cfd=2.168e-04]  WALL=2.996e-15  DATA=4.386e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    77  total=1.003e-02  PDE=1.906e-03 [colloc=1.697e-03, cfd=2.089e-04]  WALL=3.039e-15  DATA=4.251e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    78  total=9.823e-03  PDE=1.836e-03 [colloc=1.634e-03, cfd=2.017e-04]  WALL=3.015e-15  DATA=4.257e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    79  total=9.601e-03  PDE=1.784e-03 [colloc=1.584e-03, cfd=2.001e-04]  WALL=3.048e-15  DATA=4.064e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    80  total=9.369e-03  PDE=1.733e-03 [colloc=1.541e-03, cfd=1.918e-04]  WALL=3.070e-15  DATA=3.916e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    81  total=9.221e-03  PDE=1.713e-03 [colloc=1.532e-03, cfd=1.807e-04]  WALL=3.115e-15  DATA=3.783e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    82  total=9.038e-03  PDE=1.675e-03 [colloc=1.496e-03, cfd=1.787e-04]  WALL=3.136e-15  DATA=3.735e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    83  total=8.766e-03  PDE=1.641e-03 [colloc=1.469e-03, cfd=1.722e-04]  WALL=3.120e-15  DATA=3.600e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    84  total=8.625e-03  PDE=1.597e-03 [colloc=1.428e-03, cfd=1.693e-04]  WALL=3.223e-15  DATA=3.560e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    85  total=8.450e-03  PDE=1.563e-03 [colloc=1.388e-03, cfd=1.757e-04]  WALL=3.191e-15  DATA=3.488e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    86  total=8.306e-03  PDE=1.524e-03 [colloc=1.356e-03, cfd=1.678e-04]  WALL=3.203e-15  DATA=3.479e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    87  total=8.244e-03  PDE=1.488e-03 [colloc=1.317e-03, cfd=1.714e-04]  WALL=3.148e-15  DATA=3.501e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    88  total=8.122e-03  PDE=1.467e-03 [colloc=1.300e-03, cfd=1.670e-04]  WALL=3.160e-15  DATA=3.496e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    89  total=7.961e-03  PDE=1.444e-03 [colloc=1.281e-03, cfd=1.638e-04]  WALL=3.152e-15  DATA=3.454e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    90  total=7.864e-03  PDE=1.396e-03 [colloc=1.240e-03, cfd=1.558e-04]  WALL=3.170e-15  DATA=3.492e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    91  total=7.725e-03  PDE=1.361e-03 [colloc=1.207e-03, cfd=1.545e-04]  WALL=3.164e-15  DATA=3.532e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    92  total=7.595e-03  PDE=1.341e-03 [colloc=1.193e-03, cfd=1.482e-04]  WALL=3.161e-15  DATA=3.404e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    93  total=7.505e-03  PDE=1.332e-03 [colloc=1.180e-03, cfd=1.517e-04]  WALL=3.194e-15  DATA=3.336e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    94  total=7.443e-03  PDE=1.298e-03 [colloc=1.147e-03, cfd=1.512e-04]  WALL=3.210e-15  DATA=3.382e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    95  total=7.313e-03  PDE=1.269e-03 [colloc=1.122e-03, cfd=1.474e-04]  WALL=3.214e-15  DATA=3.387e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    96  total=7.248e-03  PDE=1.250e-03 [colloc=1.106e-03, cfd=1.437e-04]  WALL=3.222e-15  DATA=3.331e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    97  total=7.140e-03  PDE=1.218e-03 [colloc=1.079e-03, cfd=1.390e-04]  WALL=3.214e-15  DATA=3.305e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    98  total=6.993e-03  PDE=1.181e-03 [colloc=1.046e-03, cfd=1.350e-04]  WALL=3.198e-15  DATA=3.292e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    99  total=6.930e-03  PDE=1.181e-03 [colloc=1.050e-03, cfd=1.315e-04]  WALL=3.215e-15  DATA=3.052e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   100  total=6.847e-03  PDE=1.155e-03 [colloc=1.028e-03, cfd=1.270e-04]  WALL=3.207e-15  DATA=3.013e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   101  total=6.787e-03  PDE=1.131e-03 [colloc=1.006e-03, cfd=1.253e-04]  WALL=3.230e-15  DATA=3.026e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   102  total=6.685e-03  PDE=1.110e-03 [colloc=9.870e-04, cfd=1.234e-04]  WALL=3.223e-15  DATA=3.018e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   103  total=6.653e-03  PDE=1.101e-03 [colloc=9.768e-04, cfd=1.247e-04]  WALL=3.220e-15  DATA=3.018e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   104  total=6.606e-03  PDE=1.091e-03 [colloc=9.685e-04, cfd=1.225e-04]  WALL=3.210e-15  DATA=2.983e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   105  total=6.500e-03  PDE=1.075e-03 [colloc=9.542e-04, cfd=1.204e-04]  WALL=3.208e-15  DATA=2.927e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   106  total=6.412e-03  PDE=1.070e-03 [colloc=9.474e-04, cfd=1.228e-04]  WALL=3.194e-15  DATA=2.766e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   107  total=6.333e-03  PDE=1.042e-03 [colloc=9.283e-04, cfd=1.133e-04]  WALL=3.200e-15  DATA=2.811e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   108  total=6.259e-03  PDE=1.030e-03 [colloc=9.228e-04, cfd=1.076e-04]  WALL=3.194e-15  DATA=2.845e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   109  total=6.213e-03  PDE=1.021e-03 [colloc=9.170e-04, cfd=1.038e-04]  WALL=3.223e-15  DATA=2.847e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   110  total=6.131e-03  PDE=1.007e-03 [colloc=9.062e-04, cfd=1.010e-04]  WALL=3.213e-15  DATA=2.827e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   111  total=6.073e-03  PDE=9.804e-04 [colloc=8.858e-04, cfd=9.455e-05]  WALL=3.211e-15  DATA=2.836e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   112  total=6.009e-03  PDE=9.665e-04 [colloc=8.726e-04, cfd=9.389e-05]  WALL=3.212e-15  DATA=2.783e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   113  total=5.914e-03  PDE=9.535e-04 [colloc=8.586e-04, cfd=9.492e-05]  WALL=3.248e-15  DATA=2.788e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   114  total=5.871e-03  PDE=9.367e-04 [colloc=8.453e-04, cfd=9.133e-05]  WALL=3.230e-15  DATA=2.696e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   115  total=5.819e-03  PDE=9.200e-04 [colloc=8.300e-04, cfd=9.000e-05]  WALL=3.232e-15  DATA=2.667e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   116  total=5.727e-03  PDE=9.112e-04 [colloc=8.245e-04, cfd=8.672e-05]  WALL=3.244e-15  DATA=2.654e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   117  total=5.720e-03  PDE=8.988e-04 [colloc=8.136e-04, cfd=8.514e-05]  WALL=3.220e-15  DATA=2.812e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   119  total=5.656e-03  PDE=8.921e-04 [colloc=8.090e-04, cfd=8.307e-05]  WALL=3.236e-15  DATA=2.770e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   120  total=5.574e-03  PDE=8.791e-04 [colloc=7.980e-04, cfd=8.104e-05]  WALL=3.233e-15  DATA=2.692e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   122  total=5.528e-03  PDE=8.765e-04 [colloc=7.954e-04, cfd=8.110e-05]  WALL=3.252e-15  DATA=2.612e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   123  total=5.524e-03  PDE=8.683e-04 [colloc=7.888e-04, cfd=7.948e-05]  WALL=3.251e-15  DATA=2.514e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   125  total=5.477e-03  PDE=8.616e-04 [colloc=7.837e-04, cfd=7.791e-05]  WALL=3.262e-15  DATA=2.523e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   126  total=5.417e-03  PDE=8.529e-04 [colloc=7.761e-04, cfd=7.681e-05]  WALL=3.272e-15  DATA=2.491e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   127  total=5.387e-03  PDE=8.459e-04 [colloc=7.686e-04, cfd=7.735e-05]  WALL=3.300e-15  DATA=2.428e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   128  total=5.323e-03  PDE=8.333e-04 [colloc=7.569e-04, cfd=7.635e-05]  WALL=3.297e-15  DATA=2.430e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   129  total=5.291e-03  PDE=8.212e-04 [colloc=7.443e-04, cfd=7.685e-05]  WALL=3.290e-15  DATA=2.441e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   130  total=5.263e-03  PDE=8.040e-04 [colloc=7.281e-04, cfd=7.587e-05]  WALL=3.278e-15  DATA=2.462e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   131  total=5.178e-03  PDE=7.905e-04 [colloc=7.150e-04, cfd=7.541e-05]  WALL=3.270e-15  DATA=2.469e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   132  total=5.149e-03  PDE=7.748e-04 [colloc=6.981e-04, cfd=7.674e-05]  WALL=3.236e-15  DATA=2.513e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   133  total=5.119e-03  PDE=7.620e-04 [colloc=6.851e-04, cfd=7.692e-05]  WALL=3.242e-15  DATA=2.522e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   134  total=5.058e-03  PDE=7.535e-04 [colloc=6.801e-04, cfd=7.336e-05]  WALL=3.244e-15  DATA=2.539e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   135  total=5.042e-03  PDE=7.510e-04 [colloc=6.813e-04, cfd=6.964e-05]  WALL=3.237e-15  DATA=2.549e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   143  total=5.036e-03  PDE=7.422e-04 [colloc=6.737e-04, cfd=6.856e-05]  WALL=3.246e-15  DATA=2.535e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   144  total=5.006e-03  PDE=7.399e-04 [colloc=6.717e-04, cfd=6.821e-05]  WALL=3.246e-15  DATA=2.524e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   145  total=4.974e-03  PDE=7.291e-04 [colloc=6.623e-04, cfd=6.679e-05]  WALL=3.247e-15  DATA=2.508e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   146  total=4.952e-03  PDE=7.216e-04 [colloc=6.558e-04, cfd=6.580e-05]  WALL=3.254e-15  DATA=2.475e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   147  total=4.896e-03  PDE=7.127e-04 [colloc=6.477e-04, cfd=6.502e-05]  WALL=3.251e-15  DATA=2.460e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   148  total=4.864e-03  PDE=7.062e-04 [colloc=6.413e-04, cfd=6.490e-05]  WALL=3.284e-15  DATA=2.406e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   149  total=4.852e-03  PDE=6.959e-04 [colloc=6.337e-04, cfd=6.224e-05]  WALL=3.275e-15  DATA=2.394e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   150  total=4.844e-03  PDE=6.899e-04 [colloc=6.284e-04, cfd=6.148e-05]  WALL=3.273e-15  DATA=2.382e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   151  total=4.825e-03  PDE=6.862e-04 [colloc=6.256e-04, cfd=6.058e-05]  WALL=3.273e-15  DATA=2.382e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   152  total=4.786e-03  PDE=6.787e-04 [colloc=6.195e-04, cfd=5.928e-05]  WALL=3.269e-15  DATA=2.381e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   153  total=4.751e-03  PDE=6.674e-04 [colloc=6.103e-04, cfd=5.719e-05]  WALL=3.255e-15  DATA=2.380e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   154  total=4.685e-03  PDE=6.621e-04 [colloc=6.042e-04, cfd=5.795e-05]  WALL=3.262e-15  DATA=2.338e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   165  total=4.673e-03  PDE=6.587e-04 [colloc=6.007e-04, cfd=5.802e-05]  WALL=3.257e-15  DATA=2.330e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   173  total=4.665e-03  PDE=6.565e-04 [colloc=5.988e-04, cfd=5.768e-05]  WALL=3.256e-15  DATA=2.328e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   174  total=4.660e-03  PDE=6.533e-04 [colloc=5.961e-04, cfd=5.722e-05]  WALL=3.252e-15  DATA=2.323e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   175  total=4.655e-03  PDE=6.505e-04 [colloc=5.936e-04, cfd=5.692e-05]  WALL=3.250e-15  DATA=2.318e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   176  total=4.637e-03  PDE=6.490e-04 [colloc=5.923e-04, cfd=5.678e-05]  WALL=3.250e-15  DATA=2.309e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   177  total=4.614e-03  PDE=6.426e-04 [colloc=5.870e-04, cfd=5.563e-05]  WALL=3.246e-15  DATA=2.302e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   178  total=4.575e-03  PDE=6.362e-04 [colloc=5.815e-04, cfd=5.469e-05]  WALL=3.250e-15  DATA=2.280e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   179  total=4.569e-03  PDE=6.283e-04 [colloc=5.727e-04, cfd=5.559e-05]  WALL=3.222e-15  DATA=2.302e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   180  total=4.555e-03  PDE=6.262e-04 [colloc=5.712e-04, cfd=5.502e-05]  WALL=3.217e-15  DATA=2.297e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   181  total=4.529e-03  PDE=6.208e-04 [colloc=5.670e-04, cfd=5.378e-05]  WALL=3.217e-15  DATA=2.278e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   182  total=4.519e-03  PDE=6.204e-04 [colloc=5.672e-04, cfd=5.323e-05]  WALL=3.218e-15  DATA=2.218e-04
+[BFGS] batch 1: H0 not PD — resetting to identity.
+[BFGS-END] batch=   1  last_total=4.505e-03  last_PDE=6.204e-04 [colloc=5.672e-04, cfd=5.323e-05]  last_WALL=3.218e-15  last_DATA=2.217e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1342: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   2  call=   221  total=4.506e-03  PDE=6.197e-04 [colloc=5.666e-04, cfd=5.314e-05]  WALL=3.226e-15  DATA=2.212e-04
+Invoked: SSBroyden1 approach!

@@ -3017,3 +3017,40 @@ Invoked: SSBroyden1 approach!
   [PT] w=3.0303  (raw=3.1253  ‖ΔR‖=7.211e-02  ‖Δu‖=2.307e-02)
 [BFGS-END] batch=  42  last_total=4.517e-03  last_PDE=7.290e-04 [colloc=6.771e-04, cfd=5.190e-05]  last_WALL=3.183e-15  last_DATA=2.486e-04
   [PT] w=3.0812  (raw=3.5392  ‖ΔR‖=5.592e-04  ‖Δu‖=1.580e-04)
+[BFGS-END] batch=  43  last_total=4.498e-03  last_PDE=7.291e-04 [colloc=6.772e-04, cfd=5.190e-05]  last_WALL=3.183e-15  last_DATA=2.486e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  44  call=  1668  total=4.498e-03  PDE=7.291e-04 [colloc=6.772e-04, cfd=5.196e-05]  WALL=3.182e-15  DATA=2.484e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  44  call=  1669  total=4.481e-03  PDE=7.290e-04 [colloc=6.771e-04, cfd=5.193e-05]  WALL=3.183e-15  DATA=2.483e-04
+  [PT] w=3.0725  (raw=2.9940  ‖ΔR‖=5.250e-02  ‖Δu‖=1.754e-02)
+[BFGS-END] batch=  44  last_total=4.513e-03  last_PDE=7.289e-04 [colloc=6.770e-04, cfd=5.192e-05]  last_WALL=3.183e-15  last_DATA=2.482e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  45  call=  1694  total=4.497e-03  PDE=7.288e-04 [colloc=6.768e-04, cfd=5.195e-05]  WALL=3.184e-15  DATA=2.478e-04
+  [PT] w=3.0857  (raw=3.2045  ‖ΔR‖=6.009e-02  ‖Δu‖=1.875e-02)
+[BFGS-END] batch=  45  last_total=4.503e-03  last_PDE=7.288e-04 [colloc=6.768e-04, cfd=5.191e-05]  last_WALL=3.184e-15  last_DATA=2.478e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  46  call=  1716  total=4.465e-03  PDE=7.286e-04 [colloc=6.767e-04, cfd=5.191e-05]  WALL=3.184e-15  DATA=2.478e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  46  call=  1718  total=4.457e-03  PDE=7.285e-04 [colloc=6.768e-04, cfd=5.174e-05]  WALL=3.184e-15  DATA=2.475e-04
+  [PT] w=3.1079  (raw=3.3080  ‖ΔR‖=3.069e-02  ‖Δu‖=9.277e-03)
+[BFGS-END] batch=  46  last_total=4.497e-03  last_PDE=7.285e-04 [colloc=6.768e-04, cfd=5.174e-05]  last_WALL=3.184e-15  last_DATA=2.475e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  47  call=  1739  total=4.484e-03  PDE=7.290e-04 [colloc=6.771e-04, cfd=5.191e-05]  WALL=3.185e-15  DATA=2.468e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  47  call=  1742  total=4.472e-03  PDE=7.288e-04 [colloc=6.770e-04, cfd=5.188e-05]  WALL=3.185e-15  DATA=2.466e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  47  call=  1747  total=4.459e-03  PDE=7.284e-04 [colloc=6.767e-04, cfd=5.175e-05]  WALL=3.185e-15  DATA=2.466e-04
+  [PT] w=3.1104  (raw=3.1323  ‖ΔR‖=1.113e-01  ‖Δu‖=3.553e-02)
+[BFGS-END] batch=  47  last_total=4.495e-03  last_PDE=7.284e-04 [colloc=6.767e-04, cfd=5.175e-05]  last_WALL=3.185e-15  last_DATA=2.466e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  48  call=  1776  total=4.469e-03  PDE=7.288e-04 [colloc=6.770e-04, cfd=5.172e-05]  WALL=3.185e-15  DATA=2.466e-04
+  [PT] w=3.1083  (raw=3.0900  ‖ΔR‖=1.226e-02  ‖Δu‖=3.968e-03)
+[BFGS-END] batch=  48  last_total=4.488e-03  last_PDE=7.288e-04 [colloc=6.770e-04, cfd=5.172e-05]  last_WALL=3.185e-15  last_DATA=2.466e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  49  call=  1797  total=4.476e-03  PDE=7.292e-04 [colloc=6.775e-04, cfd=5.169e-05]  WALL=3.186e-15  DATA=2.469e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  49  call=  1799  total=4.465e-03  PDE=7.282e-04 [colloc=6.762e-04, cfd=5.202e-05]  WALL=3.182e-15  DATA=2.473e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  49  call=  1809  total=4.455e-03  PDE=7.273e-04 [colloc=6.754e-04, cfd=5.186e-05]  WALL=3.177e-15  DATA=2.469e-04
+  [PT] w=3.0423  (raw=2.4478  ‖ΔR‖=2.345e-01  ‖Δu‖=9.580e-02)
+[BFGS-END] batch=  49  last_total=4.467e-03  last_PDE=7.273e-04 [colloc=6.754e-04, cfd=5.186e-05]  last_WALL=3.177e-15  last_DATA=2.469e-04

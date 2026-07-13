@@ -82,3 +82,18 @@
   result = minimize(
 /oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1243: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
   result = minimize(
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1243: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1243: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1243: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1243: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1243: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1243: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1243: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[2026-07-07T03:13:25.707] error: *** JOB 3676260 ON gpu2262 CANCELLED AT 2026-07-07T03:13:25 DUE to SIGNAL Terminated ***
