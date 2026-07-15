@@ -1,3 +1,0 @@
-/var/spool/slurmd/job3779401/slurm_script: line 74: 3006358 Killed                  python -u cfp40.py $COMMON --save-dir "$ROOT/checkpoints" --viz-dir "$ROOT/viz" $EXTRA 2>&1
-     3006359 Done                    | tee "$ROOT/train.log"
-[2026-07-09T07:33:02.230] error: Detected 1 oom_kill event in StepId=3779401.batch. Some of the step tasks have been OOM Killed.

@@ -1,3 +1,16 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 3974480
+##  Job Name : pinn_re40_abl
+##  Nodelist : gpu2105
+##      CPUs : 
+##  Mem/Node : 102400 MB
+## Directory : /oscar/home/jchen790/cylinder flow lab
+##   Job Started : Tue Jul 14 02:58:25 PM EDT 2026
+###############################################################################
+############################################################
+# array task 2  ->  cell 'cfd_anchor'
+#   flags: --use-all-cfd-data
+############################################################
 [OK] _optimize._minimize_bfgs loaded — SSBroyden / SSBFGS variants available
 Loaded Re40.vtk  cells=8234
 Model: width=96, depth=5, params=38018

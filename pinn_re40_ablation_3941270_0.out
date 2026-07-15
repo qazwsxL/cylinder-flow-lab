@@ -1,3 +1,16 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 3941271
+##  Job Name : pinn_re40_abl
+##  Nodelist : gpu3004
+##      CPUs : 
+##  Mem/Node : 102400 MB
+## Directory : /oscar/home/jchen790/cylinder flow lab
+##   Job Started : Mon Jul 13 03:52:34 AM EDT 2026
+###############################################################################
+############################################################
+# array task 0  ->  cell 'baseline'
+#   flags: --no-data-anchor
+############################################################
 [OK] _optimize._minimize_bfgs loaded — SSBroyden / SSBFGS variants available
 Loaded Re40.vtk  cells=8234
 Model: width=96, depth=5, params=38018
@@ -2633,3 +2646,4 @@ ABSOLUTE error on CFD point cloud (target: ~1e-4 ~ 1e-5)
 
 [viz] saved ../runs/ablation/baseline/viz/re40_single_vorticity.png
 [viz] saved ../runs/ablation/baseline/viz/re40_single_speed.png
+[done] cell 'baseline' finished -> ../runs/ablation/baseline/checkpoints/pinn_Re40_single.pt
