@@ -464,6 +464,30 @@ class SingleSnapshotDataset:
     def __init__(self, snapshot: Snapshot, device: torch.device):
         self.snapshot = snapshot
         self.device = device
+        # When set (>0), the data anchor uses N random CFD points. Following the
+        # existing collocation philosophy: Adam draws a FRESH random N each epoch
+        # (sample() is called per epoch), while BFGS pins ONE random N-subset up
+        # front and keeps it FROZEN for the whole run (all_points() is called once
+        # at BFGS setup) for optimizer stability. A clean intermediate rung on the
+        # "full data -> no data" axis. sample()/all_points()/all_points_p() honour it.
+        self.fixed_n = None
+
+    def _draw_subset_ids(self, xlim, ylim, radius):
+        ids = self._domain_candidate_ids(xlim=xlim, ylim=ylim, radius=radius)
+        n = min(int(self.fixed_n), len(ids))
+        return np.random.choice(ids, size=n, replace=False)
+
+    def _pack(self, ids, with_p=False):
+        s = self.snapshot
+        t = torch.full((len(ids), 1), float(s.t), device=self.device)
+        x = torch.tensor(s.x[ids], dtype=torch.float32, device=self.device).view(-1, 1)
+        y = torch.tensor(s.y[ids], dtype=torch.float32, device=self.device).view(-1, 1)
+        if with_p:
+            p = torch.tensor(s.p[ids], dtype=torch.float32, device=self.device).view(-1, 1)
+            return t, x, y, p
+        u = torch.tensor(s.u[ids], dtype=torch.float32, device=self.device).view(-1, 1)
+        v = torch.tensor(s.v[ids], dtype=torch.float32, device=self.device).view(-1, 1)
+        return t, x, y, u, v
 
     def _domain_candidate_ids(self, xlim=None, ylim=None, radius: float = 0.5,
                                wall_buffer: float = 0.0, edge_buffer: float = 0.0):
@@ -535,6 +559,8 @@ class SingleSnapshotDataset:
 
     def sample(self, n_total: int, wake_frac: float = 0.7, xlim=None, ylim=None):
         """Sample CFD data for velocity fitting, biased toward the near wake."""
+        if self.fixed_n:
+            return self._pack(self._draw_subset_ids(xlim, ylim, 0.5))
         s = self.snapshot
         all_ids = self._domain_candidate_ids(xlim=xlim, ylim=ylim, radius=0.5)
         broad_ids, core_ids = self._wake_id_sets(all_ids, xlim=xlim, ylim=ylim)
@@ -564,6 +590,8 @@ class SingleSnapshotDataset:
         below 1e-4: random subsampling inside the BFGS loop adds gradient noise
         that BFGS interprets as nonconvergence and stalls.
         """
+        if self.fixed_n:
+            return self._pack(self._draw_subset_ids(xlim, ylim, radius))
         s = self.snapshot
         ids = self._domain_candidate_ids(xlim=xlim, ylim=ylim, radius=radius)
         t = torch.full((len(ids), 1), float(s.t), device=self.device)
@@ -579,6 +607,8 @@ class SingleSnapshotDataset:
         s = self.snapshot
         if s.p is None:
             raise ValueError("Snapshot has no pressure array; cannot anchor pressure.")
+        if self.fixed_n:
+            return self._pack(self._draw_subset_ids(xlim, ylim, radius), with_p=True)
         ids = self._domain_candidate_ids(xlim=xlim, ylim=ylim, radius=radius)
         t = torch.full((len(ids), 1), float(s.t), device=self.device)
         x = torch.tensor(s.x[ids], dtype=torch.float32, device=self.device).view(-1, 1)
@@ -1492,7 +1522,8 @@ def train_re40_single(model: nn.Module,
                       pt_w_max: float = 1e2,
                       use_data_anchor: bool = True,
                       anchor_pressure: bool = False,
-                      w_data_p: float = 1.0):
+                      w_data_p: float = 1.0,
+                      n_data_fixed: int = 0):
 
     os.makedirs(save_dir, exist_ok=True)
 
@@ -1504,6 +1535,10 @@ def train_re40_single(model: nn.Module,
         print(f"[PT  ] pseudo-time stepping ENABLED  w_init={pt_w_init}  ema={pt_ema}"
               f"  w_bounds=[{pt_w_min}, {pt_w_max}]")
     dataset = SingleSnapshotDataset(snapshot, device=device)
+    if n_data_fixed and n_data_fixed > 0:
+        dataset.fixed_n = int(n_data_fixed)
+        print(f"[data] anchor uses {n_data_fixed} random CFD points "
+              f"(fresh each Adam epoch; one frozen set during BFGS)")
     if data_only:
         print("[mode] data-only — PDE loss term DISABLED. Only data + BC.")
 
@@ -1823,6 +1858,10 @@ def parse_args():
     p.add_argument("--pt-w-max", type=float, default=1e2,
                    help="Upper bound on the PT coefficient w=1/tau (default 1e2). "
                         "Raise it to let PT use larger relaxation (avoid saturation).")
+    p.add_argument("--n-data-fixed", type=int, default=0,
+                   help="Anchor with N RANDOM CFD points (resampled each Adam epoch / "
+                        "BFGS batch) instead of all points. An intermediate rung on the "
+                        "full-data -> no-data axis. 0 = off (use all / normal path).")
     p.add_argument("--anchor-pressure", action="store_true", default=False,
                    help="Also supervise pressure against CFD pMean (gauge-free) on "
                         "all fluid points, on top of the velocity anchor.")
@@ -1935,6 +1974,7 @@ def main():
             use_data_anchor=args.use_data_anchor,
             anchor_pressure=args.anchor_pressure,
             w_data_p=args.data_p_weight,
+            n_data_fixed=args.n_data_fixed,
         )
 
     visualize_re40_single(

@@ -29,14 +29,16 @@ from compare_runs import (                                          # noqa: E402
     eval_on_grid, cfd_on_grid, load_model, pde_residual_on_grid,
 )
 
-CELLS = [
-    ("baseline",      96, 5),
-    ("pt",            96, 5),
-    ("cfd_anchor",    96, 5),
-    ("pt_cfd_anchor", 96, 5),
-    ("cfd_anchor_p",  96, 5),   # velocity + pressure anchor
-    ("pt_wide",       96, 5),   # pure PT, widened w bounds
-]
+def discover_cells(runs_root, width, depth):
+    """Every subdir of runs_root that has checkpoints/pinn_Re40_single.pt."""
+    out = []
+    if not os.path.isdir(runs_root):
+        return out
+    for key in sorted(os.listdir(runs_root)):
+        ck = os.path.join(runs_root, key, "checkpoints", "pinn_Re40_single.pt")
+        if os.path.exists(ck):
+            out.append((key, width, depth))
+    return out
 
 
 def cfd_pressure_on_grid(vtk_path, xs, ys):
@@ -87,6 +89,8 @@ def main():
     ap.add_argument("--x-max", type=float, default=12.0)
     ap.add_argument("--y-min", type=float, default=-4.0)
     ap.add_argument("--y-max", type=float, default=4.0)
+    ap.add_argument("--width", type=int, default=96)
+    ap.add_argument("--depth", type=int, default=5)
     a = ap.parse_args()
 
     os.makedirs(os.path.dirname(a.out), exist_ok=True)
@@ -100,11 +104,14 @@ def main():
     p_cfd, pname = cfd_pressure_on_grid(a.vtk_path, xs, ys)
     print(f"[export] CFD pressure array = {pname}")
 
+    cells = discover_cells(a.runs_root, a.width, a.depth)
+    print(f"[export] discovered {len(cells)} cells: {[c[0] for c in cells]}")
+
     store = {}
     metrics = {}
     present = []
     X = Y = None
-    for key, w, d in CELLS:
+    for key, w, d in cells:
         ck = os.path.join(a.runs_root, key, "checkpoints", "pinn_Re40_single.pt")
         if not os.path.exists(ck):
             print(f"[export] SKIP {key}: no checkpoint at {ck}")
