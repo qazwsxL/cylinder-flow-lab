@@ -407,6 +407,7 @@ class Snapshot:
     y: np.ndarray
     u: np.ndarray
     v: np.ndarray
+    p: Optional[np.ndarray] = None
 
 
 def _pick_array_name(names, candidates):
@@ -446,8 +447,13 @@ def load_single_vtk(vtk_path: str, t_value: float = 0.0) -> Snapshot:
     u = vel[:, 0].astype(np.float32)
     v = vel[:, 1].astype(np.float32)
 
-    print(f"Loaded {os.path.basename(vtk_path)}  cells={len(x)}")
-    return Snapshot(t=float(t_value), x=x, y=y, u=u, v=v)
+    # pressure (for optional pressure anchoring): prefer the mean field pMean
+    p_name = _pick_array_name(array_names, ["pMean", "p", "pressure", "P"])
+    p = np.asarray(data_src[p_name]).astype(np.float32).ravel() if p_name else None
+
+    print(f"Loaded {os.path.basename(vtk_path)}  cells={len(x)}"
+          + (f"  (pressure={p_name})" if p_name else "  (no pressure array)"))
+    return Snapshot(t=float(t_value), x=x, y=y, u=u, v=v, p=p)
 
 
 # ==========================================================
@@ -566,6 +572,19 @@ class SingleSnapshotDataset:
         u = torch.tensor(s.u[ids], dtype=torch.float32, device=self.device).view(-1, 1)
         v = torch.tensor(s.v[ids], dtype=torch.float32, device=self.device).view(-1, 1)
         return t, x, y, u, v
+
+    def all_points_p(self, xlim=None, ylim=None, radius: float = 0.5):
+        """Return t, x, y and CFD pressure at EVERY fluid point (for pressure
+        anchoring). Independent of the velocity path."""
+        s = self.snapshot
+        if s.p is None:
+            raise ValueError("Snapshot has no pressure array; cannot anchor pressure.")
+        ids = self._domain_candidate_ids(xlim=xlim, ylim=ylim, radius=radius)
+        t = torch.full((len(ids), 1), float(s.t), device=self.device)
+        x = torch.tensor(s.x[ids], dtype=torch.float32, device=self.device).view(-1, 1)
+        y = torch.tensor(s.y[ids], dtype=torch.float32, device=self.device).view(-1, 1)
+        p = torch.tensor(s.p[ids], dtype=torch.float32, device=self.device).view(-1, 1)
+        return t, x, y, p
 
     def sample_domain_xy(self, n_total: int, xlim=None, ylim=None, radius: float = 0.5,
                           wall_buffer: float = 0.0, edge_buffer: float = 0.0):
@@ -838,6 +857,13 @@ def compute_data_loss(model, t_d, x_d, y_d, u_d, v_d):
     return ((u - u_d) ** 2).mean() + ((v - v_d) ** 2).mean()
 
 
+def compute_data_loss_p(model, t_d, x_d, y_d, p_d):
+    """Gauge-free pressure MSE (both fields mean-subtracted over the batch), so
+    the free additive constant of pressure does not fight the outlet anchor."""
+    _, _, _, p = model_uvp(model, x_d, y_d, t_d)
+    return (((p - p.mean()) - (p_d - p_d.mean())) ** 2).mean()
+
+
 def default_fixed_weights():
     # Tuned for "drive absolute velocity error toward 1e-4 ~ 1e-5".
     # Data weight is much higher than PDE so the network first locks to CFD;
@@ -862,6 +888,8 @@ def compute_total_loss(model, dataset, device, epoch, n_f, n_data, Re, t_value,
                        cfd_pde_wall_buffer=0.0, cfd_pde_edge_buffer=0.0,
                        data_only: bool = False,
                        use_all_cfd_data: bool = False,
+                       anchor_pressure: bool = False,
+                       w_data_p: float = 1.0,
                        stepper: Optional[PseudoTimeStepper] = None):
     """
     data_only         : if True, skip the PDE residual term entirely (n_f and
@@ -928,6 +956,13 @@ def compute_total_loss(model, dataset, device, epoch, n_f, n_data, Re, t_value,
     bc = compute_bc_losses(model, device=device, t_value=t_value, xlim=xlim, ylim=ylim)
     loss_data = compute_data_loss(model, t_d, x_d, y_d, u_d, v_d)
 
+    # Optional pressure anchor (gauge-free) on all CFD fluid points.
+    if anchor_pressure and dataset.snapshot.p is not None:
+        tp, xp, yp, pp = dataset.all_points_p(xlim=xlim, ylim=ylim, radius=0.5)
+        loss_data_p = compute_data_loss_p(model, tp, xp, yp, pp)
+    else:
+        loss_data_p = torch.zeros((), device=device)
+
     raw_losses = {
         "pde": loss_pde,
         "pde_colloc": loss_pde_colloc,
@@ -938,6 +973,7 @@ def compute_total_loss(model, dataset, device, epoch, n_f, n_data, Re, t_value,
         "wall_psi": bc["wall_psi"],
         "outlet": bc["outlet"],
         "data": loss_data,
+        "data_p": loss_data_p,
     }
 
     if weight_manager is not None:
@@ -955,7 +991,8 @@ def compute_total_loss(model, dataset, device, epoch, n_f, n_data, Re, t_value,
         w["wall_uv"] * raw_losses["wall_uv"] +
         w["wall_psi"] * raw_losses["wall_psi"] +
         w["outlet"] * raw_losses["outlet"] +
-        w["data"] * raw_losses["data"]
+        w["data"] * raw_losses["data"] +
+        w_data_p * raw_losses["data_p"]
     )
 
     logs = {
@@ -969,6 +1006,7 @@ def compute_total_loss(model, dataset, device, epoch, n_f, n_data, Re, t_value,
         "WALL_PSI": raw_losses["wall_psi"],
         "OUTLET": raw_losses["outlet"],
         "DATA": raw_losses["data"],
+        "DATA_P": raw_losses["data_p"],
         "weights": w,
     }
     return total, logs
@@ -1003,6 +1041,8 @@ def run_adam(model, dataset, device, save_dir,
              data_only=False, use_all_cfd_data=False,
              use_data_anchor: bool = True,
              pt_resample: bool = False,
+             anchor_pressure: bool = False,
+             w_data_p: float = 1.0,
              stepper: Optional[PseudoTimeStepper] = None):
     os.makedirs(save_dir, exist_ok=True)
     best_loss = float("inf")
@@ -1062,6 +1102,8 @@ def run_adam(model, dataset, device, save_dir,
             cfd_pde_edge_buffer=cfd_pde_edge_buffer,
             data_only=data_only,
             use_all_cfd_data=use_all_cfd_data,
+            anchor_pressure=anchor_pressure,
+            w_data_p=w_data_p,
             stepper=stepper,
         )
         loss.backward()
@@ -1103,7 +1145,8 @@ def run_adam(model, dataset, device, save_dir,
                 f"TB={logs['TB'].item():.3e} (w={w['top_bottom']:.3f})  "
                 f"WALL={logs['WALL_UV'].item():.3e} (w={w['wall_uv']:.3f})  "
                 f"OUT={logs['OUTLET'].item():.3e} (w={w['outlet']:.3f})  "
-                f"DATA={logs['DATA'].item():.3e} (w={w['data']:.3f})"
+                f"DATA={logs['DATA'].item():.3e} (w={w['data']:.3f})  "
+                f"DATA_P={logs['DATA_P'].item():.3e} (w={w_data_p:.3f})"
             )
 
     return best_loss, frozen_weights
@@ -1140,6 +1183,8 @@ def run_scipy_bfgs(model: nn.Module,
                    use_all_cfd_data: bool = False,
                    use_data_anchor: bool = True,
                    pt_resample: bool = False,
+                   anchor_pressure: bool = False,
+                   w_data_p: float = 1.0,
                    stepper: Optional[PseudoTimeStepper] = None):
     os.makedirs(save_dir, exist_ok=True)
 
@@ -1196,6 +1241,14 @@ def run_scipy_bfgs(model: nn.Module,
     else:
         t_d_fix = x_d_fix = y_d_fix = u_d_fix = v_d_fix = None
 
+    # Pin CFD pressure points too (gauge-free) if pressure anchoring is on.
+    if anchor_pressure and dataset.snapshot.p is not None:
+        tp_fix, xp_fix, yp_fix, pp_fix = dataset.all_points_p(
+            xlim=xlim, ylim=ylim, radius=0.5)
+        print(f"[BFGS] pressure anchor: {len(xp_fix)} CFD pressure points, w_data_p={w_data_p}")
+    else:
+        tp_fix = xp_fix = yp_fix = pp_fix = None
+
     def loss_and_gradient(weights: np.ndarray):
         total_calls["n"] += 1
         epoch_now = start_epoch + total_calls["n"]
@@ -1249,6 +1302,10 @@ def run_scipy_bfgs(model: nn.Module,
             loss_pde = loss_pde_colloc + lambda_pde_cfd * loss_pde_cfd
         bc = compute_bc_losses(model, device=device, t_value=t_value, xlim=xlim, ylim=ylim)
         loss_data = compute_data_loss(model, t_d, x_d, y_d, u_d, v_d)
+        if xp_fix is not None:
+            loss_data_p = compute_data_loss_p(model, tp_fix, xp_fix, yp_fix, pp_fix)
+        else:
+            loss_data_p = torch.zeros((), device=device)
 
         total = (
             fixed_weights["pde"] * loss_pde +
@@ -1257,7 +1314,8 @@ def run_scipy_bfgs(model: nn.Module,
             fixed_weights["wall_uv"] * bc["wall_uv"] +
             fixed_weights["wall_psi"] * bc["wall_psi"] +
             fixed_weights["outlet"] * bc["outlet"] +
-            fixed_weights["data"] * loss_data
+            fixed_weights["data"] * loss_data +
+            w_data_p * loss_data_p
         )
         total.backward()
 
@@ -1430,15 +1488,21 @@ def train_re40_single(model: nn.Module,
                       pt_w_init: float = 1.0,
                       pt_ema: float = 0.9,
                       pt_resample: bool = False,
-                      use_data_anchor: bool = True):
+                      pt_w_min: float = 1e-2,
+                      pt_w_max: float = 1e2,
+                      use_data_anchor: bool = True,
+                      anchor_pressure: bool = False,
+                      w_data_p: float = 1.0):
 
     os.makedirs(save_dir, exist_ok=True)
 
     # Build pseudo-time stepper if requested
     stepper: Optional[PseudoTimeStepper] = None
     if use_pt:
-        stepper = PseudoTimeStepper(w_init=pt_w_init, ema=pt_ema)
-        print(f"[PT  ] pseudo-time stepping ENABLED  w_init={pt_w_init}  ema={pt_ema}")
+        stepper = PseudoTimeStepper(w_init=pt_w_init, ema=pt_ema,
+                                    w_min=pt_w_min, w_max=pt_w_max)
+        print(f"[PT  ] pseudo-time stepping ENABLED  w_init={pt_w_init}  ema={pt_ema}"
+              f"  w_bounds=[{pt_w_min}, {pt_w_max}]")
     dataset = SingleSnapshotDataset(snapshot, device=device)
     if data_only:
         print("[mode] data-only — PDE loss term DISABLED. Only data + BC.")
@@ -1529,6 +1593,8 @@ def train_re40_single(model: nn.Module,
         use_all_cfd_data=use_all_cfd_data,
         use_data_anchor=use_data_anchor,
         pt_resample=pt_resample,
+        anchor_pressure=anchor_pressure,
+        w_data_p=w_data_p,
         stepper=stepper,
     )
 
@@ -1565,6 +1631,8 @@ def train_re40_single(model: nn.Module,
             use_all_cfd_data=use_all_cfd_data,
             use_data_anchor=use_data_anchor,
             pt_resample=pt_resample,
+            anchor_pressure=anchor_pressure,
+            w_data_p=w_data_p,
             stepper=stepper,
         )
 
@@ -1750,6 +1818,16 @@ def parse_args():
                         "(= one pseudo-time step), the faithful analogue of "
                         "Algorithm 1 line 2 in Wang et al. 2026. Requires frozen "
                         "collocation within a batch (the default).")
+    p.add_argument("--pt-w-min", type=float, default=1e-2,
+                   help="Lower bound on the PT coefficient w=1/tau (default 1e-2).")
+    p.add_argument("--pt-w-max", type=float, default=1e2,
+                   help="Upper bound on the PT coefficient w=1/tau (default 1e2). "
+                        "Raise it to let PT use larger relaxation (avoid saturation).")
+    p.add_argument("--anchor-pressure", action="store_true", default=False,
+                   help="Also supervise pressure against CFD pMean (gauge-free) on "
+                        "all fluid points, on top of the velocity anchor.")
+    p.add_argument("--data-p-weight", type=float, default=1.0,
+                   help="Weight on the pressure data term (default 1.0).")
     p.add_argument("--data-anchor", dest="use_data_anchor", action="store_true",
                    default=True,
                    help="Use CFD velocity data supervision (default: on).")
@@ -1852,7 +1930,11 @@ def main():
             pt_w_init=args.pt_w_init,
             pt_ema=args.pt_ema,
             pt_resample=args.pt_resample,
+            pt_w_min=args.pt_w_min,
+            pt_w_max=args.pt_w_max,
             use_data_anchor=args.use_data_anchor,
+            anchor_pressure=args.anchor_pressure,
+            w_data_p=args.data_p_weight,
         )
 
     visualize_re40_single(

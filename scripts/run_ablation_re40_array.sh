@@ -54,14 +54,19 @@ PT="--use-pt --pt-w-init 1.0 --pt-ema 0.9 --pt-resample"
 ANCHOR_ON="--use-all-cfd-data"
 ANCHOR_OFF="--no-data-anchor"
 
-KEYS=(baseline pt cfd_anchor pt_cfd_anchor)
+# indices 0-3: original 2x2.  4: velocity+pressure anchor.  5: pure PT, widened w.
+KEYS=(baseline pt cfd_anchor pt_cfd_anchor cfd_anchor_p pt_wide)
 KEY=${KEYS[$SLURM_ARRAY_TASK_ID]}
+
+PT_WIDE="--use-pt --pt-w-init 1.0 --pt-ema 0.9 --pt-resample --pt-w-min 1e-4 --pt-w-max 1e4"
 
 case "$KEY" in
   baseline)      EXTRA="$ANCHOR_OFF" ;;
   pt)            EXTRA="$PT $ANCHOR_OFF" ;;
   cfd_anchor)    EXTRA="$ANCHOR_ON" ;;
   pt_cfd_anchor) EXTRA="$PT $ANCHOR_ON" ;;
+  cfd_anchor_p)  EXTRA="$ANCHOR_ON --anchor-pressure --data-p-weight 1.0" ;;
+  pt_wide)       EXTRA="$PT_WIDE $ANCHOR_OFF" ;;
   *) echo "unknown SLURM_ARRAY_TASK_ID=$SLURM_ARRAY_TASK_ID"; exit 1 ;;
 esac
 

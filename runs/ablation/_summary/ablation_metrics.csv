@@ -1,0 +1,5 @@
+variant,label,relL2_uv,relL2_u,relL2_v
+baseline,baseline (no PT, no anchor),0.562879,0.554905,1.435745
+pt,PT (no anchor),0.393583,0.376720,1.642370
+cfd_anchor,CFD anchor (no PT),0.016786,0.014501,0.119484
+pt_cfd_anchor,PT + CFD anchor,0.039511,0.032750,0.311737
