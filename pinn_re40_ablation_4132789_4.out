@@ -1,0 +1,1850 @@
+## SLURM PROLOG ###############################################################
+##    Job ID : 4132790
+##  Job Name : pinn_re40_abl
+##  Nodelist : gpu2113
+##      CPUs : 
+##  Mem/Node : 102400 MB
+## Directory : /oscar/home/jchen790/cylinder flow lab
+##   Job Started : Tue Jul 21 09:02:47 AM EDT 2026
+###############################################################################
+############################################################
+# array task 4  ->  cell 'cfd_anchor_p'
+#   flags: --use-all-cfd-data --anchor-pressure --data-p-weight 1.0
+############################################################
+[OK] _optimize._minimize_bfgs loaded — SSBroyden / SSBFGS variants available
+Loaded Re40.vtk  cells=8234  (pressure=pMean)
+Model: width=96, depth=5, params=38018
+Loss weights: adaptive during Adam, frozen during BFGS
+Cylinder no-slip: enforced hard through stream-function lifting
+CFD-aware PDE residual: n_cfd_pde=8000, lambda_pde_cfd=1.0
+[mem ] params=38018  H0 (NxN float64) = 10.77 GB  available ~ 100.0 GB
+============================================================
+Phase 1 — Adam (2000 epochs)
+Goal: match CFD while improving PDE and enforcing wall no-slip exactly
+============================================================
+[Adam] ep=   20  total=4.665e+00  PDE=2.913e-01 [colloc=2.844e-01, cfd=6.898e-03] (w=2.140)  IN=6.525e-01 (w=1.271)  TB=7.999e-01 (w=1.338)  WALL=8.883e-15 (w=0.200)  OUT=1.333e-01 (w=0.651)  DATA=4.613e-01 (w=4.265)  DATA_P=8.791e-02 (w=1.000)
+[Adam] ep=   40  total=2.242e+00  PDE=3.205e-01 [colloc=3.038e-01, cfd=1.674e-02] (w=1.628)  IN=1.859e-01 (w=1.326)  TB=4.141e-01 (w=1.610)  WALL=2.652e-15 (w=0.200)  OUT=1.291e-03 (w=0.378)  DATA=1.667e-01 (w=4.608)  DATA_P=3.822e-02 (w=1.000)
+[Adam] ep=   60  total=1.392e+00  PDE=2.936e-01 [colloc=2.794e-01, cfd=1.420e-02] (w=2.729)  IN=4.157e-02 (w=0.895)  TB=1.569e-01 (w=1.387)  WALL=6.488e-15 (w=0.200)  OUT=2.393e-03 (w=0.267)  DATA=7.788e-02 (w=3.777)  DATA_P=4.149e-02 (w=1.000)
+[Adam] ep=   80  total=1.064e+00  PDE=1.943e-01 [colloc=1.883e-01, cfd=5.932e-03] (w=2.981)  IN=4.392e-02 (w=0.741)  TB=1.214e-01 (w=1.248)  WALL=2.282e-15 (w=0.200)  OUT=8.999e-03 (w=0.290)  DATA=6.962e-02 (w=3.708)  DATA_P=3.956e-02 (w=1.000)
+[Adam] ep=  100  total=1.840e+00  PDE=4.454e-01 [colloc=4.405e-01, cfd=4.855e-03] (w=2.950)  IN=4.782e-02 (w=0.781)  TB=1.154e-01 (w=1.233)  WALL=5.745e-15 (w=0.200)  OUT=4.333e-03 (w=0.262)  DATA=7.924e-02 (w=3.868)  DATA_P=3.896e-02 (w=1.000)
+[Adam] ep=  120  total=9.190e-01  PDE=1.551e-01 [colloc=1.505e-01, cfd=4.576e-03] (w=2.859)  IN=4.734e-02 (w=0.828)  TB=1.092e-01 (w=1.278)  WALL=1.751e-15 (w=0.200)  OUT=3.495e-03 (w=0.241)  DATA=6.475e-02 (w=3.981)  DATA_P=3.820e-02 (w=1.000)
+[Adam] ep=  140  total=6.529e-01  PDE=8.107e-02 [colloc=7.715e-02, cfd=3.914e-03] (w=2.834)  IN=4.506e-02 (w=0.850)  TB=9.866e-02 (w=1.289)  WALL=8.488e-16 (w=0.200)  OUT=3.057e-03 (w=0.226)  DATA=5.488e-02 (w=3.993)  DATA_P=3.795e-02 (w=1.000)
+[Adam] ep=  160  total=1.775e+00  PDE=4.577e-01 [colloc=4.536e-01, cfd=4.128e-03] (w=2.944)  IN=4.257e-02 (w=0.832)  TB=8.552e-02 (w=1.214)  WALL=6.583e-15 (w=0.200)  OUT=3.138e-03 (w=0.227)  DATA=6.481e-02 (w=3.860)  DATA_P=3.742e-02 (w=1.000)
+[Adam] ep=  180  total=6.033e-01  PDE=9.426e-02 [colloc=9.095e-02, cfd=3.313e-03] (w=2.959)  IN=3.934e-02 (w=0.852)  TB=7.219e-02 (w=1.185)  WALL=1.430e-15 (w=0.200)  OUT=2.474e-03 (w=0.224)  DATA=4.349e-02 (w=3.854)  DATA_P=3.717e-02 (w=1.000)
+[Adam] ep=  200  total=4.688e-01  PDE=5.893e-02 [colloc=5.594e-02, cfd=2.987e-03] (w=2.939)  IN=3.856e-02 (w=0.896)  TB=6.241e-02 (w=1.163)  WALL=8.347e-16 (w=0.200)  OUT=2.482e-03 (w=0.230)  DATA=3.872e-02 (w=3.905)  DATA_P=3.667e-02 (w=1.000)
+[Adam] ep=  220  total=1.543e+00  PDE=3.988e-01 [colloc=3.956e-01, cfd=3.181e-03] (w=3.037)  IN=3.849e-02 (w=0.879)  TB=5.607e-02 (w=1.082)  WALL=6.496e-15 (w=0.200)  OUT=2.470e-03 (w=0.224)  DATA=5.261e-02 (w=3.809)  DATA_P=3.624e-02 (w=1.000)
+[Adam] ep=  240  total=5.059e-01  PDE=8.118e-02 [colloc=7.857e-02, cfd=2.611e-03] (w=3.005)  IN=3.769e-02 (w=0.920)  TB=5.071e-02 (w=1.082)  WALL=1.295e-15 (w=0.200)  OUT=2.167e-03 (w=0.225)  DATA=3.550e-02 (w=3.832)  DATA_P=3.588e-02 (w=1.000)
+[Adam] ep=  260  total=4.000e-01  PDE=4.626e-02 [colloc=4.389e-02, cfd=2.368e-03] (w=2.957)  IN=4.017e-02 (w=0.966)  TB=4.573e-02 (w=1.083)  WALL=5.816e-16 (w=0.200)  OUT=2.169e-03 (w=0.230)  DATA=3.560e-02 (w=3.904)  DATA_P=3.537e-02 (w=1.000)
+[Adam] ep=  280  total=1.267e+00  PDE=3.251e-01 [colloc=3.224e-01, cfd=2.730e-03] (w=3.031)  IN=3.721e-02 (w=0.953)  TB=4.203e-02 (w=1.021)  WALL=5.462e-15 (w=0.200)  OUT=1.910e-03 (w=0.219)  DATA=4.386e-02 (w=3.834)  DATA_P=3.514e-02 (w=1.000)
+[Adam] ep=  300  total=4.825e-01  PDE=7.853e-02 [colloc=7.630e-02, cfd=2.233e-03] (w=2.958)  IN=3.780e-02 (w=1.003)  TB=3.979e-02 (w=1.040)  WALL=1.183e-15 (w=0.200)  OUT=1.775e-03 (w=0.222)  DATA=3.440e-02 (w=3.946)  DATA_P=3.476e-02 (w=1.000)
+[Adam] ep=  320  total=3.894e-01  PDE=5.388e-02 [colloc=5.160e-02, cfd=2.274e-03] (w=2.919)  IN=3.828e-02 (w=1.035)  TB=3.697e-02 (w=1.051)  WALL=5.559e-16 (w=0.200)  OUT=1.651e-03 (w=0.224)  DATA=2.988e-02 (w=3.974)  DATA_P=3.447e-02 (w=1.000)
+[Adam] ep=  340  total=8.846e-01  PDE=2.120e-01 [colloc=2.095e-01, cfd=2.545e-03] (w=2.946)  IN=3.649e-02 (w=1.031)  TB=3.483e-02 (w=1.021)  WALL=3.752e-15 (w=0.200)  OUT=1.502e-03 (w=0.214)  DATA=3.822e-02 (w=3.983)  DATA_P=3.426e-02 (w=1.000)
+[Adam] ep=  360  total=4.356e-01  PDE=7.295e-02 [colloc=7.091e-02, cfd=2.045e-03] (w=2.912)  IN=3.380e-02 (w=1.057)  TB=3.146e-02 (w=1.023)  WALL=1.217e-15 (w=0.200)  OUT=1.351e-03 (w=0.212)  DATA=2.996e-02 (w=4.041)  DATA_P=3.386e-02 (w=1.000)
+[Adam] ep=  380  total=6.011e-01  PDE=8.020e-02 [colloc=7.803e-02, cfd=2.179e-03] (w=2.885)  IN=4.800e-02 (w=1.068)  TB=2.796e-02 (w=0.981)  WALL=1.058e-15 (w=0.200)  OUT=1.670e-03 (w=0.209)  DATA=5.992e-02 (w=4.296)  DATA_P=3.321e-02 (w=1.000)
+[Adam] ep=  400  total=1.307e+00  PDE=3.619e-01 [colloc=3.576e-01, cfd=4.348e-03] (w=3.006)  IN=2.441e-02 (w=1.003)  TB=2.071e-02 (w=0.834)  WALL=7.361e-15 (w=0.200)  OUT=3.560e-03 (w=0.241)  DATA=3.123e-02 (w=4.429)  DATA_P=3.779e-02 (w=1.000)
+[Adam] ep=  420  total=6.693e-01  PDE=1.313e-01 [colloc=1.279e-01, cfd=3.339e-03] (w=3.035)  IN=3.336e-02 (w=0.965)  TB=2.746e-02 (w=0.809)  WALL=3.250e-15 (w=0.200)  OUT=2.737e-03 (w=0.243)  DATA=4.050e-02 (w=4.492)  DATA_P=3.384e-02 (w=1.000)
+[Adam] ep=  440  total=4.537e-01  PDE=7.117e-02 [colloc=6.816e-02, cfd=3.015e-03] (w=2.844)  IN=3.845e-02 (w=1.078)  TB=2.635e-02 (w=0.983)  WALL=6.092e-16 (w=0.200)  OUT=2.137e-03 (w=0.269)  DATA=3.431e-02 (w=4.390)  DATA_P=3.274e-02 (w=1.000)
+[Adam] ep=  460  total=3.625e-01  PDE=5.635e-02 [colloc=5.459e-02, cfd=1.762e-03] (w=2.854)  IN=2.788e-02 (w=1.084)  TB=2.545e-02 (w=1.007)  WALL=1.155e-15 (w=0.200)  OUT=6.393e-04 (w=0.200)  DATA=2.618e-02 (w=4.300)  DATA_P=3.314e-02 (w=1.000)
+[Adam] ep=  480  total=5.754e-01  PDE=1.314e-01 [colloc=1.284e-01, cfd=3.025e-03] (w=2.901)  IN=2.447e-02 (w=1.064)  TB=2.162e-02 (w=0.974)  WALL=1.756e-15 (w=0.200)  OUT=8.819e-04 (w=0.200)  DATA=2.672e-02 (w=4.271)  DATA_P=3.271e-02 (w=1.000)
+[Adam] ep=  500  total=3.942e-01  PDE=7.136e-02 [colloc=6.916e-02, cfd=2.192e-03] (w=2.894)  IN=2.378e-02 (w=1.065)  TB=2.038e-02 (w=0.964)  WALL=1.519e-15 (w=0.200)  OUT=6.276e-04 (w=0.200)  DATA=2.530e-02 (w=4.342)  DATA_P=3.269e-02 (w=1.000)
+[Adam] ep=  520  total=3.366e-01  PDE=4.861e-02 [colloc=4.688e-02, cfd=1.730e-03] (w=2.806)  IN=2.228e-02 (w=1.067)  TB=1.788e-02 (w=0.951)  WALL=6.876e-16 (w=0.200)  OUT=7.046e-04 (w=0.200)  DATA=2.647e-02 (w=4.765)  DATA_P=3.311e-02 (w=1.000)
+[Adam] ep=  540  total=5.490e-01  PDE=8.508e-02 [colloc=8.153e-02, cfd=3.550e-03] (w=2.863)  IN=2.742e-02 (w=1.009)  TB=2.093e-02 (w=0.884)  WALL=2.641e-15 (w=0.200)  OUT=1.399e-03 (w=0.238)  DATA=4.614e-02 (w=4.899)  DATA_P=3.278e-02 (w=1.000)
+[Adam] ep=  560  total=3.493e-01  PDE=4.010e-02 [colloc=3.810e-02, cfd=2.001e-03] (w=2.774)  IN=1.900e-02 (w=1.040)  TB=1.262e-02 (w=0.909)  WALL=6.532e-16 (w=0.200)  OUT=1.531e-03 (w=0.237)  DATA=3.423e-02 (w=5.087)  DATA_P=3.232e-02 (w=1.000)
+[Adam] ep=  580  total=3.501e-01  PDE=5.683e-02 [colloc=5.509e-02, cfd=1.741e-03] (w=2.816)  IN=1.506e-02 (w=1.011)  TB=1.183e-02 (w=0.897)  WALL=1.372e-15 (w=0.200)  OUT=3.010e-04 (w=0.216)  DATA=2.591e-02 (w=5.060)  DATA_P=3.305e-02 (w=1.000)
+[Adam] ep=  600  total=2.775e-01  PDE=3.983e-02 [colloc=3.741e-02, cfd=2.421e-03] (w=2.867)  IN=1.459e-02 (w=1.011)  TB=9.189e-03 (w=0.840)  WALL=5.392e-16 (w=0.200)  OUT=5.078e-04 (w=0.206)  DATA=2.149e-02 (w=5.020)  DATA_P=3.288e-02 (w=1.000)
+[Adam] ep=  620  total=3.422e-01  PDE=4.650e-02 [colloc=4.372e-02, cfd=2.777e-03] (w=2.845)  IN=1.707e-02 (w=1.014)  TB=7.774e-03 (w=0.786)  WALL=8.964e-16 (w=0.200)  OUT=2.367e-03 (w=0.312)  DATA=2.938e-02 (w=5.150)  DATA_P=3.442e-02 (w=1.000)
+[Adam] ep=  640  total=3.000e-01  PDE=4.937e-02 [colloc=4.757e-02, cfd=1.801e-03] (w=2.915)  IN=1.259e-02 (w=0.980)  TB=7.704e-03 (w=0.762)  WALL=9.595e-16 (w=0.200)  OUT=9.413e-04 (w=0.324)  DATA=2.075e-02 (w=5.023)  DATA_P=3.335e-02 (w=1.000)
+[Adam] ep=  660  total=2.855e-01  PDE=4.885e-02 [colloc=4.718e-02, cfd=1.670e-03] (w=2.918)  IN=1.078e-02 (w=0.986)  TB=6.965e-03 (w=0.777)  WALL=1.166e-15 (w=0.200)  OUT=3.758e-04 (w=0.203)  DATA=1.858e-02 (w=5.057)  DATA_P=3.285e-02 (w=1.000)
+[Adam] ep=  680  total=2.843e-01  PDE=5.164e-02 [colloc=5.003e-02, cfd=1.602e-03] (w=2.942)  IN=1.022e-02 (w=0.991)  TB=5.979e-03 (w=0.736)  WALL=1.187e-15 (w=0.200)  OUT=2.670e-04 (w=0.200)  DATA=1.685e-02 (w=5.068)  DATA_P=3.239e-02 (w=1.000)
+[Adam] ep=  700  total=2.830e-01  PDE=4.667e-02 [colloc=4.522e-02, cfd=1.455e-03] (w=2.955)  IN=1.080e-02 (w=0.998)  TB=5.488e-03 (w=0.699)  WALL=9.343e-16 (w=0.200)  OUT=2.158e-04 (w=0.200)  DATA=1.932e-02 (w=5.084)  DATA_P=3.216e-02 (w=1.000)
+[Adam] ep=  720  total=2.627e-01  PDE=3.932e-02 [colloc=3.782e-02, cfd=1.503e-03] (w=2.967)  IN=1.162e-02 (w=0.990)  TB=4.852e-03 (w=0.679)  WALL=5.167e-16 (w=0.200)  OUT=2.494e-04 (w=0.200)  DATA=1.950e-02 (w=5.099)  DATA_P=3.170e-02 (w=1.000)
+[Adam] ep=  740  total=2.707e-01  PDE=4.521e-02 [colloc=4.393e-02, cfd=1.282e-03] (w=2.978)  IN=9.890e-03 (w=0.982)  TB=4.324e-03 (w=0.652)  WALL=9.691e-16 (w=0.200)  OUT=2.670e-04 (w=0.200)  DATA=1.788e-02 (w=5.131)  DATA_P=3.170e-02 (w=1.000)
+[Adam] ep=  760  total=2.538e-01  PDE=3.739e-02 [colloc=3.605e-02, cfd=1.340e-03] (w=2.986)  IN=1.129e-02 (w=0.987)  TB=4.208e-03 (w=0.631)  WALL=5.894e-16 (w=0.200)  OUT=2.683e-04 (w=0.200)  DATA=1.895e-02 (w=5.128)  DATA_P=3.112e-02 (w=1.000)
+[Adam] ep=  780  total=2.670e-01  PDE=4.123e-02 [colloc=3.993e-02, cfd=1.301e-03] (w=2.996)  IN=1.028e-02 (w=0.973)  TB=3.953e-03 (w=0.612)  WALL=7.217e-16 (w=0.200)  OUT=2.629e-04 (w=0.200)  DATA=1.934e-02 (w=5.159)  DATA_P=3.123e-02 (w=1.000)
+[Adam] ep=  800  total=2.996e-01  PDE=5.143e-02 [colloc=4.846e-02, cfd=2.978e-03] (w=3.003)  IN=9.410e-03 (w=0.950)  TB=3.477e-03 (w=0.587)  WALL=7.081e-16 (w=0.200)  OUT=3.316e-04 (w=0.200)  DATA=1.976e-02 (w=5.233)  DATA_P=3.069e-02 (w=1.000)
+[Adam] ep=  820  total=2.616e-01  PDE=3.082e-02 [colloc=2.933e-02, cfd=1.496e-03] (w=3.078)  IN=1.211e-02 (w=0.878)  TB=5.964e-03 (w=0.564)  WALL=5.957e-16 (w=0.200)  OUT=1.573e-03 (w=0.258)  DATA=2.366e-02 (w=5.115)  DATA_P=3.138e-02 (w=1.000)
+[Adam] ep=  840  total=3.090e-01  PDE=5.244e-02 [colloc=5.128e-02, cfd=1.163e-03] (w=2.964)  IN=8.575e-03 (w=0.839)  TB=7.478e-03 (w=0.683)  WALL=1.240e-15 (w=0.200)  OUT=6.738e-04 (w=0.444)  DATA=2.121e-02 (w=5.262)  DATA_P=2.935e-02 (w=1.000)
+[Adam] ep=  860  total=2.863e-01  PDE=4.240e-02 [colloc=4.156e-02, cfd=8.334e-04] (w=2.972)  IN=8.982e-03 (w=0.793)  TB=4.922e-03 (w=0.711)  WALL=4.631e-16 (w=0.200)  OUT=3.851e-04 (w=0.530)  DATA=2.332e-02 (w=5.151)  DATA_P=2.937e-02 (w=1.000)
+[Adam] ep=  880  total=2.650e-01  PDE=4.116e-02 [colloc=3.969e-02, cfd=1.473e-03] (w=2.937)  IN=9.119e-03 (w=0.788)  TB=5.361e-03 (w=0.634)  WALL=8.189e-16 (w=0.200)  OUT=3.763e-03 (w=0.761)  DATA=1.971e-02 (w=5.001)  DATA_P=3.204e-02 (w=1.000)
+[Adam] ep=  900  total=2.567e-01  PDE=4.654e-02 [colloc=4.509e-02, cfd=1.445e-03] (w=3.020)  IN=6.420e-03 (w=0.853)  TB=3.566e-03 (w=0.586)  WALL=9.469e-16 (w=0.200)  OUT=4.807e-04 (w=0.448)  DATA=1.526e-02 (w=5.177)  DATA_P=2.937e-02 (w=1.000)
+[Adam] ep=  920  total=2.430e-01  PDE=3.785e-02 [colloc=3.695e-02, cfd=8.998e-04] (w=3.029)  IN=8.672e-03 (w=0.913)  TB=3.016e-03 (w=0.564)  WALL=7.931e-16 (w=0.200)  OUT=3.702e-04 (w=0.256)  DATA=1.722e-02 (w=5.225)  DATA_P=2.864e-02 (w=1.000)
+[Adam] ep=  940  total=2.366e-01  PDE=4.177e-02 [colloc=4.084e-02, cfd=9.285e-04] (w=3.045)  IN=6.165e-03 (w=0.903)  TB=2.927e-03 (w=0.555)  WALL=9.260e-16 (w=0.200)  OUT=3.668e-04 (w=0.205)  DATA=1.403e-02 (w=5.236)  DATA_P=2.869e-02 (w=1.000)
+[Adam] ep=  960  total=2.331e-01  PDE=3.710e-02 [colloc=3.555e-02, cfd=1.553e-03] (w=3.064)  IN=6.936e-03 (w=0.879)  TB=2.719e-03 (w=0.554)  WALL=6.730e-16 (w=0.200)  OUT=3.543e-04 (w=0.203)  DATA=1.600e-02 (w=5.224)  DATA_P=2.810e-02 (w=1.000)
+[Adam] ep=  980  total=3.849e-01  PDE=8.517e-02 [colloc=8.371e-02, cfd=1.459e-03] (w=3.142)  IN=3.995e-03 (w=0.770)  TB=3.098e-03 (w=0.531)  WALL=2.854e-15 (w=0.200)  OUT=6.313e-04 (w=0.210)  DATA=1.615e-02 (w=5.208)  DATA_P=2.838e-02 (w=1.000)
+[Adam] ep= 1000  total=2.841e-01  PDE=3.650e-02 [colloc=3.266e-02, cfd=3.837e-03] (w=3.061)  IN=1.061e-02 (w=0.839)  TB=3.881e-03 (w=0.552)  WALL=3.414e-16 (w=0.200)  OUT=6.582e-04 (w=0.277)  DATA=2.518e-02 (w=5.292)  DATA_P=2.792e-02 (w=1.000)
+[Adam] ep= 1020  total=2.251e-01  PDE=3.459e-02 [colloc=3.185e-02, cfd=2.737e-03] (w=3.027)  IN=5.068e-03 (w=0.763)  TB=3.789e-03 (w=0.609)  WALL=6.602e-16 (w=0.200)  OUT=2.380e-03 (w=0.493)  DATA=1.618e-02 (w=5.263)  DATA_P=2.789e-02 (w=1.000)
+[Adam] ep= 1040  total=2.558e-01  PDE=3.708e-02 [colloc=3.617e-02, cfd=9.167e-04] (w=3.082)  IN=7.709e-03 (w=0.758)  TB=2.735e-03 (w=0.595)  WALL=6.062e-16 (w=0.200)  OUT=5.444e-04 (w=0.359)  DATA=2.068e-02 (w=5.248)  DATA_P=2.530e-02 (w=1.000)
+[Adam] ep= 1060  total=2.197e-01  PDE=3.818e-02 [colloc=3.610e-02, cfd=2.075e-03] (w=3.076)  IN=5.005e-03 (w=0.809)  TB=2.558e-03 (w=0.559)  WALL=7.669e-16 (w=0.200)  OUT=5.881e-04 (w=0.267)  DATA=1.341e-02 (w=5.300)  DATA_P=2.555e-02 (w=1.000)
+[Adam] ep= 1080  total=2.087e-01  PDE=3.357e-02 [colloc=3.065e-02, cfd=2.921e-03] (w=3.045)  IN=3.738e-03 (w=0.750)  TB=3.044e-03 (w=0.545)  WALL=5.965e-16 (w=0.200)  OUT=3.183e-04 (w=0.526)  DATA=1.438e-02 (w=5.280)  DATA_P=2.596e-02 (w=1.000)
+[Adam] ep= 1100  total=2.471e-01  PDE=4.940e-02 [colloc=4.494e-02, cfd=4.460e-03] (w=3.107)  IN=2.987e-03 (w=0.703)  TB=2.702e-03 (w=0.568)  WALL=1.131e-15 (w=0.200)  OUT=4.985e-04 (w=0.451)  DATA=1.236e-02 (w=5.198)  DATA_P=2.547e-02 (w=1.000)
+[Adam] ep= 1120  total=2.026e-01  PDE=3.472e-02 [colloc=3.341e-02, cfd=1.307e-03] (w=3.195)  IN=3.294e-03 (w=0.686)  TB=2.854e-03 (w=0.568)  WALL=1.016e-15 (w=0.200)  OUT=9.117e-04 (w=0.303)  DATA=1.251e-02 (w=5.024)  DATA_P=2.465e-02 (w=1.000)
+[Adam] ep= 1140  total=2.717e-01  PDE=5.119e-02 [colloc=4.621e-02, cfd=4.980e-03] (w=3.211)  IN=3.458e-03 (w=0.700)  TB=3.142e-03 (w=0.488)  WALL=1.093e-15 (w=0.200)  OUT=4.245e-04 (w=0.274)  DATA=1.559e-02 (w=5.080)  DATA_P=2.399e-02 (w=1.000)
+[Adam] ep= 1160  total=2.097e-01  PDE=3.122e-02 [colloc=2.981e-02, cfd=1.406e-03] (w=3.081)  IN=5.303e-03 (w=0.756)  TB=3.020e-03 (w=0.596)  WALL=8.202e-16 (w=0.200)  OUT=3.932e-04 (w=0.287)  DATA=1.574e-02 (w=5.325)  DATA_P=2.373e-02 (w=1.000)
+[Adam] ep= 1180  total=2.271e-01  PDE=3.550e-02 [colloc=3.304e-02, cfd=2.464e-03] (w=3.088)  IN=5.049e-03 (w=0.744)  TB=2.805e-03 (w=0.576)  WALL=7.267e-16 (w=0.200)  OUT=3.764e-04 (w=0.289)  DATA=1.638e-02 (w=5.358)  DATA_P=2.426e-02 (w=1.000)
+[Adam] ep= 1200  total=2.354e-01  PDE=3.742e-02 [colloc=3.653e-02, cfd=8.949e-04] (w=3.132)  IN=4.461e-03 (w=0.714)  TB=2.736e-03 (w=0.581)  WALL=8.322e-16 (w=0.200)  OUT=4.053e-04 (w=0.227)  DATA=1.702e-02 (w=5.277)  DATA_P=2.348e-02 (w=1.000)
+[Adam] ep= 1220  total=2.026e-01  PDE=2.538e-02 [colloc=2.441e-02, cfd=9.708e-04] (w=3.178)  IN=5.992e-03 (w=0.712)  TB=2.431e-03 (w=0.511)  WALL=5.238e-16 (w=0.200)  OUT=5.374e-04 (w=0.222)  DATA=1.789e-02 (w=5.205)  DATA_P=2.323e-02 (w=1.000)
+[Adam] ep= 1240  total=3.109e-01  PDE=4.900e-02 [colloc=4.773e-02, cfd=1.274e-03] (w=3.136)  IN=7.234e-03 (w=0.740)  TB=3.219e-03 (w=0.515)  WALL=1.156e-15 (w=0.200)  OUT=1.114e-03 (w=0.235)  DATA=2.395e-02 (w=5.309)  DATA_P=2.275e-02 (w=1.000)
+[Adam] ep= 1260  total=2.177e-01  PDE=4.404e-02 [colloc=4.304e-02, cfd=1.002e-03] (w=3.107)  IN=2.956e-03 (w=0.766)  TB=3.178e-03 (w=0.577)  WALL=1.607e-15 (w=0.200)  OUT=3.370e-04 (w=0.245)  DATA=1.011e-02 (w=5.259)  DATA_P=2.350e-02 (w=1.000)
+[Adam] ep= 1280  total=2.234e-01  PDE=4.678e-02 [colloc=4.191e-02, cfd=4.862e-03] (w=3.161)  IN=2.386e-03 (w=0.702)  TB=2.551e-03 (w=0.578)  WALL=1.259e-15 (w=0.200)  OUT=5.723e-04 (w=0.272)  DATA=9.557e-03 (w=5.150)  DATA_P=2.298e-02 (w=1.000)
+[Adam] ep= 1300  total=1.770e-01  PDE=3.314e-02 [colloc=3.163e-02, cfd=1.509e-03] (w=3.108)  IN=2.694e-03 (w=0.693)  TB=2.457e-03 (w=0.573)  WALL=1.068e-15 (w=0.200)  OUT=3.525e-04 (w=0.527)  DATA=9.782e-03 (w=5.093)  DATA_P=2.069e-02 (w=1.000)
+[Adam] ep= 1320  total=1.764e-01  PDE=3.282e-02 [colloc=3.186e-02, cfd=9.650e-04] (w=3.028)  IN=3.169e-03 (w=0.693)  TB=2.170e-03 (w=0.533)  WALL=1.213e-15 (w=0.200)  OUT=4.485e-03 (w=0.789)  DATA=1.034e-02 (w=4.959)  DATA_P=1.880e-02 (w=1.000)
+[Adam] ep= 1340  total=1.998e-01  PDE=3.934e-02 [colloc=3.650e-02, cfd=2.838e-03] (w=3.124)  IN=3.207e-03 (w=0.703)  TB=2.134e-03 (w=0.532)  WALL=1.388e-15 (w=0.200)  OUT=3.045e-03 (w=0.546)  DATA=1.024e-02 (w=5.039)  DATA_P=2.027e-02 (w=1.000)
+[Adam] ep= 1360  total=1.691e-01  PDE=2.765e-02 [colloc=2.629e-02, cfd=1.357e-03] (w=3.118)  IN=3.665e-03 (w=0.724)  TB=1.942e-03 (w=0.540)  WALL=1.038e-15 (w=0.200)  OUT=7.492e-04 (w=0.401)  DATA=1.126e-02 (w=5.217)  DATA_P=2.011e-02 (w=1.000)
+[Adam] ep= 1380  total=1.653e-01  PDE=2.853e-02 [colloc=2.696e-02, cfd=1.565e-03] (w=3.149)  IN=3.268e-03 (w=0.734)  TB=1.853e-03 (w=0.540)  WALL=1.122e-15 (w=0.200)  OUT=3.088e-04 (w=0.244)  DATA=1.024e-02 (w=5.220)  DATA_P=1.855e-02 (w=1.000)
+[Adam] ep= 1400  total=1.675e-01  PDE=3.100e-02 [colloc=2.959e-02, cfd=1.409e-03] (w=3.165)  IN=2.913e-03 (w=0.715)  TB=1.966e-03 (w=0.555)  WALL=1.283e-15 (w=0.200)  OUT=2.487e-04 (w=0.205)  DATA=9.350e-03 (w=5.196)  DATA_P=1.759e-02 (w=1.000)
+[Adam] ep= 1420  total=1.489e-01  PDE=2.780e-02 [colloc=2.633e-02, cfd=1.474e-03] (w=3.159)  IN=2.314e-03 (w=0.719)  TB=1.960e-03 (w=0.566)  WALL=1.265e-15 (w=0.200)  OUT=2.556e-04 (w=0.204)  DATA=7.949e-03 (w=5.193)  DATA_P=1.696e-02 (w=1.000)
+[Adam] ep= 1440  total=1.783e-01  PDE=4.052e-02 [colloc=3.917e-02, cfd=1.356e-03] (w=3.235)  IN=1.283e-03 (w=0.659)  TB=2.067e-03 (w=0.570)  WALL=2.101e-15 (w=0.200)  OUT=3.011e-04 (w=0.218)  DATA=5.879e-03 (w=4.969)  DATA_P=1.589e-02 (w=1.000)
+[Adam] ep= 1460  total=1.487e-01  PDE=2.427e-02 [colloc=2.331e-02, cfd=9.634e-04] (w=3.167)  IN=2.921e-03 (w=0.669)  TB=1.960e-03 (w=0.585)  WALL=9.724e-16 (w=0.200)  OUT=3.176e-04 (w=0.275)  DATA=1.053e-02 (w=5.177)  DATA_P=1.416e-02 (w=1.000)
+[Adam] ep= 1480  total=1.246e-01  PDE=2.386e-02 [colloc=2.216e-02, cfd=1.696e-03] (w=3.180)  IN=2.094e-03 (w=0.718)  TB=1.984e-03 (w=0.599)  WALL=1.339e-15 (w=0.200)  OUT=3.834e-04 (w=0.266)  DATA=6.532e-03 (w=4.995)  DATA_P=1.332e-02 (w=1.000)
+[Adam] ep= 1500  total=1.302e-01  PDE=1.996e-02 [colloc=1.906e-02, cfd=8.984e-04] (w=3.181)  IN=3.203e-03 (w=0.718)  TB=1.829e-03 (w=0.585)  WALL=8.955e-16 (w=0.200)  OUT=3.776e-04 (w=0.285)  DATA=1.026e-02 (w=5.001)  DATA_P=1.188e-02 (w=1.000)
+[Adam] ep= 1520  total=1.515e-01  PDE=3.088e-02 [colloc=2.999e-02, cfd=8.834e-04] (w=3.198)  IN=2.388e-03 (w=0.715)  TB=1.847e-03 (w=0.588)  WALL=1.895e-15 (w=0.200)  OUT=4.142e-04 (w=0.293)  DATA=7.877e-03 (w=4.917)  DATA_P=1.112e-02 (w=1.000)
+[Adam] ep= 1540  total=1.179e-01  PDE=1.975e-02 [colloc=1.868e-02, cfd=1.077e-03] (w=3.199)  IN=3.383e-03 (w=0.735)  TB=1.677e-03 (w=0.587)  WALL=1.235e-15 (w=0.200)  OUT=4.290e-04 (w=0.275)  DATA=8.249e-03 (w=4.884)  DATA_P=1.080e-02 (w=1.000)
+[Adam] ep= 1560  total=1.258e-01  PDE=2.304e-02 [colloc=2.185e-02, cfd=1.181e-03] (w=3.187)  IN=3.182e-03 (w=0.752)  TB=1.639e-03 (w=0.583)  WALL=1.312e-15 (w=0.200)  OUT=3.621e-04 (w=0.264)  DATA=7.892e-03 (w=4.914)  DATA_P=1.015e-02 (w=1.000)
+[Adam] ep= 1580  total=1.118e-01  PDE=1.962e-02 [colloc=1.853e-02, cfd=1.092e-03] (w=3.199)  IN=2.835e-03 (w=0.749)  TB=1.518e-03 (w=0.581)  WALL=1.353e-15 (w=0.200)  OUT=3.272e-04 (w=0.261)  DATA=7.427e-03 (w=4.877)  DATA_P=9.701e-03 (w=1.000)
+[Adam] ep= 1600  total=1.055e-01  PDE=1.731e-02 [colloc=1.623e-02, cfd=1.084e-03] (w=3.195)  IN=3.464e-03 (w=0.758)  TB=1.597e-03 (w=0.585)  WALL=1.278e-15 (w=0.200)  OUT=2.979e-04 (w=0.266)  DATA=7.698e-03 (w=4.859)  DATA_P=9.094e-03 (w=1.000)
+[Adam] ep= 1620  total=1.045e-01  PDE=1.846e-02 [colloc=1.741e-02, cfd=1.049e-03] (w=3.210)  IN=2.759e-03 (w=0.748)  TB=1.513e-03 (w=0.587)  WALL=1.377e-15 (w=0.200)  OUT=3.055e-04 (w=0.259)  DATA=6.990e-03 (w=4.816)  DATA_P=8.540e-03 (w=1.000)
+[Adam] ep= 1640  total=1.006e-01  PDE=1.694e-02 [colloc=1.609e-02, cfd=8.482e-04] (w=3.202)  IN=3.147e-03 (w=0.755)  TB=1.535e-03 (w=0.595)  WALL=1.274e-15 (w=0.200)  OUT=2.761e-04 (w=0.264)  DATA=7.289e-03 (w=4.815)  DATA_P=7.914e-03 (w=1.000)
+[Adam] ep= 1660  total=1.015e-01  PDE=1.561e-02 [colloc=1.474e-02, cfd=8.720e-04] (w=3.205)  IN=3.286e-03 (w=0.735)  TB=1.564e-03 (w=0.600)  WALL=9.273e-16 (w=0.200)  OUT=3.341e-04 (w=0.283)  DATA=8.477e-03 (w=4.821)  DATA_P=7.163e-03 (w=1.000)
+[Adam] ep= 1680  total=1.057e-01  PDE=1.561e-02 [colloc=1.476e-02, cfd=8.522e-04] (w=3.183)  IN=3.597e-03 (w=0.734)  TB=1.594e-03 (w=0.622)  WALL=7.045e-16 (w=0.200)  OUT=4.441e-04 (w=0.307)  DATA=9.407e-03 (w=4.860)  DATA_P=6.488e-03 (w=1.000)
+[Adam] ep= 1700  total=1.208e-01  PDE=2.004e-02 [colloc=1.908e-02, cfd=9.677e-04] (w=3.124)  IN=3.233e-03 (w=0.765)  TB=1.664e-03 (w=0.643)  WALL=6.246e-16 (w=0.200)  OUT=7.342e-04 (w=0.335)  DATA=9.735e-03 (w=4.980)  DATA_P=5.945e-03 (w=1.000)
+[Adam] ep= 1720  total=1.680e-01  PDE=4.119e-02 [colloc=4.025e-02, cfd=9.337e-04] (w=3.294)  IN=1.816e-03 (w=0.723)  TB=1.828e-03 (w=0.593)  WALL=3.061e-15 (w=0.200)  OUT=3.187e-04 (w=0.290)  DATA=5.438e-03 (w=4.417)  DATA_P=5.857e-03 (w=1.000)
+[Adam] ep= 1740  total=1.111e-01  PDE=2.444e-02 [colloc=2.377e-02, cfd=6.732e-04] (w=3.261)  IN=1.678e-03 (w=0.741)  TB=1.852e-03 (w=0.613)  WALL=2.155e-15 (w=0.200)  OUT=2.980e-04 (w=0.290)  DATA=5.152e-03 (w=4.496)  DATA_P=5.767e-03 (w=1.000)
+[Adam] ep= 1760  total=9.548e-02  PDE=1.800e-02 [colloc=1.741e-02, cfd=5.944e-04] (w=3.204)  IN=3.483e-03 (w=0.782)  TB=1.727e-03 (w=0.641)  WALL=1.727e-15 (w=0.200)  OUT=3.094e-04 (w=0.286)  DATA=6.146e-03 (w=4.617)  DATA_P=5.501e-03 (w=1.000)
+[Adam] ep= 1780  total=9.063e-02  PDE=1.932e-02 [colloc=1.857e-02, cfd=7.529e-04] (w=3.207)  IN=2.334e-03 (w=0.794)  TB=1.562e-03 (w=0.641)  WALL=2.136e-15 (w=0.200)  OUT=2.875e-04 (w=0.275)  DATA=4.434e-03 (w=4.582)  DATA_P=5.416e-03 (w=1.000)
+[Adam] ep= 1800  total=7.973e-02  PDE=1.524e-02 [colloc=1.455e-02, cfd=6.936e-04] (w=3.200)  IN=2.657e-03 (w=0.799)  TB=1.601e-03 (w=0.655)  WALL=1.775e-15 (w=0.200)  OUT=2.508e-04 (w=0.272)  DATA=4.970e-03 (w=4.576)  DATA_P=4.981e-03 (w=1.000)
+[Adam] ep= 1820  total=7.032e-02  PDE=1.390e-02 [colloc=1.332e-02, cfd=5.820e-04] (w=3.217)  IN=2.216e-03 (w=0.795)  TB=1.517e-03 (w=0.651)  WALL=1.851e-15 (w=0.200)  OUT=2.636e-04 (w=0.276)  DATA=4.000e-03 (w=4.502)  DATA_P=4.759e-03 (w=1.000)
+[Adam] ep= 1840  total=6.771e-02  PDE=1.336e-02 [colloc=1.271e-02, cfd=6.484e-04] (w=3.227)  IN=2.058e-03 (w=0.784)  TB=1.545e-03 (w=0.655)  WALL=1.914e-15 (w=0.200)  OUT=2.728e-04 (w=0.277)  DATA=3.923e-03 (w=4.476)  DATA_P=4.347e-03 (w=1.000)
+[Adam] ep= 1860  total=7.595e-02  PDE=1.573e-02 [colloc=1.517e-02, cfd=5.606e-04] (w=3.209)  IN=2.426e-03 (w=0.808)  TB=1.490e-03 (w=0.666)  WALL=2.029e-15 (w=0.200)  OUT=2.766e-04 (w=0.285)  DATA=4.118e-03 (w=4.465)  DATA_P=4.061e-03 (w=1.000)
+[Adam] ep= 1880  total=6.895e-02  PDE=1.427e-02 [colloc=1.365e-02, cfd=6.245e-04] (w=3.210)  IN=2.115e-03 (w=0.809)  TB=1.501e-03 (w=0.672)  WALL=2.139e-15 (w=0.200)  OUT=2.544e-04 (w=0.284)  DATA=3.706e-03 (w=4.440)  DATA_P=3.883e-03 (w=1.000)
+[Adam] ep= 1900  total=7.543e-02  PDE=1.689e-02 [colloc=1.619e-02, cfd=6.941e-04] (w=3.219)  IN=1.780e-03 (w=0.803)  TB=1.593e-03 (w=0.684)  WALL=2.367e-15 (w=0.200)  OUT=2.649e-04 (w=0.286)  DATA=3.395e-03 (w=4.387)  DATA_P=3.585e-03 (w=1.000)
+[Adam] ep= 1920  total=6.956e-02  PDE=1.563e-02 [colloc=1.504e-02, cfd=5.926e-04] (w=3.207)  IN=1.640e-03 (w=0.806)  TB=1.567e-03 (w=0.688)  WALL=2.507e-15 (w=0.200)  OUT=3.086e-04 (w=0.290)  DATA=3.034e-03 (w=4.419)  DATA_P=3.533e-03 (w=1.000)
+[Adam] ep= 1940  total=7.300e-02  PDE=1.704e-02 [colloc=1.620e-02, cfd=8.440e-04] (w=3.216)  IN=1.499e-03 (w=0.804)  TB=1.655e-03 (w=0.705)  WALL=2.529e-15 (w=0.200)  OUT=3.213e-04 (w=0.297)  DATA=2.865e-03 (w=4.330)  DATA_P=3.325e-03 (w=1.000)
+[Adam] ep= 1960  total=5.800e-02  PDE=1.279e-02 [colloc=1.223e-02, cfd=5.547e-04] (w=3.187)  IN=1.563e-03 (w=0.830)  TB=1.698e-03 (w=0.718)  WALL=2.490e-15 (w=0.200)  OUT=3.166e-04 (w=0.307)  DATA=2.644e-03 (w=4.359)  DATA_P=3.116e-03 (w=1.000)
+[Adam] ep= 1980  total=4.827e-02  PDE=1.040e-02 [colloc=9.921e-03, cfd=4.753e-04] (w=3.207)  IN=1.405e-03 (w=0.817)  TB=1.729e-03 (w=0.727)  WALL=2.427e-15 (w=0.200)  OUT=3.003e-04 (w=0.318)  DATA=2.249e-03 (w=4.258)  DATA_P=2.855e-03 (w=1.000)
+[Adam] ep= 2000  total=5.403e-02  PDE=1.127e-02 [colloc=1.077e-02, cfd=4.949e-04] (w=3.248)  IN=2.507e-03 (w=0.808)  TB=1.675e-03 (w=0.721)  WALL=2.523e-15 (w=0.200)  OUT=3.858e-04 (w=0.345)  DATA=2.790e-03 (w=4.044)  DATA_P=2.786e-03 (w=1.000)
+============================================================
+Phase 2 — BFGS (6000 total calls, 150 iters/batch)
+Adaptive weights are frozen for BFGS stability | method=SSBroyden1
+============================================================
+[BFGS] full data fitting: 4869 CFD points pinned per call
+[BFGS] pressure anchor: 4869 CFD pressure points, w_data_p=1.0
+[BFGS] using CUSTOM _optimize._minimize_bfgs (method_bfgs='SSBroyden1')
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=     4  total=5.185e-02  PDE=1.045e-02 [colloc=9.943e-03, cfd=5.066e-04]  WALL=2.014e-15  DATA=2.990e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=     6  total=4.494e-02  PDE=9.228e-03 [colloc=8.754e-03, cfd=4.739e-04]  WALL=2.309e-15  DATA=2.300e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=     8  total=4.376e-02  PDE=9.054e-03 [colloc=8.635e-03, cfd=4.193e-04]  WALL=2.276e-15  DATA=2.228e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    10  total=4.315e-02  PDE=8.770e-03 [colloc=8.339e-03, cfd=4.311e-04]  WALL=2.197e-15  DATA=2.320e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    12  total=4.306e-02  PDE=8.772e-03 [colloc=8.343e-03, cfd=4.294e-04]  WALL=2.234e-15  DATA=2.285e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    13  total=4.287e-02  PDE=8.708e-03 [colloc=8.282e-03, cfd=4.262e-04]  WALL=2.236e-15  DATA=2.296e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    14  total=4.260e-02  PDE=8.643e-03 [colloc=8.229e-03, cfd=4.133e-04]  WALL=2.233e-15  DATA=2.280e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    15  total=4.207e-02  PDE=8.468e-03 [colloc=8.048e-03, cfd=4.197e-04]  WALL=2.232e-15  DATA=2.298e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    16  total=4.137e-02  PDE=8.250e-03 [colloc=7.794e-03, cfd=4.558e-04]  WALL=2.198e-15  DATA=2.292e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    17  total=4.037e-02  PDE=7.905e-03 [colloc=7.447e-03, cfd=4.579e-04]  WALL=2.205e-15  DATA=2.315e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    18  total=3.881e-02  PDE=7.382e-03 [colloc=6.907e-03, cfd=4.753e-04]  WALL=2.193e-15  DATA=2.391e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    19  total=3.650e-02  PDE=6.585e-03 [colloc=6.124e-03, cfd=4.612e-04]  WALL=2.131e-15  DATA=2.451e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    21  total=3.515e-02  PDE=6.138e-03 [colloc=5.664e-03, cfd=4.734e-04]  WALL=2.093e-15  DATA=2.545e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    23  total=3.446e-02  PDE=6.176e-03 [colloc=5.692e-03, cfd=4.848e-04]  WALL=2.051e-15  DATA=2.343e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    24  total=3.399e-02  PDE=5.787e-03 [colloc=5.297e-03, cfd=4.900e-04]  WALL=1.991e-15  DATA=2.498e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    25  total=3.348e-02  PDE=5.743e-03 [colloc=5.233e-03, cfd=5.100e-04]  WALL=1.999e-15  DATA=2.444e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    26  total=3.283e-02  PDE=5.600e-03 [colloc=5.115e-03, cfd=4.853e-04]  WALL=2.007e-15  DATA=2.399e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    27  total=3.204e-02  PDE=5.597e-03 [colloc=5.131e-03, cfd=4.661e-04]  WALL=2.045e-15  DATA=2.248e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    28  total=3.136e-02  PDE=5.434e-03 [colloc=5.004e-03, cfd=4.303e-04]  WALL=2.088e-15  DATA=2.187e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    29  total=3.067e-02  PDE=5.395e-03 [colloc=4.961e-03, cfd=4.339e-04]  WALL=2.102e-15  DATA=2.066e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    30  total=3.003e-02  PDE=5.333e-03 [colloc=4.898e-03, cfd=4.355e-04]  WALL=2.173e-15  DATA=1.992e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    31  total=2.913e-02  PDE=5.311e-03 [colloc=4.883e-03, cfd=4.282e-04]  WALL=2.210e-15  DATA=1.840e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    32  total=2.842e-02  PDE=5.266e-03 [colloc=4.814e-03, cfd=4.514e-04]  WALL=2.291e-15  DATA=1.715e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    33  total=2.774e-02  PDE=5.176e-03 [colloc=4.709e-03, cfd=4.664e-04]  WALL=2.344e-15  DATA=1.662e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    34  total=2.707e-02  PDE=5.198e-03 [colloc=4.714e-03, cfd=4.848e-04]  WALL=2.390e-15  DATA=1.553e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    35  total=2.621e-02  PDE=5.083e-03 [colloc=4.554e-03, cfd=5.290e-04]  WALL=2.410e-15  DATA=1.503e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    36  total=2.548e-02  PDE=5.102e-03 [colloc=4.530e-03, cfd=5.719e-04]  WALL=2.442e-15  DATA=1.352e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    37  total=2.473e-02  PDE=4.985e-03 [colloc=4.418e-03, cfd=5.668e-04]  WALL=2.491e-15  DATA=1.288e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    38  total=2.406e-02  PDE=4.881e-03 [colloc=4.323e-03, cfd=5.577e-04]  WALL=2.583e-15  DATA=1.261e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    39  total=2.321e-02  PDE=4.650e-03 [colloc=4.095e-03, cfd=5.550e-04]  WALL=2.619e-15  DATA=1.271e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    40  total=2.233e-02  PDE=4.335e-03 [colloc=3.790e-03, cfd=5.450e-04]  WALL=2.649e-15  DATA=1.314e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    41  total=2.154e-02  PDE=4.104e-03 [colloc=3.563e-03, cfd=5.410e-04]  WALL=2.653e-15  DATA=1.257e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    42  total=2.066e-02  PDE=3.944e-03 [colloc=3.405e-03, cfd=5.392e-04]  WALL=2.694e-15  DATA=1.201e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    43  total=2.044e-02  PDE=3.993e-03 [colloc=3.429e-03, cfd=5.635e-04]  WALL=2.730e-15  DATA=1.071e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    44  total=1.999e-02  PDE=3.912e-03 [colloc=3.360e-03, cfd=5.524e-04]  WALL=2.764e-15  DATA=1.057e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    45  total=1.926e-02  PDE=3.720e-03 [colloc=3.198e-03, cfd=5.223e-04]  WALL=2.749e-15  DATA=1.045e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    46  total=1.834e-02  PDE=3.494e-03 [colloc=3.014e-03, cfd=4.798e-04]  WALL=2.881e-15  DATA=1.014e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    47  total=1.818e-02  PDE=3.389e-03 [colloc=2.942e-03, cfd=4.474e-04]  WALL=2.891e-15  DATA=1.118e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    48  total=1.796e-02  PDE=3.328e-03 [colloc=2.892e-03, cfd=4.363e-04]  WALL=2.904e-15  DATA=1.104e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    49  total=1.762e-02  PDE=3.274e-03 [colloc=2.838e-03, cfd=4.356e-04]  WALL=2.871e-15  DATA=1.077e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    50  total=1.728e-02  PDE=3.206e-03 [colloc=2.783e-03, cfd=4.230e-04]  WALL=2.918e-15  DATA=1.045e-03
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    51  total=1.679e-02  PDE=3.147e-03 [colloc=2.739e-03, cfd=4.072e-04]  WALL=2.910e-15  DATA=9.851e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    52  total=1.628e-02  PDE=3.057e-03 [colloc=2.638e-03, cfd=4.190e-04]  WALL=2.902e-15  DATA=8.998e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    53  total=1.594e-02  PDE=3.044e-03 [colloc=2.615e-03, cfd=4.291e-04]  WALL=2.888e-15  DATA=8.616e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    54  total=1.549e-02  PDE=2.922e-03 [colloc=2.515e-03, cfd=4.070e-04]  WALL=2.877e-15  DATA=8.724e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    55  total=1.488e-02  PDE=2.810e-03 [colloc=2.409e-03, cfd=4.012e-04]  WALL=2.850e-15  DATA=8.396e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    56  total=1.448e-02  PDE=2.774e-03 [colloc=2.399e-03, cfd=3.747e-04]  WALL=2.934e-15  DATA=7.633e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    57  total=1.410e-02  PDE=2.701e-03 [colloc=2.329e-03, cfd=3.720e-04]  WALL=2.947e-15  DATA=7.227e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    58  total=1.371e-02  PDE=2.591e-03 [colloc=2.246e-03, cfd=3.449e-04]  WALL=2.944e-15  DATA=6.823e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    60  total=1.346e-02  PDE=2.515e-03 [colloc=2.180e-03, cfd=3.349e-04]  WALL=2.945e-15  DATA=6.779e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    61  total=1.314e-02  PDE=2.403e-03 [colloc=2.090e-03, cfd=3.128e-04]  WALL=2.899e-15  DATA=6.777e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    62  total=1.284e-02  PDE=2.331e-03 [colloc=2.038e-03, cfd=2.925e-04]  WALL=2.924e-15  DATA=6.334e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    63  total=1.248e-02  PDE=2.227e-03 [colloc=1.946e-03, cfd=2.810e-04]  WALL=2.950e-15  DATA=6.318e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    64  total=1.203e-02  PDE=2.147e-03 [colloc=1.879e-03, cfd=2.677e-04]  WALL=2.958e-15  DATA=6.028e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    65  total=1.152e-02  PDE=2.002e-03 [colloc=1.751e-03, cfd=2.511e-04]  WALL=2.966e-15  DATA=5.835e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    67  total=1.124e-02  PDE=1.984e-03 [colloc=1.736e-03, cfd=2.484e-04]  WALL=2.993e-15  DATA=5.541e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    68  total=1.101e-02  PDE=1.935e-03 [colloc=1.681e-03, cfd=2.537e-04]  WALL=3.017e-15  DATA=5.519e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    69  total=1.070e-02  PDE=1.890e-03 [colloc=1.639e-03, cfd=2.511e-04]  WALL=3.081e-15  DATA=5.355e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    70  total=1.056e-02  PDE=1.913e-03 [colloc=1.658e-03, cfd=2.546e-04]  WALL=3.101e-15  DATA=4.854e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    71  total=1.032e-02  PDE=1.870e-03 [colloc=1.617e-03, cfd=2.532e-04]  WALL=3.089e-15  DATA=4.797e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    72  total=1.014e-02  PDE=1.830e-03 [colloc=1.593e-03, cfd=2.371e-04]  WALL=3.209e-15  DATA=4.784e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    73  total=9.944e-03  PDE=1.788e-03 [colloc=1.566e-03, cfd=2.226e-04]  WALL=3.201e-15  DATA=4.552e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    74  total=9.713e-03  PDE=1.739e-03 [colloc=1.524e-03, cfd=2.157e-04]  WALL=3.190e-15  DATA=4.515e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    75  total=9.498e-03  PDE=1.702e-03 [colloc=1.493e-03, cfd=2.085e-04]  WALL=3.244e-15  DATA=4.376e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    76  total=9.224e-03  PDE=1.632e-03 [colloc=1.434e-03, cfd=1.975e-04]  WALL=3.212e-15  DATA=4.436e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    77  total=9.070e-03  PDE=1.584e-03 [colloc=1.398e-03, cfd=1.856e-04]  WALL=3.183e-15  DATA=4.292e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    78  total=8.876e-03  PDE=1.541e-03 [colloc=1.361e-03, cfd=1.801e-04]  WALL=3.191e-15  DATA=4.202e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    79  total=8.741e-03  PDE=1.523e-03 [colloc=1.348e-03, cfd=1.748e-04]  WALL=3.232e-15  DATA=4.293e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    80  total=8.643e-03  PDE=1.491e-03 [colloc=1.318e-03, cfd=1.737e-04]  WALL=3.226e-15  DATA=4.305e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    81  total=8.488e-03  PDE=1.461e-03 [colloc=1.295e-03, cfd=1.661e-04]  WALL=3.251e-15  DATA=4.206e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    82  total=8.296e-03  PDE=1.418e-03 [colloc=1.255e-03, cfd=1.631e-04]  WALL=3.247e-15  DATA=4.125e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    83  total=8.081e-03  PDE=1.386e-03 [colloc=1.232e-03, cfd=1.542e-04]  WALL=3.249e-15  DATA=3.840e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    84  total=7.926e-03  PDE=1.333e-03 [colloc=1.184e-03, cfd=1.490e-04]  WALL=3.268e-15  DATA=3.711e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    85  total=7.855e-03  PDE=1.296e-03 [colloc=1.151e-03, cfd=1.455e-04]  WALL=3.271e-15  DATA=3.846e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    86  total=7.749e-03  PDE=1.271e-03 [colloc=1.129e-03, cfd=1.427e-04]  WALL=3.284e-15  DATA=3.860e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    87  total=7.676e-03  PDE=1.255e-03 [colloc=1.114e-03, cfd=1.402e-04]  WALL=3.260e-15  DATA=3.835e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    88  total=7.589e-03  PDE=1.245e-03 [colloc=1.113e-03, cfd=1.326e-04]  WALL=3.281e-15  DATA=3.828e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    89  total=7.451e-03  PDE=1.224e-03 [colloc=1.101e-03, cfd=1.239e-04]  WALL=3.284e-15  DATA=3.771e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    90  total=7.384e-03  PDE=1.195e-03 [colloc=1.075e-03, cfd=1.195e-04]  WALL=3.265e-15  DATA=3.770e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    91  total=7.257e-03  PDE=1.168e-03 [colloc=1.050e-03, cfd=1.179e-04]  WALL=3.269e-15  DATA=3.785e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    92  total=7.163e-03  PDE=1.138e-03 [colloc=1.023e-03, cfd=1.148e-04]  WALL=3.259e-15  DATA=3.776e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    93  total=7.053e-03  PDE=1.109e-03 [colloc=9.990e-04, cfd=1.099e-04]  WALL=3.286e-15  DATA=3.848e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    94  total=6.992e-03  PDE=1.100e-03 [colloc=9.923e-04, cfd=1.075e-04]  WALL=3.309e-15  DATA=3.770e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    95  total=6.848e-03  PDE=1.077e-03 [colloc=9.735e-04, cfd=1.038e-04]  WALL=3.308e-15  DATA=3.799e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    97  total=6.840e-03  PDE=1.060e-03 [colloc=9.574e-04, cfd=1.022e-04]  WALL=3.323e-15  DATA=3.822e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=    99  total=6.757e-03  PDE=1.047e-03 [colloc=9.463e-04, cfd=1.005e-04]  WALL=3.322e-15  DATA=3.795e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   100  total=6.662e-03  PDE=1.038e-03 [colloc=9.370e-04, cfd=1.007e-04]  WALL=3.356e-15  DATA=3.690e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   101  total=6.563e-03  PDE=1.019e-03 [colloc=9.236e-04, cfd=9.580e-05]  WALL=3.343e-15  DATA=3.668e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   102  total=6.489e-03  PDE=1.006e-03 [colloc=9.121e-04, cfd=9.424e-05]  WALL=3.333e-15  DATA=3.703e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   103  total=6.386e-03  PDE=9.874e-04 [colloc=8.948e-04, cfd=9.254e-05]  WALL=3.338e-15  DATA=3.684e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   104  total=6.322e-03  PDE=9.803e-04 [colloc=8.866e-04, cfd=9.372e-05]  WALL=3.319e-15  DATA=3.540e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   105  total=6.191e-03  PDE=9.569e-04 [colloc=8.663e-04, cfd=9.064e-05]  WALL=3.326e-15  DATA=3.503e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   106  total=6.124e-03  PDE=9.323e-04 [colloc=8.411e-04, cfd=9.112e-05]  WALL=3.331e-15  DATA=3.374e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   107  total=6.084e-03  PDE=9.115e-04 [colloc=8.215e-04, cfd=9.002e-05]  WALL=3.327e-15  DATA=3.335e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   108  total=6.021e-03  PDE=8.966e-04 [colloc=8.089e-04, cfd=8.774e-05]  WALL=3.328e-15  DATA=3.321e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   109  total=5.966e-03  PDE=8.898e-04 [colloc=8.034e-04, cfd=8.644e-05]  WALL=3.322e-15  DATA=3.232e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   110  total=5.888e-03  PDE=8.802e-04 [colloc=7.927e-04, cfd=8.754e-05]  WALL=3.346e-15  DATA=3.156e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   111  total=5.840e-03  PDE=8.587e-04 [colloc=7.775e-04, cfd=8.122e-05]  WALL=3.323e-15  DATA=3.185e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   112  total=5.800e-03  PDE=8.440e-04 [colloc=7.634e-04, cfd=8.056e-05]  WALL=3.360e-15  DATA=3.237e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   113  total=5.707e-03  PDE=8.309e-04 [colloc=7.519e-04, cfd=7.900e-05]  WALL=3.350e-15  DATA=3.227e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   114  total=5.650e-03  PDE=8.208e-04 [colloc=7.420e-04, cfd=7.878e-05]  WALL=3.371e-15  DATA=3.288e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   115  total=5.598e-03  PDE=8.023e-04 [colloc=7.278e-04, cfd=7.454e-05]  WALL=3.370e-15  DATA=3.325e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   116  total=5.520e-03  PDE=7.849e-04 [colloc=7.127e-04, cfd=7.215e-05]  WALL=3.367e-15  DATA=3.360e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   117  total=5.505e-03  PDE=7.690e-04 [colloc=6.996e-04, cfd=6.942e-05]  WALL=3.351e-15  DATA=3.426e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   118  total=5.451e-03  PDE=7.630e-04 [colloc=6.943e-04, cfd=6.867e-05]  WALL=3.350e-15  DATA=3.415e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   119  total=5.382e-03  PDE=7.500e-04 [colloc=6.830e-04, cfd=6.706e-05]  WALL=3.340e-15  DATA=3.337e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   120  total=5.307e-03  PDE=7.394e-04 [colloc=6.752e-04, cfd=6.413e-05]  WALL=3.337e-15  DATA=3.281e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   122  total=5.272e-03  PDE=7.292e-04 [colloc=6.656e-04, cfd=6.358e-05]  WALL=3.337e-15  DATA=3.266e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   123  total=5.268e-03  PDE=7.201e-04 [colloc=6.584e-04, cfd=6.167e-05]  WALL=3.339e-15  DATA=3.230e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   125  total=5.201e-03  PDE=7.115e-04 [colloc=6.507e-04, cfd=6.074e-05]  WALL=3.340e-15  DATA=3.236e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   126  total=5.141e-03  PDE=6.964e-04 [colloc=6.379e-04, cfd=5.858e-05]  WALL=3.334e-15  DATA=3.187e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   127  total=5.132e-03  PDE=6.829e-04 [colloc=6.235e-04, cfd=5.941e-05]  WALL=3.366e-15  DATA=3.203e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   128  total=5.096e-03  PDE=6.791e-04 [colloc=6.200e-04, cfd=5.907e-05]  WALL=3.364e-15  DATA=3.188e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   129  total=5.074e-03  PDE=6.680e-04 [colloc=6.104e-04, cfd=5.759e-05]  WALL=3.346e-15  DATA=3.134e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   130  total=5.047e-03  PDE=6.639e-04 [colloc=6.069e-04, cfd=5.701e-05]  WALL=3.342e-15  DATA=3.104e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   131  total=4.955e-03  PDE=6.564e-04 [colloc=5.995e-04, cfd=5.685e-05]  WALL=3.342e-15  DATA=3.064e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   1  call=   132  total=4.955e-03  PDE=6.536e-04 [colloc=5.957e-04, cfd=5.789e-05]  WALL=3.328e-15  DATA=3.022e-04
+[BFGS] batch 1: H0 not PD — resetting to identity.
+[BFGS-END] batch=   1  last_total=4.949e-03  last_PDE=6.533e-04 [colloc=5.954e-04, cfd=5.785e-05]  last_WALL=3.328e-15  last_DATA=3.021e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   2  call=   156  total=4.973e-03  PDE=6.469e-04 [colloc=5.896e-04, cfd=5.723e-05]  WALL=3.330e-15  DATA=3.021e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   2  call=   157  total=4.940e-03  PDE=6.444e-04 [colloc=5.876e-04, cfd=5.681e-05]  WALL=3.329e-15  DATA=3.024e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   2  call=   159  total=4.902e-03  PDE=6.426e-04 [colloc=5.863e-04, cfd=5.631e-05]  WALL=3.317e-15  DATA=3.027e-04
+[BFGS-END] batch=   2  last_total=4.910e-03  last_PDE=6.422e-04 [colloc=5.860e-04, cfd=5.624e-05]  last_WALL=3.317e-15  last_DATA=3.028e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   3  call=   198  total=4.898e-03  PDE=6.365e-04 [colloc=5.815e-04, cfd=5.506e-05]  WALL=3.311e-15  DATA=3.055e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   3  call=   208  total=4.886e-03  PDE=6.358e-04 [colloc=5.808e-04, cfd=5.498e-05]  WALL=3.315e-15  DATA=3.057e-04
+[BFGS-END] batch=   3  last_total=4.914e-03  last_PDE=6.357e-04 [colloc=5.807e-04, cfd=5.497e-05]  last_WALL=3.315e-15  last_DATA=3.057e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=   4  last_total=4.895e-03  last_PDE=6.355e-04 [colloc=5.806e-04, cfd=5.495e-05]  last_WALL=3.314e-15  last_DATA=3.058e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   5  call=   249  total=4.867e-03  PDE=6.319e-04 [colloc=5.775e-04, cfd=5.447e-05]  WALL=3.306e-15  DATA=3.068e-04
+[BFGS-END] batch=   5  last_total=4.915e-03  last_PDE=6.319e-04 [colloc=5.775e-04, cfd=5.447e-05]  last_WALL=3.306e-15  last_DATA=3.068e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=   6  last_total=4.904e-03  last_PDE=6.319e-04 [colloc=5.775e-04, cfd=5.447e-05]  last_WALL=3.306e-15  last_DATA=3.068e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   7  call=   291  total=4.878e-03  PDE=6.327e-04 [colloc=5.787e-04, cfd=5.400e-05]  WALL=3.318e-15  DATA=3.041e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   7  call=   292  total=4.831e-03  PDE=6.264e-04 [colloc=5.733e-04, cfd=5.311e-05]  WALL=3.322e-15  DATA=3.050e-04
+[BFGS-END] batch=   7  last_total=4.864e-03  last_PDE=6.264e-04 [colloc=5.733e-04, cfd=5.311e-05]  last_WALL=3.322e-15  last_DATA=3.050e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   8  call=   316  total=4.833e-03  PDE=6.266e-04 [colloc=5.747e-04, cfd=5.196e-05]  WALL=3.319e-15  DATA=3.065e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   8  call=   318  total=4.818e-03  PDE=6.243e-04 [colloc=5.728e-04, cfd=5.149e-05]  WALL=3.325e-15  DATA=3.059e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   8  call=   327  total=4.816e-03  PDE=6.239e-04 [colloc=5.725e-04, cfd=5.144e-05]  WALL=3.326e-15  DATA=3.060e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   8  call=   328  total=4.780e-03  PDE=6.230e-04 [colloc=5.716e-04, cfd=5.133e-05]  WALL=3.327e-15  DATA=3.057e-04
+[BFGS-END] batch=   8  last_total=4.811e-03  last_PDE=6.230e-04 [colloc=5.716e-04, cfd=5.133e-05]  last_WALL=3.327e-15  last_DATA=3.057e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   9  call=   360  total=4.814e-03  PDE=6.223e-04 [colloc=5.713e-04, cfd=5.099e-05]  WALL=3.324e-15  DATA=3.047e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   9  call=   369  total=4.809e-03  PDE=6.202e-04 [colloc=5.693e-04, cfd=5.089e-05]  WALL=3.325e-15  DATA=3.037e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   9  call=   370  total=4.803e-03  PDE=6.184e-04 [colloc=5.679e-04, cfd=5.060e-05]  WALL=3.330e-15  DATA=3.039e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   9  call=   371  total=4.791e-03  PDE=6.178e-04 [colloc=5.676e-04, cfd=5.023e-05]  WALL=3.326e-15  DATA=3.029e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   9  call=   387  total=4.775e-03  PDE=6.176e-04 [colloc=5.674e-04, cfd=5.023e-05]  WALL=3.326e-15  DATA=3.028e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   9  call=   399  total=4.771e-03  PDE=6.163e-04 [colloc=5.660e-04, cfd=5.035e-05]  WALL=3.328e-15  DATA=3.016e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   9  call=   400  total=4.766e-03  PDE=6.143e-04 [colloc=5.647e-04, cfd=4.962e-05]  WALL=3.328e-15  DATA=3.011e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   9  call=   402  total=4.759e-03  PDE=6.142e-04 [colloc=5.646e-04, cfd=4.957e-05]  WALL=3.328e-15  DATA=3.008e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=   9  call=   409  total=4.747e-03  PDE=6.142e-04 [colloc=5.646e-04, cfd=4.958e-05]  WALL=3.326e-15  DATA=2.977e-04
+[BFGS-END] batch=   9  last_total=4.792e-03  last_PDE=6.142e-04 [colloc=5.646e-04, cfd=4.958e-05]  last_WALL=3.326e-15  last_DATA=2.977e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  10  call=   440  total=4.754e-03  PDE=6.141e-04 [colloc=5.645e-04, cfd=4.956e-05]  WALL=3.327e-15  DATA=2.976e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  10  call=   441  total=4.751e-03  PDE=6.127e-04 [colloc=5.631e-04, cfd=4.968e-05]  WALL=3.330e-15  DATA=2.971e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  10  call=   447  total=4.735e-03  PDE=6.115e-04 [colloc=5.620e-04, cfd=4.947e-05]  WALL=3.329e-15  DATA=2.962e-04
+[BFGS-END] batch=  10  last_total=4.785e-03  last_PDE=6.115e-04 [colloc=5.620e-04, cfd=4.947e-05]  last_WALL=3.329e-15  last_DATA=2.962e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  11  call=   469  total=4.766e-03  PDE=6.108e-04 [colloc=5.617e-04, cfd=4.919e-05]  WALL=3.330e-15  DATA=2.968e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  11  call=   470  total=4.763e-03  PDE=6.099e-04 [colloc=5.610e-04, cfd=4.885e-05]  WALL=3.331e-15  DATA=2.967e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  11  call=   471  total=4.751e-03  PDE=6.083e-04 [colloc=5.598e-04, cfd=4.854e-05]  WALL=3.331e-15  DATA=2.968e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  11  call=   472  total=4.718e-03  PDE=6.090e-04 [colloc=5.618e-04, cfd=4.727e-05]  WALL=3.336e-15  DATA=2.959e-04
+[BFGS-END] batch=  11  last_total=4.771e-03  last_PDE=6.090e-04 [colloc=5.618e-04, cfd=4.726e-05]  last_WALL=3.336e-15  last_DATA=2.959e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  12  call=   494  total=4.727e-03  PDE=6.085e-04 [colloc=5.617e-04, cfd=4.676e-05]  WALL=3.338e-15  DATA=2.973e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  12  call=   496  total=4.711e-03  PDE=6.059e-04 [colloc=5.596e-04, cfd=4.632e-05]  WALL=3.340e-15  DATA=2.974e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  12  call=   498  total=4.689e-03  PDE=6.043e-04 [colloc=5.584e-04, cfd=4.591e-05]  WALL=3.338e-15  DATA=2.961e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  12  call=   505  total=4.684e-03  PDE=6.011e-04 [colloc=5.553e-04, cfd=4.583e-05]  WALL=3.334e-15  DATA=2.913e-04
+[BFGS-END] batch=  12  last_total=4.707e-03  last_PDE=6.011e-04 [colloc=5.553e-04, cfd=4.583e-05]  last_WALL=3.334e-15  last_DATA=2.913e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  13  last_total=4.729e-03  last_PDE=6.011e-04 [colloc=5.553e-04, cfd=4.583e-05]  last_WALL=3.334e-15  last_DATA=2.913e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  14  call=   545  total=4.730e-03  PDE=6.015e-04 [colloc=5.551e-04, cfd=4.643e-05]  WALL=3.342e-15  DATA=2.904e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  14  call=   546  total=4.678e-03  PDE=5.988e-04 [colloc=5.530e-04, cfd=4.579e-05]  WALL=3.345e-15  DATA=2.925e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  14  call=   548  total=4.662e-03  PDE=5.986e-04 [colloc=5.527e-04, cfd=4.591e-05]  WALL=3.344e-15  DATA=2.921e-04
+[BFGS-END] batch=  14  last_total=4.705e-03  last_PDE=5.986e-04 [colloc=5.527e-04, cfd=4.591e-05]  last_WALL=3.344e-15  last_DATA=2.921e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  15  call=   570  total=4.694e-03  PDE=5.974e-04 [colloc=5.517e-04, cfd=4.575e-05]  WALL=3.344e-15  DATA=2.928e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  15  call=   571  total=4.674e-03  PDE=5.953e-04 [colloc=5.497e-04, cfd=4.563e-05]  WALL=3.339e-15  DATA=2.952e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  15  call=   573  total=4.656e-03  PDE=5.941e-04 [colloc=5.485e-04, cfd=4.561e-05]  WALL=3.338e-15  DATA=2.949e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  15  call=   575  total=4.647e-03  PDE=5.932e-04 [colloc=5.477e-04, cfd=4.541e-05]  WALL=3.337e-15  DATA=2.944e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  15  call=   576  total=4.624e-03  PDE=5.908e-04 [colloc=5.452e-04, cfd=4.554e-05]  WALL=3.335e-15  DATA=2.923e-04
+[BFGS-END] batch=  15  last_total=4.671e-03  last_PDE=5.908e-04 [colloc=5.452e-04, cfd=4.554e-05]  last_WALL=3.335e-15  last_DATA=2.923e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  16  call=   600  total=4.620e-03  PDE=5.907e-04 [colloc=5.452e-04, cfd=4.554e-05]  WALL=3.335e-15  DATA=2.923e-04
+[BFGS] batch 16: H0 not PD — resetting to identity.
+[BFGS-END] batch=  16  last_total=4.660e-03  last_PDE=5.907e-04 [colloc=5.452e-04, cfd=4.554e-05]  last_WALL=3.335e-15  last_DATA=2.923e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  17  last_total=4.661e-03  last_PDE=5.905e-04 [colloc=5.450e-04, cfd=4.553e-05]  last_WALL=3.333e-15  last_DATA=2.922e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  18  call=   642  total=4.647e-03  PDE=5.899e-04 [colloc=5.444e-04, cfd=4.548e-05]  WALL=3.327e-15  DATA=2.920e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  18  call=   644  total=4.637e-03  PDE=5.894e-04 [colloc=5.440e-04, cfd=4.532e-05]  WALL=3.330e-15  DATA=2.914e-04
+[BFGS-END] batch=  18  last_total=4.647e-03  last_PDE=5.894e-04 [colloc=5.440e-04, cfd=4.532e-05]  last_WALL=3.330e-15  last_DATA=2.914e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  19  call=   665  total=4.657e-03  PDE=5.891e-04 [colloc=5.439e-04, cfd=4.524e-05]  WALL=3.335e-15  DATA=2.915e-04
+[BFGS-END] batch=  19  last_total=4.633e-03  last_PDE=5.899e-04 [colloc=5.449e-04, cfd=4.497e-05]  last_WALL=3.340e-15  last_DATA=2.914e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  20  call=   678  total=4.632e-03  PDE=5.885e-04 [colloc=5.435e-04, cfd=4.502e-05]  WALL=3.336e-15  DATA=2.915e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  20  call=   680  total=4.626e-03  PDE=5.877e-04 [colloc=5.428e-04, cfd=4.485e-05]  WALL=3.334e-15  DATA=2.922e-04
+[BFGS-END] batch=  20  last_total=4.642e-03  last_PDE=5.877e-04 [colloc=5.428e-04, cfd=4.485e-05]  last_WALL=3.334e-15  last_DATA=2.922e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  21  last_total=4.651e-03  last_PDE=5.880e-04 [colloc=5.432e-04, cfd=4.479e-05]  last_WALL=3.335e-15  last_DATA=2.926e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  22  call=   720  total=4.609e-03  PDE=5.877e-04 [colloc=5.428e-04, cfd=4.485e-05]  WALL=3.334e-15  DATA=2.922e-04
+[BFGS-END] batch=  22  last_total=4.614e-03  last_PDE=5.877e-04 [colloc=5.428e-04, cfd=4.484e-05]  last_WALL=3.334e-15  last_DATA=2.922e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  23  call=   741  total=4.611e-03  PDE=5.884e-04 [colloc=5.436e-04, cfd=4.482e-05]  WALL=3.329e-15  DATA=2.922e-04
+[BFGS-END] batch=  23  last_total=4.653e-03  last_PDE=5.884e-04 [colloc=5.436e-04, cfd=4.482e-05]  last_WALL=3.329e-15  last_DATA=2.922e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  24  call=   763  total=4.615e-03  PDE=5.887e-04 [colloc=5.436e-04, cfd=4.503e-05]  WALL=3.332e-15  DATA=2.921e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  24  call=   772  total=4.611e-03  PDE=5.873e-04 [colloc=5.424e-04, cfd=4.497e-05]  WALL=3.334e-15  DATA=2.920e-04
+[BFGS-END] batch=  24  last_total=4.649e-03  last_PDE=5.873e-04 [colloc=5.424e-04, cfd=4.497e-05]  last_WALL=3.334e-15  last_DATA=2.920e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  25  call=   792  total=4.634e-03  PDE=5.869e-04 [colloc=5.422e-04, cfd=4.474e-05]  WALL=3.333e-15  DATA=2.920e-04
+[BFGS-END] batch=  25  last_total=4.635e-03  last_PDE=5.869e-04 [colloc=5.422e-04, cfd=4.472e-05]  last_WALL=3.334e-15  last_DATA=2.919e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  26  last_total=4.673e-03  last_PDE=5.869e-04 [colloc=5.422e-04, cfd=4.474e-05]  last_WALL=3.333e-15  last_DATA=2.920e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  27  call=   837  total=4.625e-03  PDE=5.869e-04 [colloc=5.422e-04, cfd=4.474e-05]  WALL=3.333e-15  DATA=2.920e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  27  call=   844  total=4.612e-03  PDE=5.866e-04 [colloc=5.420e-04, cfd=4.464e-05]  WALL=3.335e-15  DATA=2.913e-04
+[BFGS-END] batch=  27  last_total=4.634e-03  last_PDE=5.866e-04 [colloc=5.420e-04, cfd=4.464e-05]  last_WALL=3.335e-15  last_DATA=2.913e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  28  last_total=4.662e-03  last_PDE=5.866e-04 [colloc=5.420e-04, cfd=4.464e-05]  last_WALL=3.335e-15  last_DATA=2.912e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  29  call=   885  total=4.636e-03  PDE=5.869e-04 [colloc=5.422e-04, cfd=4.468e-05]  WALL=3.334e-15  DATA=2.907e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  29  call=   887  total=4.599e-03  PDE=5.873e-04 [colloc=5.426e-04, cfd=4.470e-05]  WALL=3.335e-15  DATA=2.894e-04
+[BFGS-END] batch=  29  last_total=4.641e-03  last_PDE=5.873e-04 [colloc=5.426e-04, cfd=4.470e-05]  last_WALL=3.335e-15  last_DATA=2.894e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  30  call=   908  total=4.618e-03  PDE=5.880e-04 [colloc=5.435e-04, cfd=4.445e-05]  WALL=3.334e-15  DATA=2.895e-04
+[BFGS-END] batch=  30  last_total=4.637e-03  last_PDE=5.880e-04 [colloc=5.435e-04, cfd=4.445e-05]  last_WALL=3.334e-15  last_DATA=2.895e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  31  call=   930  total=4.630e-03  PDE=5.879e-04 [colloc=5.435e-04, cfd=4.445e-05]  WALL=3.334e-15  DATA=2.895e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  31  call=   931  total=4.614e-03  PDE=5.876e-04 [colloc=5.432e-04, cfd=4.441e-05]  WALL=3.334e-15  DATA=2.898e-04
+[BFGS-END] batch=  31  last_total=4.623e-03  last_PDE=5.876e-04 [colloc=5.432e-04, cfd=4.441e-05]  last_WALL=3.334e-15  last_DATA=2.898e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  32  call=   952  total=4.646e-03  PDE=5.871e-04 [colloc=5.426e-04, cfd=4.448e-05]  WALL=3.335e-15  DATA=2.897e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  32  call=   953  total=4.632e-03  PDE=5.881e-04 [colloc=5.433e-04, cfd=4.476e-05]  WALL=3.334e-15  DATA=2.878e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  32  call=   955  total=4.613e-03  PDE=5.873e-04 [colloc=5.430e-04, cfd=4.436e-05]  WALL=3.337e-15  DATA=2.868e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  32  call=   957  total=4.606e-03  PDE=5.868e-04 [colloc=5.425e-04, cfd=4.435e-05]  WALL=3.338e-15  DATA=2.865e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  32  call=   959  total=4.602e-03  PDE=5.865e-04 [colloc=5.422e-04, cfd=4.433e-05]  WALL=3.338e-15  DATA=2.866e-04
+[BFGS-END] batch=  32  last_total=4.621e-03  last_PDE=5.865e-04 [colloc=5.422e-04, cfd=4.433e-05]  last_WALL=3.338e-15  last_DATA=2.866e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  33  call=   979  total=4.631e-03  PDE=5.860e-04 [colloc=5.416e-04, cfd=4.439e-05]  WALL=3.340e-15  DATA=2.871e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  33  call=   980  total=4.626e-03  PDE=5.864e-04 [colloc=5.417e-04, cfd=4.463e-05]  WALL=3.343e-15  DATA=2.857e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  33  call=   988  total=4.597e-03  PDE=5.838e-04 [colloc=5.391e-04, cfd=4.472e-05]  WALL=3.344e-15  DATA=2.869e-04
+[BFGS-END] batch=  33  last_total=4.629e-03  last_PDE=5.838e-04 [colloc=5.391e-04, cfd=4.472e-05]  last_WALL=3.344e-15  last_DATA=2.869e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  34  call=  1012  total=4.603e-03  PDE=5.838e-04 [colloc=5.391e-04, cfd=4.472e-05]  WALL=3.344e-15  DATA=2.869e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  34  call=  1014  total=4.593e-03  PDE=5.832e-04 [colloc=5.386e-04, cfd=4.454e-05]  WALL=3.346e-15  DATA=2.878e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  34  call=  1016  total=4.589e-03  PDE=5.828e-04 [colloc=5.384e-04, cfd=4.444e-05]  WALL=3.346e-15  DATA=2.879e-04
+[BFGS-END] batch=  34  last_total=4.631e-03  last_PDE=5.828e-04 [colloc=5.384e-04, cfd=4.444e-05]  last_WALL=3.346e-15  last_DATA=2.879e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  35  call=  1037  total=4.615e-03  PDE=5.827e-04 [colloc=5.383e-04, cfd=4.435e-05]  WALL=3.347e-15  DATA=2.880e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  35  call=  1044  total=4.613e-03  PDE=5.820e-04 [colloc=5.377e-04, cfd=4.436e-05]  WALL=3.348e-15  DATA=2.886e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  35  call=  1048  total=4.600e-03  PDE=5.817e-04 [colloc=5.375e-04, cfd=4.418e-05]  WALL=3.348e-15  DATA=2.886e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  35  call=  1056  total=4.573e-03  PDE=5.796e-04 [colloc=5.359e-04, cfd=4.370e-05]  WALL=3.340e-15  DATA=2.898e-04
+[BFGS-END] batch=  35  last_total=4.615e-03  last_PDE=5.796e-04 [colloc=5.359e-04, cfd=4.370e-05]  last_WALL=3.340e-15  last_DATA=2.898e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  36  call=  1079  total=4.577e-03  PDE=5.796e-04 [colloc=5.359e-04, cfd=4.370e-05]  WALL=3.340e-15  DATA=2.897e-04
+[BFGS-END] batch=  36  last_total=4.617e-03  last_PDE=5.796e-04 [colloc=5.359e-04, cfd=4.370e-05]  last_WALL=3.340e-15  last_DATA=2.897e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  37  call=  1100  total=4.593e-03  PDE=5.789e-04 [colloc=5.353e-04, cfd=4.359e-05]  WALL=3.342e-15  DATA=2.896e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  37  call=  1107  total=4.586e-03  PDE=5.771e-04 [colloc=5.339e-04, cfd=4.313e-05]  WALL=3.342e-15  DATA=2.904e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  37  call=  1108  total=4.581e-03  PDE=5.752e-04 [colloc=5.316e-04, cfd=4.360e-05]  WALL=3.343e-15  DATA=2.898e-04
+[BFGS-END] batch=  37  last_total=4.578e-03  last_PDE=5.750e-04 [colloc=5.315e-04, cfd=4.355e-05]  last_WALL=3.343e-15  last_DATA=2.899e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  38  call=  1130  total=4.582e-03  PDE=5.741e-04 [colloc=5.307e-04, cfd=4.335e-05]  WALL=3.345e-15  DATA=2.925e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  38  call=  1136  total=4.576e-03  PDE=5.737e-04 [colloc=5.305e-04, cfd=4.322e-05]  WALL=3.345e-15  DATA=2.925e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  38  call=  1146  total=4.567e-03  PDE=5.730e-04 [colloc=5.301e-04, cfd=4.295e-05]  WALL=3.346e-15  DATA=2.921e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  38  call=  1147  total=4.550e-03  PDE=5.712e-04 [colloc=5.281e-04, cfd=4.306e-05]  WALL=3.351e-15  DATA=2.933e-04
+[BFGS] batch 38: H0 not PD — resetting to identity.
+[BFGS-END] batch=  38  last_total=4.571e-03  last_PDE=5.712e-04 [colloc=5.281e-04, cfd=4.306e-05]  last_WALL=3.351e-15  last_DATA=2.933e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  39  call=  1173  total=4.569e-03  PDE=5.706e-04 [colloc=5.276e-04, cfd=4.302e-05]  WALL=3.349e-15  DATA=2.933e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  39  call=  1175  total=4.563e-03  PDE=5.715e-04 [colloc=5.287e-04, cfd=4.278e-05]  WALL=3.344e-15  DATA=2.918e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  39  call=  1182  total=4.545e-03  PDE=5.718e-04 [colloc=5.291e-04, cfd=4.267e-05]  WALL=3.351e-15  DATA=2.913e-04
+[BFGS-END] batch=  39  last_total=4.553e-03  last_PDE=5.718e-04 [colloc=5.291e-04, cfd=4.267e-05]  last_WALL=3.351e-15  last_DATA=2.913e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  40  last_total=4.581e-03  last_PDE=5.718e-04 [colloc=5.291e-04, cfd=4.267e-05]  last_WALL=3.351e-15  last_DATA=2.913e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  41  call=  1227  total=4.556e-03  PDE=5.713e-04 [colloc=5.287e-04, cfd=4.267e-05]  WALL=3.344e-15  DATA=2.906e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  41  call=  1241  total=4.554e-03  PDE=5.712e-04 [colloc=5.285e-04, cfd=4.266e-05]  WALL=3.344e-15  DATA=2.905e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  41  call=  1247  total=4.532e-03  PDE=5.712e-04 [colloc=5.285e-04, cfd=4.270e-05]  WALL=3.348e-15  DATA=2.900e-04
+[BFGS-END] batch=  41  last_total=4.535e-03  last_PDE=5.712e-04 [colloc=5.285e-04, cfd=4.270e-05]  last_WALL=3.348e-15  last_DATA=2.900e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  42  call=  1282  total=4.547e-03  PDE=5.711e-04 [colloc=5.284e-04, cfd=4.269e-05]  WALL=3.347e-15  DATA=2.899e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  42  call=  1283  total=4.540e-03  PDE=5.709e-04 [colloc=5.282e-04, cfd=4.264e-05]  WALL=3.343e-15  DATA=2.893e-04
+[BFGS-END] batch=  42  last_total=4.538e-03  last_PDE=5.709e-04 [colloc=5.282e-04, cfd=4.264e-05]  last_WALL=3.343e-15  last_DATA=2.893e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  43  call=  1305  total=4.532e-03  PDE=5.700e-04 [colloc=5.275e-04, cfd=4.251e-05]  WALL=3.346e-15  DATA=2.884e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  43  call=  1318  total=4.527e-03  PDE=5.703e-04 [colloc=5.277e-04, cfd=4.257e-05]  WALL=3.344e-15  DATA=2.874e-04
+[BFGS-END] batch=  43  last_total=4.548e-03  last_PDE=5.703e-04 [colloc=5.277e-04, cfd=4.257e-05]  last_WALL=3.344e-15  last_DATA=2.874e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  44  call=  1339  total=4.547e-03  PDE=5.698e-04 [colloc=5.270e-04, cfd=4.275e-05]  WALL=3.341e-15  DATA=2.863e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  44  call=  1350  total=4.545e-03  PDE=5.699e-04 [colloc=5.271e-04, cfd=4.271e-05]  WALL=3.340e-15  DATA=2.858e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  44  call=  1352  total=4.534e-03  PDE=5.705e-04 [colloc=5.278e-04, cfd=4.269e-05]  WALL=3.337e-15  DATA=2.843e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  44  call=  1355  total=4.526e-03  PDE=5.705e-04 [colloc=5.278e-04, cfd=4.269e-05]  WALL=3.337e-15  DATA=2.843e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  44  call=  1362  total=4.516e-03  PDE=5.697e-04 [colloc=5.272e-04, cfd=4.248e-05]  WALL=3.335e-15  DATA=2.842e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  44  call=  1372  total=4.506e-03  PDE=5.697e-04 [colloc=5.272e-04, cfd=4.249e-05]  WALL=3.336e-15  DATA=2.828e-04
+[BFGS-END] batch=  44  last_total=4.531e-03  last_PDE=5.697e-04 [colloc=5.272e-04, cfd=4.249e-05]  last_WALL=3.336e-15  last_DATA=2.828e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  45  call=  1393  total=4.538e-03  PDE=5.697e-04 [colloc=5.272e-04, cfd=4.249e-05]  WALL=3.336e-15  DATA=2.828e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  45  call=  1395  total=4.529e-03  PDE=5.697e-04 [colloc=5.273e-04, cfd=4.247e-05]  WALL=3.334e-15  DATA=2.827e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  45  call=  1404  total=4.522e-03  PDE=5.696e-04 [colloc=5.271e-04, cfd=4.245e-05]  WALL=3.333e-15  DATA=2.829e-04
+[BFGS-END] batch=  45  last_total=4.541e-03  last_PDE=5.696e-04 [colloc=5.271e-04, cfd=4.245e-05]  last_WALL=3.333e-15  last_DATA=2.830e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  46  call=  1425  total=4.535e-03  PDE=5.695e-04 [colloc=5.268e-04, cfd=4.262e-05]  WALL=3.334e-15  DATA=2.830e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  46  call=  1431  total=4.517e-03  PDE=5.695e-04 [colloc=5.268e-04, cfd=4.262e-05]  WALL=3.334e-15  DATA=2.830e-04
+[BFGS-END] batch=  46  last_total=4.542e-03  last_PDE=5.695e-04 [colloc=5.268e-04, cfd=4.262e-05]  last_WALL=3.334e-15  last_DATA=2.830e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  47  last_total=4.561e-03  last_PDE=5.695e-04 [colloc=5.268e-04, cfd=4.262e-05]  last_WALL=3.334e-15  last_DATA=2.830e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  48  call=  1481  total=4.514e-03  PDE=5.693e-04 [colloc=5.268e-04, cfd=4.254e-05]  WALL=3.336e-15  DATA=2.833e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  48  call=  1493  total=4.506e-03  PDE=5.696e-04 [colloc=5.270e-04, cfd=4.260e-05]  WALL=3.336e-15  DATA=2.832e-04
+[BFGS] batch 48: H0 not PD — resetting to identity.
+[BFGS-END] batch=  48  last_total=4.543e-03  last_PDE=5.696e-04 [colloc=5.270e-04, cfd=4.260e-05]  last_WALL=3.336e-15  last_DATA=2.832e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  49  call=  1513  total=4.538e-03  PDE=5.696e-04 [colloc=5.270e-04, cfd=4.259e-05]  WALL=3.340e-15  DATA=2.835e-04
+[BFGS-END] batch=  49  last_total=4.551e-03  last_PDE=5.696e-04 [colloc=5.270e-04, cfd=4.259e-05]  last_WALL=3.340e-15  last_DATA=2.835e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  50  call=  1533  total=4.561e-03  PDE=5.692e-04 [colloc=5.267e-04, cfd=4.250e-05]  WALL=3.338e-15  DATA=2.841e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  50  call=  1535  total=4.505e-03  PDE=5.691e-04 [colloc=5.266e-04, cfd=4.250e-05]  WALL=3.338e-15  DATA=2.841e-04
+[BFGS-END] batch=  50  last_total=4.528e-03  last_PDE=5.691e-04 [colloc=5.266e-04, cfd=4.250e-05]  last_WALL=3.338e-15  last_DATA=2.842e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  51  last_total=4.543e-03  last_PDE=5.690e-04 [colloc=5.265e-04, cfd=4.249e-05]  last_WALL=3.338e-15  last_DATA=2.842e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  52  call=  1577  total=4.547e-03  PDE=5.691e-04 [colloc=5.266e-04, cfd=4.250e-05]  WALL=3.338e-15  DATA=2.842e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  52  call=  1589  total=4.511e-03  PDE=5.689e-04 [colloc=5.264e-04, cfd=4.248e-05]  WALL=3.337e-15  DATA=2.843e-04
+[BFGS-END] batch=  52  last_total=4.523e-03  last_PDE=5.689e-04 [colloc=5.264e-04, cfd=4.247e-05]  last_WALL=3.337e-15  last_DATA=2.843e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  53  call=  1609  total=4.539e-03  PDE=5.688e-04 [colloc=5.264e-04, cfd=4.244e-05]  WALL=3.338e-15  DATA=2.845e-04
+[BFGS-END] batch=  53  last_total=4.570e-03  last_PDE=5.688e-04 [colloc=5.264e-04, cfd=4.244e-05]  last_WALL=3.338e-15  last_DATA=2.845e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  54  last_total=4.544e-03  last_PDE=5.688e-04 [colloc=5.263e-04, cfd=4.244e-05]  last_WALL=3.338e-15  last_DATA=2.845e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  55  last_total=4.571e-03  last_PDE=5.688e-04 [colloc=5.263e-04, cfd=4.244e-05]  last_WALL=3.338e-15  last_DATA=2.845e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  56  call=  1665  total=4.526e-03  PDE=5.686e-04 [colloc=5.262e-04, cfd=4.240e-05]  WALL=3.338e-15  DATA=2.846e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  56  call=  1674  total=4.521e-03  PDE=5.684e-04 [colloc=5.260e-04, cfd=4.239e-05]  WALL=3.339e-15  DATA=2.846e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  56  call=  1685  total=4.518e-03  PDE=5.681e-04 [colloc=5.257e-04, cfd=4.239e-05]  WALL=3.340e-15  DATA=2.847e-04
+[BFGS-END] batch=  56  last_total=4.552e-03  last_PDE=5.681e-04 [colloc=5.257e-04, cfd=4.239e-05]  last_WALL=3.340e-15  last_DATA=2.847e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  57  call=  1705  total=4.531e-03  PDE=5.682e-04 [colloc=5.258e-04, cfd=4.238e-05]  WALL=3.339e-15  DATA=2.845e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  57  call=  1714  total=4.528e-03  PDE=5.679e-04 [colloc=5.256e-04, cfd=4.234e-05]  WALL=3.337e-15  DATA=2.847e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  57  call=  1716  total=4.521e-03  PDE=5.679e-04 [colloc=5.256e-04, cfd=4.236e-05]  WALL=3.336e-15  DATA=2.846e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  57  call=  1718  total=4.508e-03  PDE=5.675e-04 [colloc=5.252e-04, cfd=4.232e-05]  WALL=3.336e-15  DATA=2.846e-04
+[BFGS-END] batch=  57  last_total=4.556e-03  last_PDE=5.675e-04 [colloc=5.252e-04, cfd=4.232e-05]  last_WALL=3.336e-15  last_DATA=2.846e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  58  call=  1739  total=4.540e-03  PDE=5.679e-04 [colloc=5.257e-04, cfd=4.229e-05]  WALL=3.336e-15  DATA=2.847e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  58  call=  1748  total=4.529e-03  PDE=5.672e-04 [colloc=5.250e-04, cfd=4.223e-05]  WALL=3.341e-15  DATA=2.849e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  58  call=  1750  total=4.518e-03  PDE=5.669e-04 [colloc=5.247e-04, cfd=4.221e-05]  WALL=3.340e-15  DATA=2.851e-04
+[BFGS] batch 58: H0 not PD — resetting to identity.
+[BFGS-END] batch=  58  last_total=4.554e-03  last_PDE=5.669e-04 [colloc=5.247e-04, cfd=4.221e-05]  last_WALL=3.340e-15  last_DATA=2.851e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  59  call=  1771  total=4.559e-03  PDE=5.670e-04 [colloc=5.248e-04, cfd=4.221e-05]  WALL=3.341e-15  DATA=2.852e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  59  call=  1773  total=4.529e-03  PDE=5.675e-04 [colloc=5.253e-04, cfd=4.220e-05]  WALL=3.340e-15  DATA=2.851e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  59  call=  1776  total=4.524e-03  PDE=5.675e-04 [colloc=5.253e-04, cfd=4.220e-05]  WALL=3.340e-15  DATA=2.851e-04
+[BFGS-END] batch=  59  last_total=4.538e-03  last_PDE=5.675e-04 [colloc=5.253e-04, cfd=4.220e-05]  last_WALL=3.340e-15  last_DATA=2.851e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  60  call=  1797  total=4.532e-03  PDE=5.675e-04 [colloc=5.253e-04, cfd=4.220e-05]  WALL=3.340e-15  DATA=2.851e-04
+[BFGS-END] batch=  60  last_total=4.591e-03  last_PDE=5.715e-04 [colloc=5.290e-04, cfd=4.256e-05]  last_WALL=3.327e-15  last_DATA=2.849e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  61  call=  1814  total=4.524e-03  PDE=5.675e-04 [colloc=5.253e-04, cfd=4.222e-05]  WALL=3.339e-15  DATA=2.850e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  61  call=  1828  total=4.504e-03  PDE=5.675e-04 [colloc=5.253e-04, cfd=4.222e-05]  WALL=3.339e-15  DATA=2.850e-04
+[BFGS-END] batch=  61  last_total=4.536e-03  last_PDE=5.675e-04 [colloc=5.253e-04, cfd=4.222e-05]  last_WALL=3.339e-15  last_DATA=2.850e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  62  call=  1849  total=4.534e-03  PDE=5.675e-04 [colloc=5.253e-04, cfd=4.222e-05]  WALL=3.339e-15  DATA=2.850e-04
+[BFGS-END] batch=  62  last_total=4.541e-03  last_PDE=5.678e-04 [colloc=5.255e-04, cfd=4.224e-05]  last_WALL=3.345e-15  last_DATA=2.853e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  63  call=  1869  total=4.522e-03  PDE=5.675e-04 [colloc=5.253e-04, cfd=4.222e-05]  WALL=3.339e-15  DATA=2.850e-04
+[BFGS-END] batch=  63  last_total=4.533e-03  last_PDE=5.675e-04 [colloc=5.253e-04, cfd=4.222e-05]  last_WALL=3.339e-15  last_DATA=2.850e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  64  last_total=4.556e-03  last_PDE=5.676e-04 [colloc=5.254e-04, cfd=4.222e-05]  last_WALL=3.345e-15  last_DATA=2.854e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  65  last_total=4.542e-03  last_PDE=5.675e-04 [colloc=5.253e-04, cfd=4.222e-05]  last_WALL=3.339e-15  last_DATA=2.850e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  66  call=  1924  total=4.531e-03  PDE=5.674e-04 [colloc=5.252e-04, cfd=4.222e-05]  WALL=3.340e-15  DATA=2.851e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  66  call=  1926  total=4.512e-03  PDE=5.674e-04 [colloc=5.251e-04, cfd=4.222e-05]  WALL=3.342e-15  DATA=2.852e-04
+[BFGS-END] batch=  66  last_total=4.544e-03  last_PDE=5.673e-04 [colloc=5.251e-04, cfd=4.222e-05]  last_WALL=3.342e-15  last_DATA=2.852e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  67  call=  1961  total=4.531e-03  PDE=5.672e-04 [colloc=5.250e-04, cfd=4.221e-05]  WALL=3.341e-15  DATA=2.852e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  67  call=  1973  total=4.518e-03  PDE=5.669e-04 [colloc=5.247e-04, cfd=4.220e-05]  WALL=3.340e-15  DATA=2.853e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  67  call=  1983  total=4.515e-03  PDE=5.670e-04 [colloc=5.248e-04, cfd=4.222e-05]  WALL=3.339e-15  DATA=2.851e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  67  call=  1985  total=4.509e-03  PDE=5.671e-04 [colloc=5.248e-04, cfd=4.222e-05]  WALL=3.339e-15  DATA=2.851e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  67  call=  1987  total=4.498e-03  PDE=5.670e-04 [colloc=5.248e-04, cfd=4.220e-05]  WALL=3.339e-15  DATA=2.851e-04
+[BFGS-END] batch=  67  last_total=4.529e-03  last_PDE=5.670e-04 [colloc=5.248e-04, cfd=4.220e-05]  last_WALL=3.339e-15  last_DATA=2.851e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  68  call=  2007  total=4.549e-03  PDE=5.670e-04 [colloc=5.248e-04, cfd=4.214e-05]  WALL=3.337e-15  DATA=2.857e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  68  call=  2017  total=4.528e-03  PDE=5.669e-04 [colloc=5.247e-04, cfd=4.215e-05]  WALL=3.338e-15  DATA=2.852e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  68  call=  2020  total=4.522e-03  PDE=5.667e-04 [colloc=5.246e-04, cfd=4.218e-05]  WALL=3.338e-15  DATA=2.848e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  68  call=  2031  total=4.511e-03  PDE=5.668e-04 [colloc=5.246e-04, cfd=4.218e-05]  WALL=3.337e-15  DATA=2.848e-04
+[BFGS-END] batch=  68  last_total=4.549e-03  last_PDE=5.668e-04 [colloc=5.246e-04, cfd=4.218e-05]  last_WALL=3.337e-15  last_DATA=2.848e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  69  call=  2051  total=4.534e-03  PDE=5.663e-04 [colloc=5.241e-04, cfd=4.215e-05]  WALL=3.339e-15  DATA=2.849e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  69  call=  2053  total=4.517e-03  PDE=5.662e-04 [colloc=5.241e-04, cfd=4.210e-05]  WALL=3.339e-15  DATA=2.848e-04
+[BFGS-END] batch=  69  last_total=4.556e-03  last_PDE=5.661e-04 [colloc=5.240e-04, cfd=4.210e-05]  last_WALL=3.339e-15  last_DATA=2.848e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  70  call=  2076  total=4.516e-03  PDE=5.662e-04 [colloc=5.241e-04, cfd=4.210e-05]  WALL=3.339e-15  DATA=2.848e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  70  call=  2078  total=4.501e-03  PDE=5.662e-04 [colloc=5.241e-04, cfd=4.211e-05]  WALL=3.338e-15  DATA=2.847e-04
+[BFGS] batch 70: H0 not PD — resetting to identity.
+[BFGS-END] batch=  70  last_total=4.524e-03  last_PDE=5.662e-04 [colloc=5.241e-04, cfd=4.211e-05]  last_WALL=3.338e-15  last_DATA=2.847e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  71  last_total=4.530e-03  last_PDE=5.664e-04 [colloc=5.243e-04, cfd=4.211e-05]  last_WALL=3.342e-15  last_DATA=2.849e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  72  call=  2119  total=4.527e-03  PDE=5.663e-04 [colloc=5.242e-04, cfd=4.211e-05]  WALL=3.341e-15  DATA=2.848e-04
+[BFGS-END] batch=  72  last_total=4.531e-03  last_PDE=5.686e-04 [colloc=5.265e-04, cfd=4.219e-05]  last_WALL=3.348e-15  last_DATA=2.864e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  73  call=  2137  total=4.483e-03  PDE=5.662e-04 [colloc=5.241e-04, cfd=4.207e-05]  WALL=3.341e-15  DATA=2.850e-04
+[BFGS-END] batch=  73  last_total=4.553e-03  last_PDE=5.662e-04 [colloc=5.241e-04, cfd=4.207e-05]  last_WALL=3.341e-15  last_DATA=2.850e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  74  call=  2157  total=4.550e-03  PDE=5.662e-04 [colloc=5.242e-04, cfd=4.206e-05]  WALL=3.339e-15  DATA=2.850e-04
+[BFGS-END] batch=  74  last_total=4.540e-03  last_PDE=5.671e-04 [colloc=5.250e-04, cfd=4.211e-05]  last_WALL=3.336e-15  last_DATA=2.849e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  75  call=  2177  total=4.531e-03  PDE=5.662e-04 [colloc=5.242e-04, cfd=4.206e-05]  WALL=3.339e-15  DATA=2.850e-04
+[BFGS-END] batch=  75  last_total=4.549e-03  last_PDE=5.662e-04 [colloc=5.242e-04, cfd=4.206e-05]  last_WALL=3.339e-15  last_DATA=2.850e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  76  call=  2200  total=4.528e-03  PDE=5.664e-04 [colloc=5.244e-04, cfd=4.208e-05]  WALL=3.339e-15  DATA=2.849e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  76  call=  2202  total=4.519e-03  PDE=5.665e-04 [colloc=5.245e-04, cfd=4.208e-05]  WALL=3.340e-15  DATA=2.849e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  76  call=  2204  total=4.507e-03  PDE=5.664e-04 [colloc=5.244e-04, cfd=4.208e-05]  WALL=3.340e-15  DATA=2.848e-04
+[BFGS-END] batch=  76  last_total=4.526e-03  last_PDE=5.664e-04 [colloc=5.243e-04, cfd=4.208e-05]  last_WALL=3.340e-15  last_DATA=2.848e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  77  call=  2226  total=4.520e-03  PDE=5.664e-04 [colloc=5.244e-04, cfd=4.208e-05]  WALL=3.340e-15  DATA=2.848e-04
+[BFGS-END] batch=  77  last_total=4.555e-03  last_PDE=5.664e-04 [colloc=5.243e-04, cfd=4.208e-05]  last_WALL=3.340e-15  last_DATA=2.848e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  78  call=  2246  total=4.527e-03  PDE=5.662e-04 [colloc=5.241e-04, cfd=4.207e-05]  WALL=3.339e-15  DATA=2.849e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  78  call=  2248  total=4.525e-03  PDE=5.659e-04 [colloc=5.238e-04, cfd=4.208e-05]  WALL=3.341e-15  DATA=2.849e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  78  call=  2256  total=4.518e-03  PDE=5.658e-04 [colloc=5.238e-04, cfd=4.202e-05]  WALL=3.339e-15  DATA=2.850e-04
+[BFGS-END] batch=  78  last_total=4.528e-03  last_PDE=5.642e-04 [colloc=5.221e-04, cfd=4.214e-05]  last_WALL=3.333e-15  last_DATA=2.849e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  79  call=  2288  total=4.499e-03  PDE=5.658e-04 [colloc=5.238e-04, cfd=4.202e-05]  WALL=3.339e-15  DATA=2.849e-04
+[BFGS-END] batch=  79  last_total=4.534e-03  last_PDE=5.658e-04 [colloc=5.238e-04, cfd=4.202e-05]  last_WALL=3.339e-15  last_DATA=2.849e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  80  call=  2308  total=4.547e-03  PDE=5.654e-04 [colloc=5.234e-04, cfd=4.198e-05]  WALL=3.336e-15  DATA=2.847e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  80  call=  2310  total=4.531e-03  PDE=5.650e-04 [colloc=5.230e-04, cfd=4.195e-05]  WALL=3.337e-15  DATA=2.840e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  80  call=  2326  total=4.524e-03  PDE=5.650e-04 [colloc=5.231e-04, cfd=4.195e-05]  WALL=3.337e-15  DATA=2.840e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  80  call=  2337  total=4.524e-03  PDE=5.651e-04 [colloc=5.231e-04, cfd=4.196e-05]  WALL=3.336e-15  DATA=2.839e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  80  call=  2338  total=4.510e-03  PDE=5.650e-04 [colloc=5.230e-04, cfd=4.196e-05]  WALL=3.338e-15  DATA=2.837e-04
+[BFGS-END] batch=  80  last_total=4.546e-03  last_PDE=5.650e-04 [colloc=5.230e-04, cfd=4.196e-05]  last_WALL=3.338e-15  last_DATA=2.837e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  81  last_total=4.546e-03  last_PDE=5.650e-04 [colloc=5.230e-04, cfd=4.196e-05]  last_WALL=3.338e-15  last_DATA=2.837e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  82  call=  2377  total=4.554e-03  PDE=5.648e-04 [colloc=5.229e-04, cfd=4.194e-05]  WALL=3.338e-15  DATA=2.842e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  82  call=  2379  total=4.542e-03  PDE=5.654e-04 [colloc=5.234e-04, cfd=4.198e-05]  WALL=3.339e-15  DATA=2.838e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  82  call=  2386  total=4.508e-03  PDE=5.654e-04 [colloc=5.234e-04, cfd=4.198e-05]  WALL=3.339e-15  DATA=2.838e-04
+[BFGS-END] batch=  82  last_total=4.565e-03  last_PDE=5.654e-04 [colloc=5.234e-04, cfd=4.197e-05]  last_WALL=3.339e-15  last_DATA=2.838e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  83  call=  2407  total=4.527e-03  PDE=5.646e-04 [colloc=5.227e-04, cfd=4.192e-05]  WALL=3.341e-15  DATA=2.832e-04
+[BFGS-END] batch=  83  last_total=4.558e-03  last_PDE=5.646e-04 [colloc=5.227e-04, cfd=4.192e-05]  last_WALL=3.341e-15  last_DATA=2.832e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  84  last_total=4.530e-03  last_PDE=5.652e-04 [colloc=5.234e-04, cfd=4.177e-05]  last_WALL=3.338e-15  last_DATA=2.817e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  85  call=  2447  total=4.523e-03  PDE=5.646e-04 [colloc=5.227e-04, cfd=4.192e-05]  WALL=3.341e-15  DATA=2.832e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  85  call=  2449  total=4.522e-03  PDE=5.648e-04 [colloc=5.229e-04, cfd=4.187e-05]  WALL=3.339e-15  DATA=2.830e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  85  call=  2450  total=4.496e-03  PDE=5.647e-04 [colloc=5.230e-04, cfd=4.166e-05]  WALL=3.339e-15  DATA=2.825e-04
+[BFGS-END] batch=  85  last_total=4.539e-03  last_PDE=5.647e-04 [colloc=5.230e-04, cfd=4.166e-05]  last_WALL=3.339e-15  last_DATA=2.825e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  86  call=  2471  total=4.544e-03  PDE=5.644e-04 [colloc=5.225e-04, cfd=4.191e-05]  WALL=3.341e-15  DATA=2.822e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  86  call=  2473  total=4.526e-03  PDE=5.643e-04 [colloc=5.224e-04, cfd=4.190e-05]  WALL=3.340e-15  DATA=2.823e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  86  call=  2475  total=4.520e-03  PDE=5.640e-04 [colloc=5.223e-04, cfd=4.168e-05]  WALL=3.340e-15  DATA=2.823e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  86  call=  2477  total=4.509e-03  PDE=5.639e-04 [colloc=5.222e-04, cfd=4.163e-05]  WALL=3.339e-15  DATA=2.824e-04
+[BFGS] batch 86: H0 not PD — resetting to identity.
+[BFGS-END] batch=  86  last_total=4.526e-03  last_PDE=5.639e-04 [colloc=5.222e-04, cfd=4.163e-05]  last_WALL=3.339e-15  last_DATA=2.824e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  87  call=  2502  total=4.489e-03  PDE=5.636e-04 [colloc=5.220e-04, cfd=4.163e-05]  WALL=3.340e-15  DATA=2.826e-04
+[BFGS-END] batch=  87  last_total=4.528e-03  last_PDE=5.636e-04 [colloc=5.219e-04, cfd=4.162e-05]  last_WALL=3.340e-15  last_DATA=2.826e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  88  last_total=4.528e-03  last_PDE=5.634e-04 [colloc=5.218e-04, cfd=4.161e-05]  last_WALL=3.340e-15  last_DATA=2.827e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  89  call=  2540  total=4.525e-03  PDE=5.631e-04 [colloc=5.215e-04, cfd=4.159e-05]  WALL=3.342e-15  DATA=2.831e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  89  call=  2543  total=4.512e-03  PDE=5.631e-04 [colloc=5.215e-04, cfd=4.159e-05]  WALL=3.342e-15  DATA=2.831e-04
+[BFGS-END] batch=  89  last_total=4.534e-03  last_PDE=5.625e-04 [colloc=5.210e-04, cfd=4.149e-05]  last_WALL=3.327e-15  last_DATA=2.837e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  90  call=  2568  total=4.530e-03  PDE=5.631e-04 [colloc=5.215e-04, cfd=4.159e-05]  WALL=3.342e-15  DATA=2.831e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  90  call=  2570  total=4.516e-03  PDE=5.628e-04 [colloc=5.212e-04, cfd=4.156e-05]  WALL=3.339e-15  DATA=2.832e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  90  call=  2584  total=4.512e-03  PDE=5.630e-04 [colloc=5.214e-04, cfd=4.154e-05]  WALL=3.340e-15  DATA=2.833e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  90  call=  2595  total=4.492e-03  PDE=5.630e-04 [colloc=5.214e-04, cfd=4.154e-05]  WALL=3.339e-15  DATA=2.832e-04
+[BFGS-END] batch=  90  last_total=4.514e-03  last_PDE=5.630e-04 [colloc=5.214e-04, cfd=4.154e-05]  last_WALL=3.339e-15  last_DATA=2.832e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch=  91  last_total=4.527e-03  last_PDE=5.630e-04 [colloc=5.214e-04, cfd=4.154e-05]  last_WALL=3.339e-15  last_DATA=2.831e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  92  call=  2633  total=4.536e-03  PDE=5.632e-04 [colloc=5.217e-04, cfd=4.152e-05]  WALL=3.340e-15  DATA=2.833e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  92  call=  2635  total=4.512e-03  PDE=5.632e-04 [colloc=5.217e-04, cfd=4.150e-05]  WALL=3.341e-15  DATA=2.835e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  92  call=  2639  total=4.506e-03  PDE=5.632e-04 [colloc=5.217e-04, cfd=4.150e-05]  WALL=3.341e-15  DATA=2.835e-04
+[BFGS-END] batch=  92  last_total=4.534e-03  last_PDE=5.632e-04 [colloc=5.217e-04, cfd=4.150e-05]  last_WALL=3.341e-15  last_DATA=2.835e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  93  call=  2659  total=4.509e-03  PDE=5.629e-04 [colloc=5.214e-04, cfd=4.155e-05]  WALL=3.342e-15  DATA=2.835e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  93  call=  2661  total=4.506e-03  PDE=5.630e-04 [colloc=5.215e-04, cfd=4.157e-05]  WALL=3.340e-15  DATA=2.841e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  93  call=  2663  total=4.495e-03  PDE=5.629e-04 [colloc=5.213e-04, cfd=4.156e-05]  WALL=3.340e-15  DATA=2.842e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  93  call=  2665  total=4.494e-03  PDE=5.624e-04 [colloc=5.209e-04, cfd=4.152e-05]  WALL=3.341e-15  DATA=2.847e-04
+[BFGS-END] batch=  93  last_total=4.534e-03  last_PDE=5.624e-04 [colloc=5.209e-04, cfd=4.152e-05]  last_WALL=3.341e-15  last_DATA=2.847e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  94  call=  2686  total=4.514e-03  PDE=5.624e-04 [colloc=5.209e-04, cfd=4.152e-05]  WALL=3.341e-15  DATA=2.847e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  94  call=  2688  total=4.507e-03  PDE=5.627e-04 [colloc=5.211e-04, cfd=4.159e-05]  WALL=3.344e-15  DATA=2.843e-04
+[BFGS-END] batch=  94  last_total=4.513e-03  last_PDE=5.628e-04 [colloc=5.212e-04, cfd=4.158e-05]  last_WALL=3.343e-15  last_DATA=2.843e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  95  call=  2710  total=4.530e-03  PDE=5.631e-04 [colloc=5.216e-04, cfd=4.157e-05]  WALL=3.342e-15  DATA=2.845e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  95  call=  2712  total=4.522e-03  PDE=5.631e-04 [colloc=5.215e-04, cfd=4.157e-05]  WALL=3.341e-15  DATA=2.846e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  95  call=  2721  total=4.510e-03  PDE=5.630e-04 [colloc=5.214e-04, cfd=4.158e-05]  WALL=3.341e-15  DATA=2.847e-04
+[BFGS-END] batch=  95  last_total=4.547e-03  last_PDE=5.630e-04 [colloc=5.214e-04, cfd=4.158e-05]  last_WALL=3.341e-15  last_DATA=2.847e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  96  call=  2755  total=4.501e-03  PDE=5.630e-04 [colloc=5.214e-04, cfd=4.159e-05]  WALL=3.341e-15  DATA=2.847e-04
+[BFGS-END] batch=  96  last_total=4.503e-03  last_PDE=5.630e-04 [colloc=5.214e-04, cfd=4.159e-05]  last_WALL=3.341e-15  last_DATA=2.847e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  97  call=  2775  total=4.532e-03  PDE=5.631e-04 [colloc=5.215e-04, cfd=4.166e-05]  WALL=3.341e-15  DATA=2.844e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  97  call=  2777  total=4.520e-03  PDE=5.627e-04 [colloc=5.212e-04, cfd=4.157e-05]  WALL=3.342e-15  DATA=2.852e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  97  call=  2779  total=4.518e-03  PDE=5.631e-04 [colloc=5.213e-04, cfd=4.176e-05]  WALL=3.341e-15  DATA=2.849e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  97  call=  2783  total=4.495e-03  PDE=5.627e-04 [colloc=5.209e-04, cfd=4.174e-05]  WALL=3.341e-15  DATA=2.848e-04
+[BFGS-END] batch=  97  last_total=4.520e-03  last_PDE=5.627e-04 [colloc=5.209e-04, cfd=4.174e-05]  last_WALL=3.341e-15  last_DATA=2.848e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  98  call=  2805  total=4.507e-03  PDE=5.621e-04 [colloc=5.202e-04, cfd=4.183e-05]  WALL=3.341e-15  DATA=2.856e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  98  call=  2813  total=4.492e-03  PDE=5.611e-04 [colloc=5.188e-04, cfd=4.227e-05]  WALL=3.342e-15  DATA=2.858e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  98  call=  2821  total=4.476e-03  PDE=5.611e-04 [colloc=5.189e-04, cfd=4.216e-05]  WALL=3.342e-15  DATA=2.850e-04
+[BFGS-END] batch=  98  last_total=4.498e-03  last_PDE=5.611e-04 [colloc=5.189e-04, cfd=4.216e-05]  last_WALL=3.342e-15  last_DATA=2.850e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch=  99  call=  2850  total=4.484e-03  PDE=5.610e-04 [colloc=5.188e-04, cfd=4.216e-05]  WALL=3.342e-15  DATA=2.849e-04
+[BFGS-END] batch=  99  last_total=4.530e-03  last_PDE=5.610e-04 [colloc=5.188e-04, cfd=4.216e-05]  last_WALL=3.342e-15  last_DATA=2.849e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 100  call=  2873  total=4.483e-03  PDE=5.597e-04 [colloc=5.175e-04, cfd=4.227e-05]  WALL=3.343e-15  DATA=2.859e-04
+[BFGS-END] batch= 100  last_total=4.481e-03  last_PDE=5.597e-04 [colloc=5.174e-04, cfd=4.227e-05]  last_WALL=3.343e-15  last_DATA=2.859e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch= 101  last_total=4.508e-03  last_PDE=5.597e-04 [colloc=5.175e-04, cfd=4.227e-05]  last_WALL=3.343e-15  last_DATA=2.859e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch= 102  last_total=4.502e-03  last_PDE=5.597e-04 [colloc=5.175e-04, cfd=4.227e-05]  last_WALL=3.343e-15  last_DATA=2.859e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 103  call=  2933  total=4.479e-03  PDE=5.594e-04 [colloc=5.171e-04, cfd=4.229e-05]  WALL=3.343e-15  DATA=2.860e-04
+[BFGS-END] batch= 103  last_total=4.503e-03  last_PDE=5.594e-04 [colloc=5.171e-04, cfd=4.229e-05]  last_WALL=3.343e-15  last_DATA=2.860e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 104  call=  2958  total=4.481e-03  PDE=5.592e-04 [colloc=5.170e-04, cfd=4.229e-05]  WALL=3.342e-15  DATA=2.858e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 104  call=  2968  total=4.477e-03  PDE=5.591e-04 [colloc=5.168e-04, cfd=4.228e-05]  WALL=3.342e-15  DATA=2.856e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 104  call=  2974  total=4.454e-03  PDE=5.581e-04 [colloc=5.158e-04, cfd=4.223e-05]  WALL=3.341e-15  DATA=2.851e-04
+[BFGS] batch 104: H0 not PD — resetting to identity.
+[BFGS-END] batch= 104  last_total=4.537e-03  last_PDE=5.581e-04 [colloc=5.158e-04, cfd=4.223e-05]  last_WALL=3.341e-15  last_DATA=2.851e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 105  call=  3014  total=4.479e-03  PDE=5.579e-04 [colloc=5.157e-04, cfd=4.217e-05]  WALL=3.342e-15  DATA=2.852e-04
+[BFGS-END] batch= 105  last_total=4.497e-03  last_PDE=5.579e-04 [colloc=5.157e-04, cfd=4.217e-05]  last_WALL=3.342e-15  last_DATA=2.852e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 106  call=  3034  total=4.489e-03  PDE=5.576e-04 [colloc=5.158e-04, cfd=4.178e-05]  WALL=3.342e-15  DATA=2.863e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 106  call=  3045  total=4.487e-03  PDE=5.574e-04 [colloc=5.157e-04, cfd=4.168e-05]  WALL=3.339e-15  DATA=2.864e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 106  call=  3048  total=4.474e-03  PDE=5.574e-04 [colloc=5.157e-04, cfd=4.168e-05]  WALL=3.339e-15  DATA=2.864e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 106  call=  3050  total=4.460e-03  PDE=5.567e-04 [colloc=5.152e-04, cfd=4.152e-05]  WALL=3.338e-15  DATA=2.866e-04
+[BFGS-END] batch= 106  last_total=4.492e-03  last_PDE=5.567e-04 [colloc=5.152e-04, cfd=4.152e-05]  last_WALL=3.338e-15  last_DATA=2.866e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 107  call=  3084  total=4.475e-03  PDE=5.567e-04 [colloc=5.152e-04, cfd=4.150e-05]  WALL=3.339e-15  DATA=2.866e-04
+[BFGS-END] batch= 107  last_total=4.468e-03  last_PDE=5.552e-04 [colloc=5.141e-04, cfd=4.107e-05]  last_WALL=3.339e-15  last_DATA=2.863e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 108  call=  3103  total=4.493e-03  PDE=5.557e-04 [colloc=5.144e-04, cfd=4.131e-05]  WALL=3.339e-15  DATA=2.864e-04
+[BFGS-END] batch= 108  last_total=4.484e-03  last_PDE=5.577e-04 [colloc=5.164e-04, cfd=4.128e-05]  last_WALL=3.355e-15  last_DATA=2.859e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 109  call=  3121  total=4.497e-03  PDE=5.557e-04 [colloc=5.144e-04, cfd=4.131e-05]  WALL=3.339e-15  DATA=2.864e-04
+[BFGS-END] batch= 109  last_total=4.488e-03  last_PDE=5.575e-04 [colloc=5.162e-04, cfd=4.137e-05]  last_WALL=3.350e-15  last_DATA=2.852e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 110  call=  3136  total=4.475e-03  PDE=5.558e-04 [colloc=5.145e-04, cfd=4.129e-05]  WALL=3.342e-15  DATA=2.860e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 110  call=  3138  total=4.463e-03  PDE=5.556e-04 [colloc=5.143e-04, cfd=4.131e-05]  WALL=3.342e-15  DATA=2.856e-04
+[BFGS-END] batch= 110  last_total=4.488e-03  last_PDE=5.556e-04 [colloc=5.143e-04, cfd=4.131e-05]  last_WALL=3.342e-15  last_DATA=2.856e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 111  call=  3158  total=4.463e-03  PDE=5.558e-04 [colloc=5.144e-04, cfd=4.135e-05]  WALL=3.338e-15  DATA=2.855e-04
+[BFGS-END] batch= 111  last_total=4.488e-03  last_PDE=5.557e-04 [colloc=5.143e-04, cfd=4.135e-05]  last_WALL=3.338e-15  last_DATA=2.855e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 112  call=  3195  total=4.471e-03  PDE=5.558e-04 [colloc=5.144e-04, cfd=4.135e-05]  WALL=3.338e-15  DATA=2.855e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 112  call=  3209  total=4.463e-03  PDE=5.557e-04 [colloc=5.144e-04, cfd=4.135e-05]  WALL=3.338e-15  DATA=2.855e-04
+[BFGS-END] batch= 112  last_total=4.489e-03  last_PDE=5.557e-04 [colloc=5.144e-04, cfd=4.135e-05]  last_WALL=3.338e-15  last_DATA=2.855e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 113  call=  3230  total=4.487e-03  PDE=5.548e-04 [colloc=5.135e-04, cfd=4.127e-05]  WALL=3.338e-15  DATA=2.853e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 113  call=  3232  total=4.476e-03  PDE=5.549e-04 [colloc=5.139e-04, cfd=4.109e-05]  WALL=3.338e-15  DATA=2.848e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 113  call=  3234  total=4.469e-03  PDE=5.545e-04 [colloc=5.135e-04, cfd=4.094e-05]  WALL=3.338e-15  DATA=2.850e-04
+[BFGS-END] batch= 113  last_total=4.474e-03  last_PDE=5.545e-04 [colloc=5.135e-04, cfd=4.094e-05]  last_WALL=3.338e-15  last_DATA=2.850e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch= 114  last_total=4.493e-03  last_PDE=5.545e-04 [colloc=5.135e-04, cfd=4.094e-05]  last_WALL=3.338e-15  last_DATA=2.850e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 115  call=  3275  total=4.495e-03  PDE=5.551e-04 [colloc=5.142e-04, cfd=4.087e-05]  WALL=3.337e-15  DATA=2.840e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 115  call=  3277  total=4.479e-03  PDE=5.551e-04 [colloc=5.142e-04, cfd=4.091e-05]  WALL=3.334e-15  DATA=2.836e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 115  call=  3288  total=4.471e-03  PDE=5.551e-04 [colloc=5.142e-04, cfd=4.089e-05]  WALL=3.334e-15  DATA=2.836e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 115  call=  3300  total=4.459e-03  PDE=5.550e-04 [colloc=5.141e-04, cfd=4.089e-05]  WALL=3.334e-15  DATA=2.836e-04
+[BFGS-END] batch= 115  last_total=4.475e-03  last_PDE=5.550e-04 [colloc=5.141e-04, cfd=4.089e-05]  last_WALL=3.334e-15  last_DATA=2.836e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch= 116  last_total=4.498e-03  last_PDE=5.550e-04 [colloc=5.141e-04, cfd=4.089e-05]  last_WALL=3.334e-15  last_DATA=2.836e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 117  call=  3349  total=4.469e-03  PDE=5.549e-04 [colloc=5.141e-04, cfd=4.076e-05]  WALL=3.335e-15  DATA=2.842e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 117  call=  3359  total=4.453e-03  PDE=5.549e-04 [colloc=5.141e-04, cfd=4.076e-05]  WALL=3.335e-15  DATA=2.842e-04
+[BFGS] batch 117: H0 not PD — resetting to identity.
+[BFGS-END] batch= 117  last_total=4.476e-03  last_PDE=5.549e-04 [colloc=5.141e-04, cfd=4.076e-05]  last_WALL=3.335e-15  last_DATA=2.842e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 118  call=  3380  total=4.466e-03  PDE=5.547e-04 [colloc=5.139e-04, cfd=4.074e-05]  WALL=3.340e-15  DATA=2.844e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 118  call=  3392  total=4.461e-03  PDE=5.543e-04 [colloc=5.136e-04, cfd=4.073e-05]  WALL=3.338e-15  DATA=2.843e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 118  call=  3403  total=4.459e-03  PDE=5.542e-04 [colloc=5.134e-04, cfd=4.073e-05]  WALL=3.338e-15  DATA=2.842e-04
+[BFGS-END] batch= 118  last_total=4.515e-03  last_PDE=5.542e-04 [colloc=5.134e-04, cfd=4.073e-05]  last_WALL=3.338e-15  last_DATA=2.842e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch= 119  last_total=4.485e-03  last_PDE=5.541e-04 [colloc=5.134e-04, cfd=4.072e-05]  last_WALL=3.338e-15  last_DATA=2.842e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 120  call=  3441  total=4.453e-03  PDE=5.539e-04 [colloc=5.132e-04, cfd=4.073e-05]  WALL=3.340e-15  DATA=2.842e-04
+[BFGS-END] batch= 120  last_total=4.493e-03  last_PDE=5.539e-04 [colloc=5.132e-04, cfd=4.073e-05]  last_WALL=3.340e-15  last_DATA=2.842e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 121  call=  3463  total=4.473e-03  PDE=5.539e-04 [colloc=5.132e-04, cfd=4.073e-05]  WALL=3.340e-15  DATA=2.842e-04
+[BFGS-END] batch= 121  last_total=4.479e-03  last_PDE=5.539e-04 [colloc=5.132e-04, cfd=4.073e-05]  last_WALL=3.340e-15  last_DATA=2.842e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 122  call=  3483  total=4.483e-03  PDE=5.539e-04 [colloc=5.132e-04, cfd=4.072e-05]  WALL=3.340e-15  DATA=2.842e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 122  call=  3487  total=4.477e-03  PDE=5.539e-04 [colloc=5.132e-04, cfd=4.072e-05]  WALL=3.340e-15  DATA=2.842e-04
+[BFGS-END] batch= 122  last_total=4.446e-03  last_PDE=5.540e-04 [colloc=5.134e-04, cfd=4.069e-05]  last_WALL=3.337e-15  last_DATA=2.839e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 123  call=  3520  total=4.458e-03  PDE=5.539e-04 [colloc=5.132e-04, cfd=4.071e-05]  WALL=3.339e-15  DATA=2.841e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 123  call=  3532  total=4.436e-03  PDE=5.539e-04 [colloc=5.132e-04, cfd=4.071e-05]  WALL=3.339e-15  DATA=2.841e-04
+[BFGS-END] batch= 123  last_total=4.465e-03  last_PDE=5.539e-04 [colloc=5.132e-04, cfd=4.071e-05]  last_WALL=3.339e-15  last_DATA=2.840e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 124  call=  3555  total=4.462e-03  PDE=5.539e-04 [colloc=5.132e-04, cfd=4.071e-05]  WALL=3.339e-15  DATA=2.841e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 124  call=  3557  total=4.462e-03  PDE=5.539e-04 [colloc=5.132e-04, cfd=4.071e-05]  WALL=3.339e-15  DATA=2.839e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 124  call=  3568  total=4.446e-03  PDE=5.539e-04 [colloc=5.132e-04, cfd=4.071e-05]  WALL=3.339e-15  DATA=2.839e-04
+[BFGS-END] batch= 124  last_total=4.483e-03  last_PDE=5.539e-04 [colloc=5.132e-04, cfd=4.071e-05]  last_WALL=3.339e-15  last_DATA=2.838e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 125  call=  3590  total=4.467e-03  PDE=5.539e-04 [colloc=5.132e-04, cfd=4.071e-05]  WALL=3.339e-15  DATA=2.839e-04
+[BFGS-END] batch= 125  last_total=4.497e-03  last_PDE=5.545e-04 [colloc=5.137e-04, cfd=4.078e-05]  last_WALL=3.337e-15  last_DATA=2.821e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 126  call=  3608  total=4.467e-03  PDE=5.539e-04 [colloc=5.132e-04, cfd=4.071e-05]  WALL=3.339e-15  DATA=2.839e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 126  call=  3621  total=4.464e-03  PDE=5.538e-04 [colloc=5.131e-04, cfd=4.072e-05]  WALL=3.339e-15  DATA=2.837e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 126  call=  3631  total=4.453e-03  PDE=5.532e-04 [colloc=5.125e-04, cfd=4.076e-05]  WALL=3.338e-15  DATA=2.824e-04
+[BFGS-END] batch= 126  last_total=4.502e-03  last_PDE=5.532e-04 [colloc=5.125e-04, cfd=4.076e-05]  last_WALL=3.338e-15  last_DATA=2.824e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 127  call=  3651  total=4.454e-03  PDE=5.534e-04 [colloc=5.127e-04, cfd=4.074e-05]  WALL=3.337e-15  DATA=2.822e-04
+[BFGS-END] batch= 127  last_total=4.482e-03  last_PDE=5.534e-04 [colloc=5.127e-04, cfd=4.074e-05]  last_WALL=3.337e-15  last_DATA=2.822e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 128  call=  3673  total=4.462e-03  PDE=5.534e-04 [colloc=5.127e-04, cfd=4.074e-05]  WALL=3.337e-15  DATA=2.822e-04
+[BFGS-END] batch= 128  last_total=4.479e-03  last_PDE=5.534e-04 [colloc=5.127e-04, cfd=4.074e-05]  last_WALL=3.337e-15  last_DATA=2.822e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch= 129  last_total=4.465e-03  last_PDE=5.533e-04 [colloc=5.126e-04, cfd=4.074e-05]  last_WALL=3.336e-15  last_DATA=2.822e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 130  call=  3713  total=4.481e-03  PDE=5.528e-04 [colloc=5.120e-04, cfd=4.086e-05]  WALL=3.337e-15  DATA=2.821e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 130  call=  3715  total=4.474e-03  PDE=5.528e-04 [colloc=5.120e-04, cfd=4.082e-05]  WALL=3.337e-15  DATA=2.817e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 130  call=  3717  total=4.458e-03  PDE=5.524e-04 [colloc=5.117e-04, cfd=4.076e-05]  WALL=3.335e-15  DATA=2.819e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 130  call=  3728  total=4.456e-03  PDE=5.525e-04 [colloc=5.118e-04, cfd=4.077e-05]  WALL=3.335e-15  DATA=2.818e-04
+[BFGS] batch 130: H0 not PD — resetting to identity.
+[BFGS-END] batch= 130  last_total=4.495e-03  last_PDE=5.525e-04 [colloc=5.118e-04, cfd=4.077e-05]  last_WALL=3.335e-15  last_DATA=2.817e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 131  call=  3748  total=4.484e-03  PDE=5.527e-04 [colloc=5.119e-04, cfd=4.077e-05]  WALL=3.337e-15  DATA=2.818e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 131  call=  3750  total=4.450e-03  PDE=5.529e-04 [colloc=5.122e-04, cfd=4.078e-05]  WALL=3.336e-15  DATA=2.817e-04
+[BFGS-END] batch= 131  last_total=4.482e-03  last_PDE=5.530e-04 [colloc=5.122e-04, cfd=4.078e-05]  last_WALL=3.336e-15  last_DATA=2.816e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 132  call=  3785  total=4.457e-03  PDE=5.530e-04 [colloc=5.122e-04, cfd=4.078e-05]  WALL=3.336e-15  DATA=2.817e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 132  call=  3798  total=4.455e-03  PDE=5.530e-04 [colloc=5.122e-04, cfd=4.078e-05]  WALL=3.334e-15  DATA=2.815e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 132  call=  3812  total=4.452e-03  PDE=5.530e-04 [colloc=5.122e-04, cfd=4.078e-05]  WALL=3.334e-15  DATA=2.815e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 132  call=  3824  total=4.440e-03  PDE=5.530e-04 [colloc=5.122e-04, cfd=4.078e-05]  WALL=3.335e-15  DATA=2.815e-04
+[BFGS-END] batch= 132  last_total=4.499e-03  last_PDE=5.530e-04 [colloc=5.122e-04, cfd=4.078e-05]  last_WALL=3.335e-15  last_DATA=2.815e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch= 133  last_total=4.475e-03  last_PDE=5.530e-04 [colloc=5.122e-04, cfd=4.078e-05]  last_WALL=3.335e-15  last_DATA=2.814e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 134  call=  3863  total=4.458e-03  PDE=5.530e-04 [colloc=5.122e-04, cfd=4.078e-05]  WALL=3.335e-15  DATA=2.815e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 134  call=  3865  total=4.440e-03  PDE=5.530e-04 [colloc=5.122e-04, cfd=4.082e-05]  WALL=3.336e-15  DATA=2.812e-04
+[BFGS-END] batch= 134  last_total=4.496e-03  last_PDE=5.530e-04 [colloc=5.122e-04, cfd=4.082e-05]  last_WALL=3.336e-15  last_DATA=2.812e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 135  call=  3885  total=4.473e-03  PDE=5.531e-04 [colloc=5.123e-04, cfd=4.078e-05]  WALL=3.336e-15  DATA=2.815e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 135  call=  3887  total=4.443e-03  PDE=5.529e-04 [colloc=5.121e-04, cfd=4.076e-05]  WALL=3.337e-15  DATA=2.817e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 135  call=  3889  total=4.432e-03  PDE=5.529e-04 [colloc=5.122e-04, cfd=4.073e-05]  WALL=3.338e-15  DATA=2.818e-04
+[BFGS-END] batch= 135  last_total=4.475e-03  last_PDE=5.529e-04 [colloc=5.122e-04, cfd=4.073e-05]  last_WALL=3.338e-15  last_DATA=2.818e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 136  call=  3910  total=4.457e-03  PDE=5.529e-04 [colloc=5.122e-04, cfd=4.073e-05]  WALL=3.338e-15  DATA=2.818e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 136  call=  3921  total=4.455e-03  PDE=5.531e-04 [colloc=5.124e-04, cfd=4.073e-05]  WALL=3.338e-15  DATA=2.818e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 136  call=  3925  total=4.454e-03  PDE=5.531e-04 [colloc=5.124e-04, cfd=4.073e-05]  WALL=3.338e-15  DATA=2.818e-04
+[BFGS-END] batch= 136  last_total=4.478e-03  last_PDE=5.531e-04 [colloc=5.124e-04, cfd=4.073e-05]  last_WALL=3.338e-15  last_DATA=2.818e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 137  call=  3945  total=4.467e-03  PDE=5.529e-04 [colloc=5.122e-04, cfd=4.069e-05]  WALL=3.338e-15  DATA=2.823e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 137  call=  3947  total=4.453e-03  PDE=5.532e-04 [colloc=5.124e-04, cfd=4.074e-05]  WALL=3.339e-15  DATA=2.820e-04
+[BFGS] batch 137: H0 not PD — resetting to identity.
+[BFGS-END] batch= 137  last_total=4.464e-03  last_PDE=5.531e-04 [colloc=5.124e-04, cfd=4.074e-05]  last_WALL=3.339e-15  last_DATA=2.820e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch= 138  last_total=4.446e-03  last_PDE=5.527e-04 [colloc=5.120e-04, cfd=4.073e-05]  last_WALL=3.332e-15  last_DATA=2.819e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 139  call=  3986  total=4.468e-03  PDE=5.529e-04 [colloc=5.122e-04, cfd=4.074e-05]  WALL=3.336e-15  DATA=2.820e-04
+[BFGS-END] batch= 139  last_total=4.459e-03  last_PDE=5.532e-04 [colloc=5.124e-04, cfd=4.080e-05]  last_WALL=3.337e-15  last_DATA=2.819e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 140  call=  4005  total=4.477e-03  PDE=5.529e-04 [colloc=5.122e-04, cfd=4.074e-05]  WALL=3.336e-15  DATA=2.820e-04
+[BFGS-END] batch= 140  last_total=4.493e-03  last_PDE=5.562e-04 [colloc=5.153e-04, cfd=4.094e-05]  last_WALL=3.338e-15  last_DATA=2.818e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 141  call=  4021  total=4.458e-03  PDE=5.528e-04 [colloc=5.121e-04, cfd=4.073e-05]  WALL=3.337e-15  DATA=2.819e-04
+[BFGS-END] batch= 141  last_total=4.476e-03  last_PDE=5.528e-04 [colloc=5.120e-04, cfd=4.073e-05]  last_WALL=3.337e-15  last_DATA=2.819e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 142  call=  4041  total=4.451e-03  PDE=5.527e-04 [colloc=5.120e-04, cfd=4.072e-05]  WALL=3.338e-15  DATA=2.820e-04
+[BFGS-END] batch= 142  last_total=4.465e-03  last_PDE=5.527e-04 [colloc=5.120e-04, cfd=4.072e-05]  last_WALL=3.338e-15  last_DATA=2.820e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 143  call=  4062  total=4.452e-03  PDE=5.527e-04 [colloc=5.120e-04, cfd=4.072e-05]  WALL=3.338e-15  DATA=2.820e-04
+[BFGS-END] batch= 143  last_total=4.490e-03  last_PDE=5.527e-04 [colloc=5.120e-04, cfd=4.072e-05]  last_WALL=3.338e-15  last_DATA=2.820e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 144  call=  4084  total=4.477e-03  PDE=5.528e-04 [colloc=5.121e-04, cfd=4.069e-05]  WALL=3.339e-15  DATA=2.819e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 144  call=  4089  total=4.468e-03  PDE=5.528e-04 [colloc=5.121e-04, cfd=4.069e-05]  WALL=3.339e-15  DATA=2.819e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 144  call=  4094  total=4.463e-03  PDE=5.528e-04 [colloc=5.121e-04, cfd=4.069e-05]  WALL=3.339e-15  DATA=2.819e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 144  call=  4096  total=4.449e-03  PDE=5.529e-04 [colloc=5.123e-04, cfd=4.068e-05]  WALL=3.338e-15  DATA=2.817e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 144  call=  4099  total=4.448e-03  PDE=5.529e-04 [colloc=5.123e-04, cfd=4.068e-05]  WALL=3.338e-15  DATA=2.817e-04
+[BFGS-END] batch= 144  last_total=4.478e-03  last_PDE=5.529e-04 [colloc=5.123e-04, cfd=4.068e-05]  last_WALL=3.338e-15  last_DATA=2.817e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 145  call=  4119  total=4.479e-03  PDE=5.531e-04 [colloc=5.124e-04, cfd=4.069e-05]  WALL=3.338e-15  DATA=2.817e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 145  call=  4121  total=4.478e-03  PDE=5.531e-04 [colloc=5.124e-04, cfd=4.070e-05]  WALL=3.339e-15  DATA=2.817e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 145  call=  4123  total=4.456e-03  PDE=5.530e-04 [colloc=5.123e-04, cfd=4.071e-05]  WALL=3.339e-15  DATA=2.816e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 145  call=  4134  total=4.448e-03  PDE=5.529e-04 [colloc=5.122e-04, cfd=4.071e-05]  WALL=3.338e-15  DATA=2.814e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 145  call=  4149  total=4.445e-03  PDE=5.529e-04 [colloc=5.121e-04, cfd=4.071e-05]  WALL=3.338e-15  DATA=2.814e-04
+[BFGS] batch 145: H0 not PD — resetting to identity.
+[BFGS-END] batch= 145  last_total=4.480e-03  last_PDE=5.528e-04 [colloc=5.121e-04, cfd=4.071e-05]  last_WALL=3.338e-15  last_DATA=2.814e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 146  call=  4169  total=4.488e-03  PDE=5.528e-04 [colloc=5.121e-04, cfd=4.070e-05]  WALL=3.337e-15  DATA=2.813e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 146  call=  4171  total=4.470e-03  PDE=5.528e-04 [colloc=5.121e-04, cfd=4.070e-05]  WALL=3.336e-15  DATA=2.813e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 146  call=  4185  total=4.461e-03  PDE=5.528e-04 [colloc=5.120e-04, cfd=4.072e-05]  WALL=3.336e-15  DATA=2.813e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 146  call=  4187  total=4.460e-03  PDE=5.528e-04 [colloc=5.121e-04, cfd=4.072e-05]  WALL=3.337e-15  DATA=2.813e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 146  call=  4189  total=4.456e-03  PDE=5.527e-04 [colloc=5.120e-04, cfd=4.072e-05]  WALL=3.337e-15  DATA=2.814e-04
+[BFGS-END] batch= 146  last_total=4.448e-03  last_PDE=5.521e-04 [colloc=5.114e-04, cfd=4.072e-05]  last_WALL=3.335e-15  last_DATA=2.816e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 147  call=  4207  total=4.462e-03  PDE=5.527e-04 [colloc=5.120e-04, cfd=4.072e-05]  WALL=3.337e-15  DATA=2.814e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 147  call=  4210  total=4.458e-03  PDE=5.527e-04 [colloc=5.120e-04, cfd=4.072e-05]  WALL=3.337e-15  DATA=2.814e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 147  call=  4222  total=4.442e-03  PDE=5.528e-04 [colloc=5.121e-04, cfd=4.072e-05]  WALL=3.337e-15  DATA=2.815e-04
+[BFGS-END] batch= 147  last_total=4.497e-03  last_PDE=5.528e-04 [colloc=5.121e-04, cfd=4.072e-05]  last_WALL=3.337e-15  last_DATA=2.815e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 148  call=  4243  total=4.469e-03  PDE=5.528e-04 [colloc=5.121e-04, cfd=4.072e-05]  WALL=3.337e-15  DATA=2.815e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 148  call=  4247  total=4.462e-03  PDE=5.528e-04 [colloc=5.121e-04, cfd=4.072e-05]  WALL=3.337e-15  DATA=2.815e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 148  call=  4259  total=4.458e-03  PDE=5.529e-04 [colloc=5.122e-04, cfd=4.070e-05]  WALL=3.336e-15  DATA=2.817e-04
+[BFGS-END] batch= 148  last_total=4.444e-03  last_PDE=5.532e-04 [colloc=5.122e-04, cfd=4.096e-05]  last_WALL=3.343e-15  last_DATA=2.830e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 149  call=  4274  total=4.482e-03  PDE=5.524e-04 [colloc=5.117e-04, cfd=4.071e-05]  WALL=3.337e-15  DATA=2.822e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 149  call=  4279  total=4.475e-03  PDE=5.523e-04 [colloc=5.116e-04, cfd=4.071e-05]  WALL=3.337e-15  DATA=2.823e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 149  call=  4281  total=4.464e-03  PDE=5.524e-04 [colloc=5.117e-04, cfd=4.075e-05]  WALL=3.341e-15  DATA=2.824e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 149  call=  4298  total=4.462e-03  PDE=5.524e-04 [colloc=5.117e-04, cfd=4.075e-05]  WALL=3.341e-15  DATA=2.824e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 149  call=  4305  total=4.458e-03  PDE=5.524e-04 [colloc=5.117e-04, cfd=4.070e-05]  WALL=3.341e-15  DATA=2.825e-04
+[BFGS-END] batch= 149  last_total=4.484e-03  last_PDE=5.524e-04 [colloc=5.117e-04, cfd=4.070e-05]  last_WALL=3.341e-15  last_DATA=2.825e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 150  call=  4325  total=4.461e-03  PDE=5.525e-04 [colloc=5.117e-04, cfd=4.082e-05]  WALL=3.342e-15  DATA=2.825e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 150  call=  4338  total=4.448e-03  PDE=5.526e-04 [colloc=5.117e-04, cfd=4.083e-05]  WALL=3.342e-15  DATA=2.825e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 150  call=  4349  total=4.439e-03  PDE=5.526e-04 [colloc=5.117e-04, cfd=4.085e-05]  WALL=3.342e-15  DATA=2.823e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 150  call=  4351  total=4.430e-03  PDE=5.524e-04 [colloc=5.116e-04, cfd=4.076e-05]  WALL=3.342e-15  DATA=2.825e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 150  call=  4361  total=4.419e-03  PDE=5.524e-04 [colloc=5.117e-04, cfd=4.075e-05]  WALL=3.341e-15  DATA=2.825e-04
+[BFGS] batch 150: H0 not PD — resetting to identity.
+[BFGS-END] batch= 150  last_total=4.503e-03  last_PDE=5.524e-04 [colloc=5.117e-04, cfd=4.075e-05]  last_WALL=3.341e-15  last_DATA=2.825e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 151  call=  4381  total=4.466e-03  PDE=5.522e-04 [colloc=5.115e-04, cfd=4.074e-05]  WALL=3.339e-15  DATA=2.824e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 151  call=  4399  total=4.455e-03  PDE=5.523e-04 [colloc=5.115e-04, cfd=4.074e-05]  WALL=3.339e-15  DATA=2.824e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 151  call=  4413  total=4.454e-03  PDE=5.524e-04 [colloc=5.116e-04, cfd=4.074e-05]  WALL=3.340e-15  DATA=2.824e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 151  call=  4416  total=4.449e-03  PDE=5.524e-04 [colloc=5.116e-04, cfd=4.074e-05]  WALL=3.340e-15  DATA=2.824e-04
+[BFGS-END] batch= 151  last_total=4.480e-03  last_PDE=5.524e-04 [colloc=5.116e-04, cfd=4.074e-05]  last_WALL=3.340e-15  last_DATA=2.824e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 152  call=  4436  total=4.470e-03  PDE=5.523e-04 [colloc=5.116e-04, cfd=4.076e-05]  WALL=3.339e-15  DATA=2.822e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 152  call=  4451  total=4.467e-03  PDE=5.523e-04 [colloc=5.115e-04, cfd=4.077e-05]  WALL=3.341e-15  DATA=2.822e-04
+[BFGS-END] batch= 152  last_total=4.451e-03  last_PDE=5.510e-04 [colloc=5.103e-04, cfd=4.066e-05]  last_WALL=3.333e-15  last_DATA=2.820e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 153  call=  4466  total=4.461e-03  PDE=5.520e-04 [colloc=5.112e-04, cfd=4.073e-05]  WALL=3.339e-15  DATA=2.821e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 153  call=  4468  total=4.446e-03  PDE=5.517e-04 [colloc=5.110e-04, cfd=4.073e-05]  WALL=3.339e-15  DATA=2.820e-04
+[BFGS-END] batch= 153  last_total=4.441e-03  last_PDE=5.518e-04 [colloc=5.110e-04, cfd=4.079e-05]  last_WALL=3.336e-15  last_DATA=2.810e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 154  call=  4484  total=4.462e-03  PDE=5.519e-04 [colloc=5.111e-04, cfd=4.074e-05]  WALL=3.337e-15  DATA=2.819e-04
+[BFGS-END] batch= 154  last_total=4.493e-03  last_PDE=5.530e-04 [colloc=5.123e-04, cfd=4.077e-05]  last_WALL=3.334e-15  last_DATA=2.801e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 155  call=  4503  total=4.453e-03  PDE=5.519e-04 [colloc=5.112e-04, cfd=4.070e-05]  WALL=3.338e-15  DATA=2.821e-04
+[BFGS-END] batch= 155  last_total=4.474e-03  last_PDE=5.529e-04 [colloc=5.121e-04, cfd=4.082e-05]  last_WALL=3.346e-15  last_DATA=2.805e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 156  call=  4523  total=4.454e-03  PDE=5.519e-04 [colloc=5.112e-04, cfd=4.070e-05]  WALL=3.338e-15  DATA=2.821e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 156  call=  4527  total=4.451e-03  PDE=5.519e-04 [colloc=5.112e-04, cfd=4.070e-05]  WALL=3.338e-15  DATA=2.821e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 156  call=  4535  total=4.448e-03  PDE=5.518e-04 [colloc=5.111e-04, cfd=4.069e-05]  WALL=3.338e-15  DATA=2.818e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 156  call=  4538  total=4.426e-03  PDE=5.518e-04 [colloc=5.111e-04, cfd=4.069e-05]  WALL=3.338e-15  DATA=2.818e-04
+[BFGS-END] batch= 156  last_total=4.490e-03  last_PDE=5.518e-04 [colloc=5.111e-04, cfd=4.069e-05]  last_WALL=3.338e-15  last_DATA=2.818e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 157  call=  4558  total=4.458e-03  PDE=5.517e-04 [colloc=5.111e-04, cfd=4.065e-05]  WALL=3.337e-15  DATA=2.815e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 157  call=  4560  total=4.446e-03  PDE=5.516e-04 [colloc=5.110e-04, cfd=4.057e-05]  WALL=3.336e-15  DATA=2.810e-04
+[BFGS] batch 157: H0 not PD — resetting to identity.
+[BFGS-END] batch= 157  last_total=4.469e-03  last_PDE=5.516e-04 [colloc=5.110e-04, cfd=4.057e-05]  last_WALL=3.336e-15  last_DATA=2.810e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 158  call=  4581  total=4.449e-03  PDE=5.515e-04 [colloc=5.110e-04, cfd=4.057e-05]  WALL=3.338e-15  DATA=2.811e-04
+[BFGS-END] batch= 158  last_total=4.449e-03  last_PDE=5.512e-04 [colloc=5.106e-04, cfd=4.060e-05]  last_WALL=3.339e-15  last_DATA=2.810e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 159  call=  4603  total=4.465e-03  PDE=5.515e-04 [colloc=5.110e-04, cfd=4.057e-05]  WALL=3.338e-15  DATA=2.811e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 159  call=  4620  total=4.459e-03  PDE=5.515e-04 [colloc=5.109e-04, cfd=4.057e-05]  WALL=3.338e-15  DATA=2.811e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 159  call=  4624  total=4.455e-03  PDE=5.515e-04 [colloc=5.109e-04, cfd=4.057e-05]  WALL=3.338e-15  DATA=2.811e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 159  call=  4644  total=4.440e-03  PDE=5.515e-04 [colloc=5.109e-04, cfd=4.057e-05]  WALL=3.338e-15  DATA=2.811e-04
+[BFGS-END] batch= 159  last_total=4.457e-03  last_PDE=5.515e-04 [colloc=5.109e-04, cfd=4.057e-05]  last_WALL=3.338e-15  last_DATA=2.811e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 160  call=  4664  total=4.451e-03  PDE=5.513e-04 [colloc=5.107e-04, cfd=4.058e-05]  WALL=3.337e-15  DATA=2.810e-04
+[BFGS-END] batch= 160  last_total=4.495e-03  last_PDE=5.522e-04 [colloc=5.113e-04, cfd=4.088e-05]  last_WALL=3.342e-15  last_DATA=2.806e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 161  call=  4682  total=4.453e-03  PDE=5.515e-04 [colloc=5.109e-04, cfd=4.066e-05]  WALL=3.339e-15  DATA=2.808e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 161  call=  4697  total=4.439e-03  PDE=5.516e-04 [colloc=5.109e-04, cfd=4.067e-05]  WALL=3.340e-15  DATA=2.808e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 161  call=  4712  total=4.435e-03  PDE=5.516e-04 [colloc=5.109e-04, cfd=4.067e-05]  WALL=3.339e-15  DATA=2.808e-04
+[BFGS-END] batch= 161  last_total=4.461e-03  last_PDE=5.516e-04 [colloc=5.109e-04, cfd=4.067e-05]  last_WALL=3.339e-15  last_DATA=2.808e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 162  call=  4732  total=4.452e-03  PDE=5.516e-04 [colloc=5.110e-04, cfd=4.066e-05]  WALL=3.340e-15  DATA=2.811e-04
+[BFGS-END] batch= 162  last_total=4.490e-03  last_PDE=5.516e-04 [colloc=5.110e-04, cfd=4.066e-05]  last_WALL=3.340e-15  last_DATA=2.811e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 163  call=  4752  total=4.464e-03  PDE=5.514e-04 [colloc=5.108e-04, cfd=4.063e-05]  WALL=3.339e-15  DATA=2.811e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 163  call=  4756  total=4.445e-03  PDE=5.514e-04 [colloc=5.108e-04, cfd=4.063e-05]  WALL=3.339e-15  DATA=2.811e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 163  call=  4771  total=4.432e-03  PDE=5.514e-04 [colloc=5.107e-04, cfd=4.063e-05]  WALL=3.339e-15  DATA=2.811e-04
+[BFGS-END] batch= 163  last_total=4.471e-03  last_PDE=5.514e-04 [colloc=5.108e-04, cfd=4.063e-05]  last_WALL=3.339e-15  last_DATA=2.811e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 164  call=  4791  total=4.473e-03  PDE=5.519e-04 [colloc=5.112e-04, cfd=4.067e-05]  WALL=3.338e-15  DATA=2.811e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 164  call=  4793  total=4.461e-03  PDE=5.514e-04 [colloc=5.108e-04, cfd=4.060e-05]  WALL=3.338e-15  DATA=2.813e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 164  call=  4795  total=4.455e-03  PDE=5.515e-04 [colloc=5.109e-04, cfd=4.061e-05]  WALL=3.337e-15  DATA=2.810e-04
+[BFGS-END] batch= 164  last_total=4.449e-03  last_PDE=5.503e-04 [colloc=5.093e-04, cfd=4.104e-05]  last_WALL=3.342e-15  last_DATA=2.809e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 165  call=  4820  total=4.444e-03  PDE=5.512e-04 [colloc=5.107e-04, cfd=4.055e-05]  WALL=3.338e-15  DATA=2.811e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 165  call=  4826  total=4.425e-03  PDE=5.508e-04 [colloc=5.103e-04, cfd=4.057e-05]  WALL=3.339e-15  DATA=2.806e-04
+[BFGS-END] batch= 165  last_total=4.467e-03  last_PDE=5.508e-04 [colloc=5.103e-04, cfd=4.057e-05]  last_WALL=3.339e-15  last_DATA=2.806e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 166  call=  4846  total=4.476e-03  PDE=5.504e-04 [colloc=5.099e-04, cfd=4.053e-05]  WALL=3.337e-15  DATA=2.810e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 166  call=  4848  total=4.474e-03  PDE=5.505e-04 [colloc=5.101e-04, cfd=4.043e-05]  WALL=3.336e-15  DATA=2.808e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 166  call=  4851  total=4.454e-03  PDE=5.505e-04 [colloc=5.101e-04, cfd=4.043e-05]  WALL=3.336e-15  DATA=2.808e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 166  call=  4853  total=4.437e-03  PDE=5.503e-04 [colloc=5.098e-04, cfd=4.045e-05]  WALL=3.337e-15  DATA=2.806e-04
+[BFGS] batch 166: H0 not PD — resetting to identity.
+[BFGS-END] batch= 166  last_total=4.505e-03  last_PDE=5.503e-04 [colloc=5.098e-04, cfd=4.045e-05]  last_WALL=3.337e-15  last_DATA=2.806e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 167  call=  4873  total=4.441e-03  PDE=5.502e-04 [colloc=5.098e-04, cfd=4.046e-05]  WALL=3.339e-15  DATA=2.807e-04
+[BFGS-END] batch= 167  last_total=4.483e-03  last_PDE=5.502e-04 [colloc=5.098e-04, cfd=4.045e-05]  last_WALL=3.339e-15  last_DATA=2.807e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 168  call=  4895  total=4.458e-03  PDE=5.504e-04 [colloc=5.099e-04, cfd=4.046e-05]  WALL=3.340e-15  DATA=2.807e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 168  call=  4897  total=4.451e-03  PDE=5.503e-04 [colloc=5.099e-04, cfd=4.046e-05]  WALL=3.338e-15  DATA=2.807e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 168  call=  4909  total=4.434e-03  PDE=5.504e-04 [colloc=5.099e-04, cfd=4.048e-05]  WALL=3.338e-15  DATA=2.807e-04
+[BFGS-END] batch= 168  last_total=4.480e-03  last_PDE=5.504e-04 [colloc=5.099e-04, cfd=4.048e-05]  last_WALL=3.338e-15  last_DATA=2.807e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch= 169  last_total=4.474e-03  last_PDE=5.504e-04 [colloc=5.099e-04, cfd=4.049e-05]  last_WALL=3.339e-15  last_DATA=2.807e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 170  call=  4948  total=4.468e-03  PDE=5.504e-04 [colloc=5.099e-04, cfd=4.048e-05]  WALL=3.338e-15  DATA=2.807e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 170  call=  4950  total=4.452e-03  PDE=5.505e-04 [colloc=5.100e-04, cfd=4.049e-05]  WALL=3.339e-15  DATA=2.807e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 170  call=  4962  total=4.443e-03  PDE=5.507e-04 [colloc=5.102e-04, cfd=4.052e-05]  WALL=3.339e-15  DATA=2.806e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 170  call=  4964  total=4.442e-03  PDE=5.506e-04 [colloc=5.101e-04, cfd=4.053e-05]  WALL=3.340e-15  DATA=2.806e-04
+[BFGS-END] batch= 170  last_total=4.461e-03  last_PDE=5.506e-04 [colloc=5.101e-04, cfd=4.053e-05]  last_WALL=3.340e-15  last_DATA=2.806e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 171  call=  4984  total=4.451e-03  PDE=5.507e-04 [colloc=5.102e-04, cfd=4.057e-05]  WALL=3.340e-15  DATA=2.803e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 171  call=  4989  total=4.439e-03  PDE=5.507e-04 [colloc=5.102e-04, cfd=4.057e-05]  WALL=3.340e-15  DATA=2.803e-04
+[BFGS-END] batch= 171  last_total=4.478e-03  last_PDE=5.507e-04 [colloc=5.102e-04, cfd=4.057e-05]  last_WALL=3.340e-15  last_DATA=2.803e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 172  call=  5012  total=4.473e-03  PDE=5.507e-04 [colloc=5.102e-04, cfd=4.057e-05]  WALL=3.340e-15  DATA=2.803e-04
+[BFGS-END] batch= 172  last_total=4.444e-03  last_PDE=5.508e-04 [colloc=5.102e-04, cfd=4.060e-05]  last_WALL=3.338e-15  last_DATA=2.800e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 173  call=  5031  total=4.436e-03  PDE=5.507e-04 [colloc=5.102e-04, cfd=4.057e-05]  WALL=3.340e-15  DATA=2.803e-04
+[BFGS-END] batch= 173  last_total=4.451e-03  last_PDE=5.507e-04 [colloc=5.102e-04, cfd=4.057e-05]  last_WALL=3.340e-15  last_DATA=2.803e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 174  call=  5051  total=4.470e-03  PDE=5.507e-04 [colloc=5.102e-04, cfd=4.055e-05]  WALL=3.338e-15  DATA=2.805e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 174  call=  5054  total=4.452e-03  PDE=5.507e-04 [colloc=5.101e-04, cfd=4.055e-05]  WALL=3.338e-15  DATA=2.805e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 174  call=  5069  total=4.443e-03  PDE=5.507e-04 [colloc=5.101e-04, cfd=4.055e-05]  WALL=3.338e-15  DATA=2.805e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 174  call=  5074  total=4.428e-03  PDE=5.507e-04 [colloc=5.101e-04, cfd=4.055e-05]  WALL=3.338e-15  DATA=2.805e-04
+[BFGS-END] batch= 174  last_total=4.443e-03  last_PDE=5.507e-04 [colloc=5.101e-04, cfd=4.055e-05]  last_WALL=3.338e-15  last_DATA=2.805e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 175  call=  5104  total=4.452e-03  PDE=5.507e-04 [colloc=5.101e-04, cfd=4.055e-05]  WALL=3.338e-15  DATA=2.804e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 175  call=  5114  total=4.450e-03  PDE=5.506e-04 [colloc=5.100e-04, cfd=4.055e-05]  WALL=3.336e-15  DATA=2.804e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 175  call=  5122  total=4.444e-03  PDE=5.505e-04 [colloc=5.100e-04, cfd=4.051e-05]  WALL=3.337e-15  DATA=2.803e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 175  call=  5132  total=4.444e-03  PDE=5.505e-04 [colloc=5.100e-04, cfd=4.050e-05]  WALL=3.337e-15  DATA=2.803e-04
+[BFGS-END] batch= 175  last_total=4.463e-03  last_PDE=5.505e-04 [colloc=5.100e-04, cfd=4.050e-05]  last_WALL=3.337e-15  last_DATA=2.803e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 176  call=  5151  total=4.427e-03  PDE=5.497e-04 [colloc=5.092e-04, cfd=4.049e-05]  WALL=3.339e-15  DATA=2.808e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 176  call=  5161  total=4.420e-03  PDE=5.497e-04 [colloc=5.092e-04, cfd=4.047e-05]  WALL=3.339e-15  DATA=2.807e-04
+[BFGS-END] batch= 176  last_total=4.452e-03  last_PDE=5.497e-04 [colloc=5.092e-04, cfd=4.047e-05]  last_WALL=3.339e-15  last_DATA=2.807e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 177  call=  5181  total=4.450e-03  PDE=5.496e-04 [colloc=5.091e-04, cfd=4.044e-05]  WALL=3.339e-15  DATA=2.808e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 177  call=  5182  total=4.434e-03  PDE=5.472e-04 [colloc=5.074e-04, cfd=3.984e-05]  WALL=3.346e-15  DATA=2.831e-04
+[BFGS-END] batch= 177  last_total=4.464e-03  last_PDE=5.472e-04 [colloc=5.074e-04, cfd=3.984e-05]  last_WALL=3.346e-15  last_DATA=2.831e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 178  call=  5203  total=4.428e-03  PDE=5.472e-04 [colloc=5.073e-04, cfd=3.987e-05]  WALL=3.346e-15  DATA=2.838e-04
+[BFGS-END] batch= 178  last_total=4.449e-03  last_PDE=5.471e-04 [colloc=5.073e-04, cfd=3.987e-05]  last_WALL=3.346e-15  last_DATA=2.838e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch= 179  last_total=4.480e-03  last_PDE=5.471e-04 [colloc=5.073e-04, cfd=3.987e-05]  last_WALL=3.346e-15  last_DATA=2.838e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 180  call=  5245  total=4.435e-03  PDE=5.471e-04 [colloc=5.073e-04, cfd=3.987e-05]  WALL=3.346e-15  DATA=2.838e-04
+[BFGS-END] batch= 180  last_total=4.463e-03  last_PDE=5.471e-04 [colloc=5.073e-04, cfd=3.987e-05]  last_WALL=3.346e-15  last_DATA=2.838e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 181  call=  5269  total=4.436e-03  PDE=5.471e-04 [colloc=5.073e-04, cfd=3.987e-05]  WALL=3.346e-15  DATA=2.838e-04
+[BFGS-END] batch= 181  last_total=4.441e-03  last_PDE=5.470e-04 [colloc=5.072e-04, cfd=3.985e-05]  last_WALL=3.346e-15  last_DATA=2.839e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 182  call=  5290  total=4.462e-03  PDE=5.467e-04 [colloc=5.070e-04, cfd=3.970e-05]  WALL=3.346e-15  DATA=2.844e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 182  call=  5292  total=4.448e-03  PDE=5.457e-04 [colloc=5.060e-04, cfd=3.968e-05]  WALL=3.340e-15  DATA=2.838e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 182  call=  5294  total=4.429e-03  PDE=5.444e-04 [colloc=5.046e-04, cfd=3.980e-05]  WALL=3.340e-15  DATA=2.839e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 182  call=  5296  total=4.423e-03  PDE=5.446e-04 [colloc=5.050e-04, cfd=3.961e-05]  WALL=3.336e-15  DATA=2.828e-04
+[BFGS] batch 182: H0 not PD — resetting to identity.
+[BFGS-END] batch= 182  last_total=4.445e-03  last_PDE=5.446e-04 [colloc=5.050e-04, cfd=3.961e-05]  last_WALL=3.337e-15  last_DATA=2.828e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch= 183  last_total=4.440e-03  last_PDE=5.451e-04 [colloc=5.055e-04, cfd=3.964e-05]  last_WALL=3.340e-15  last_DATA=2.823e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 184  call=  5354  total=4.427e-03  PDE=5.444e-04 [colloc=5.048e-04, cfd=3.962e-05]  WALL=3.338e-15  DATA=2.826e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 184  call=  5361  total=4.419e-03  PDE=5.447e-04 [colloc=5.049e-04, cfd=3.981e-05]  WALL=3.342e-15  DATA=2.811e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 184  call=  5370  total=4.415e-03  PDE=5.445e-04 [colloc=5.047e-04, cfd=3.983e-05]  WALL=3.340e-15  DATA=2.806e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 184  call=  5381  total=4.407e-03  PDE=5.445e-04 [colloc=5.047e-04, cfd=3.984e-05]  WALL=3.340e-15  DATA=2.806e-04
+[BFGS-END] batch= 184  last_total=4.451e-03  last_PDE=5.445e-04 [colloc=5.047e-04, cfd=3.984e-05]  last_WALL=3.340e-15  last_DATA=2.806e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 185  call=  5402  total=4.406e-03  PDE=5.445e-04 [colloc=5.046e-04, cfd=3.984e-05]  WALL=3.340e-15  DATA=2.806e-04
+[BFGS-END] batch= 185  last_total=4.428e-03  last_PDE=5.445e-04 [colloc=5.046e-04, cfd=3.984e-05]  last_WALL=3.340e-15  last_DATA=2.806e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 186  call=  5437  total=4.425e-03  PDE=5.444e-04 [colloc=5.046e-04, cfd=3.985e-05]  WALL=3.341e-15  DATA=2.805e-04
+[BFGS-END] batch= 186  last_total=4.456e-03  last_PDE=5.444e-04 [colloc=5.046e-04, cfd=3.985e-05]  last_WALL=3.341e-15  last_DATA=2.805e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 187  call=  5468  total=4.426e-03  PDE=5.448e-04 [colloc=5.048e-04, cfd=4.006e-05]  WALL=3.343e-15  DATA=2.794e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 187  call=  5484  total=4.423e-03  PDE=5.448e-04 [colloc=5.047e-04, cfd=4.006e-05]  WALL=3.342e-15  DATA=2.793e-04
+[BFGS-END] batch= 187  last_total=4.434e-03  last_PDE=5.448e-04 [colloc=5.047e-04, cfd=4.006e-05]  last_WALL=3.342e-15  last_DATA=2.793e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 188  call=  5504  total=4.425e-03  PDE=5.448e-04 [colloc=5.046e-04, cfd=4.013e-05]  WALL=3.340e-15  DATA=2.788e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 188  call=  5520  total=4.423e-03  PDE=5.448e-04 [colloc=5.046e-04, cfd=4.012e-05]  WALL=3.340e-15  DATA=2.788e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 188  call=  5527  total=4.419e-03  PDE=5.448e-04 [colloc=5.047e-04, cfd=4.009e-05]  WALL=3.339e-15  DATA=2.786e-04
+[BFGS-END] batch= 188  last_total=4.425e-03  last_PDE=5.448e-04 [colloc=5.047e-04, cfd=4.009e-05]  last_WALL=3.339e-15  last_DATA=2.786e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 189  call=  5548  total=4.425e-03  PDE=5.447e-04 [colloc=5.047e-04, cfd=4.007e-05]  WALL=3.340e-15  DATA=2.785e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 189  call=  5550  total=4.415e-03  PDE=5.440e-04 [colloc=5.039e-04, cfd=4.000e-05]  WALL=3.340e-15  DATA=2.780e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 189  call=  5558  total=4.412e-03  PDE=5.447e-04 [colloc=5.048e-04, cfd=3.995e-05]  WALL=3.341e-15  DATA=2.767e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 189  call=  5566  total=4.404e-03  PDE=5.445e-04 [colloc=5.046e-04, cfd=3.988e-05]  WALL=3.338e-15  DATA=2.764e-04
+[BFGS-END] batch= 189  last_total=4.451e-03  last_PDE=5.445e-04 [colloc=5.046e-04, cfd=3.988e-05]  last_WALL=3.338e-15  last_DATA=2.764e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 190  call=  5588  total=4.441e-03  PDE=5.446e-04 [colloc=5.048e-04, cfd=3.987e-05]  WALL=3.335e-15  DATA=2.764e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 190  call=  5590  total=4.393e-03  PDE=5.442e-04 [colloc=5.042e-04, cfd=4.001e-05]  WALL=3.337e-15  DATA=2.759e-04
+[BFGS-END] batch= 190  last_total=4.422e-03  last_PDE=5.442e-04 [colloc=5.042e-04, cfd=4.001e-05]  last_WALL=3.337e-15  last_DATA=2.759e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 191  call=  5610  total=4.421e-03  PDE=5.438e-04 [colloc=5.038e-04, cfd=4.002e-05]  WALL=3.339e-15  DATA=2.757e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 191  call=  5612  total=4.410e-03  PDE=5.438e-04 [colloc=5.038e-04, cfd=4.001e-05]  WALL=3.339e-15  DATA=2.754e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 191  call=  5616  total=4.404e-03  PDE=5.438e-04 [colloc=5.038e-04, cfd=4.001e-05]  WALL=3.339e-15  DATA=2.754e-04
+[BFGS] batch 191: H0 not PD — resetting to identity.
+[BFGS-END] batch= 191  last_total=4.423e-03  last_PDE=5.438e-04 [colloc=5.038e-04, cfd=4.001e-05]  last_WALL=3.339e-15  last_DATA=2.754e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 192  call=  5637  total=4.422e-03  PDE=5.437e-04 [colloc=5.037e-04, cfd=3.999e-05]  WALL=3.338e-15  DATA=2.754e-04
+[BFGS-END] batch= 192  last_total=4.455e-03  last_PDE=5.437e-04 [colloc=5.037e-04, cfd=3.999e-05]  last_WALL=3.338e-15  last_DATA=2.754e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 193  call=  5670  total=4.393e-03  PDE=5.435e-04 [colloc=5.036e-04, cfd=3.994e-05]  WALL=3.339e-15  DATA=2.759e-04
+[BFGS-END] batch= 193  last_total=4.412e-03  last_PDE=5.435e-04 [colloc=5.036e-04, cfd=3.993e-05]  last_WALL=3.339e-15  last_DATA=2.759e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+[BFGS-END] batch= 194  last_total=4.420e-03  last_PDE=5.435e-04 [colloc=5.036e-04, cfd=3.992e-05]  last_WALL=3.339e-15  last_DATA=2.760e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 195  call=  5708  total=4.440e-03  PDE=5.438e-04 [colloc=5.039e-04, cfd=3.988e-05]  WALL=3.340e-15  DATA=2.761e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 195  call=  5710  total=4.423e-03  PDE=5.437e-04 [colloc=5.039e-04, cfd=3.981e-05]  WALL=3.336e-15  DATA=2.763e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 195  call=  5712  total=4.403e-03  PDE=5.437e-04 [colloc=5.039e-04, cfd=3.974e-05]  WALL=3.335e-15  DATA=2.764e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 195  call=  5725  total=4.401e-03  PDE=5.437e-04 [colloc=5.040e-04, cfd=3.972e-05]  WALL=3.338e-15  DATA=2.765e-04
+[BFGS-END] batch= 195  last_total=4.437e-03  last_PDE=5.437e-04 [colloc=5.040e-04, cfd=3.972e-05]  last_WALL=3.338e-15  last_DATA=2.765e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 196  call=  5747  total=4.431e-03  PDE=5.437e-04 [colloc=5.040e-04, cfd=3.972e-05]  WALL=3.338e-15  DATA=2.765e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 196  call=  5749  total=4.418e-03  PDE=5.435e-04 [colloc=5.038e-04, cfd=3.971e-05]  WALL=3.338e-15  DATA=2.765e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 196  call=  5753  total=4.405e-03  PDE=5.435e-04 [colloc=5.038e-04, cfd=3.971e-05]  WALL=3.338e-15  DATA=2.765e-04
+[BFGS-END] batch= 196  last_total=4.411e-03  last_PDE=5.435e-04 [colloc=5.038e-04, cfd=3.971e-05]  last_WALL=3.338e-15  last_DATA=2.765e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 197  call=  5773  total=4.409e-03  PDE=5.431e-04 [colloc=5.034e-04, cfd=3.970e-05]  WALL=3.337e-15  DATA=2.771e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 197  call=  5785  total=4.409e-03  PDE=5.435e-04 [colloc=5.038e-04, cfd=3.974e-05]  WALL=3.336e-15  DATA=2.771e-04
+[BFGS-END] batch= 197  last_total=4.428e-03  last_PDE=5.435e-04 [colloc=5.038e-04, cfd=3.974e-05]  last_WALL=3.336e-15  last_DATA=2.771e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 198  call=  5804  total=4.383e-03  PDE=5.433e-04 [colloc=5.036e-04, cfd=3.973e-05]  WALL=3.336e-15  DATA=2.774e-04
+[BFGS-END] batch= 198  last_total=4.392e-03  last_PDE=5.433e-04 [colloc=5.036e-04, cfd=3.973e-05]  last_WALL=3.336e-15  last_DATA=2.774e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 199  call=  5825  total=4.423e-03  PDE=5.431e-04 [colloc=5.034e-04, cfd=3.971e-05]  WALL=3.336e-15  DATA=2.777e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 199  call=  5827  total=4.402e-03  PDE=5.435e-04 [colloc=5.037e-04, cfd=3.976e-05]  WALL=3.340e-15  DATA=2.777e-04
+[BFGS-END] batch= 199  last_total=4.397e-03  last_PDE=5.448e-04 [colloc=5.049e-04, cfd=3.995e-05]  last_WALL=3.345e-15  last_DATA=2.783e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 200  call=  5848  total=4.385e-03  PDE=5.435e-04 [colloc=5.037e-04, cfd=3.976e-05]  WALL=3.340e-15  DATA=2.777e-04
+[BFGS-END] batch= 200  last_total=4.391e-03  last_PDE=5.435e-04 [colloc=5.037e-04, cfd=3.976e-05]  last_WALL=3.340e-15  last_DATA=2.777e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 201  call=  5869  total=4.405e-03  PDE=5.435e-04 [colloc=5.037e-04, cfd=3.976e-05]  WALL=3.340e-15  DATA=2.777e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 201  call=  5873  total=4.387e-03  PDE=5.435e-04 [colloc=5.037e-04, cfd=3.976e-05]  WALL=3.340e-15  DATA=2.777e-04
+[BFGS-END] batch= 201  last_total=4.444e-03  last_PDE=5.435e-04 [colloc=5.037e-04, cfd=3.976e-05]  last_WALL=3.340e-15  last_DATA=2.777e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 202  call=  5893  total=4.415e-03  PDE=5.431e-04 [colloc=5.034e-04, cfd=3.976e-05]  WALL=3.341e-15  DATA=2.780e-04
+[BFGS-END] batch= 202  last_total=4.411e-03  last_PDE=5.431e-04 [colloc=5.034e-04, cfd=3.976e-05]  last_WALL=3.341e-15  last_DATA=2.780e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 203  call=  5915  total=4.403e-03  PDE=5.431e-04 [colloc=5.034e-04, cfd=3.976e-05]  WALL=3.341e-15  DATA=2.780e-04
+[BFGS-END] batch= 203  last_total=4.418e-03  last_PDE=5.431e-04 [colloc=5.034e-04, cfd=3.976e-05]  last_WALL=3.341e-15  last_DATA=2.780e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 204  call=  5935  total=4.417e-03  PDE=5.431e-04 [colloc=5.033e-04, cfd=3.981e-05]  WALL=3.341e-15  DATA=2.780e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 204  call=  5938  total=4.410e-03  PDE=5.431e-04 [colloc=5.033e-04, cfd=3.981e-05]  WALL=3.341e-15  DATA=2.780e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 204  call=  5949  total=4.400e-03  PDE=5.431e-04 [colloc=5.033e-04, cfd=3.976e-05]  WALL=3.342e-15  DATA=2.780e-04
+[BFGS] batch 204: H0 not PD — resetting to identity.
+[BFGS-END] batch= 204  last_total=4.403e-03  last_PDE=5.431e-04 [colloc=5.033e-04, cfd=3.976e-05]  last_WALL=3.342e-15  last_DATA=2.780e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 205  call=  5971  total=4.420e-03  PDE=5.431e-04 [colloc=5.033e-04, cfd=3.976e-05]  WALL=3.340e-15  DATA=2.779e-04
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 205  call=  5980  total=4.418e-03  PDE=5.432e-04 [colloc=5.034e-04, cfd=3.975e-05]  WALL=3.340e-15  DATA=2.780e-04
+[BFGS-END] batch= 205  last_total=4.438e-03  last_PDE=5.448e-04 [colloc=5.048e-04, cfd=3.993e-05]  last_WALL=3.331e-15  last_DATA=2.784e-04
+/oscar/home/jchen790/cylinder flow lab/src/cfp40.py:1400: OptimizeWarning: Unknown solver options: hess, hessp, bounds, constraints, tol
+  result = minimize(
+Invoked: SSBroyden1 approach!
+[BFGS] batch= 206  call=  5995  total=4.402e-03  PDE=5.432e-04 [colloc=5.035e-04, cfd=3.975e-05]  WALL=3.339e-15  DATA=2.781e-04
+[BFGS-END] batch= 206  last_total=4.443e-03  last_PDE=5.432e-04 [colloc=5.035e-04, cfd=3.975e-05]  last_WALL=3.339e-15  last_DATA=2.781e-04
+[BFGS] done. total_calls=6014  best_loss=4.383347e-03
+[train] Saved -> ../runs/ablation/cfd_anchor_p/checkpoints/pinn_Re40_single.pt
+[viz] loaded ../runs/ablation/cfd_anchor_p/checkpoints/pinn_Re40_single.pt
+
+============================================================
+ABSOLUTE error on CFD point cloud (target: ~1e-4 ~ 1e-5)
+============================================================
+  points used           : 4869
+  speed magnitude (mean): 7.0030e-01
+  mae_u                 : 9.3591e-03
+  mae_v                 : 5.9405e-03
+  rmse_u                : 1.3831e-02
+  rmse_v                : 9.3154e-03
+  max |eu|              : 5.6933e-02
+  max |ev|              : 5.3676e-02
+  rel_l2_u              : 1.7085e-02
+  rel_l2_v              : 7.3568e-02
+
+[viz] saved ../runs/ablation/cfd_anchor_p/viz/re40_single_vorticity.png
+[viz] saved ../runs/ablation/cfd_anchor_p/viz/re40_single_speed.png
+[done] cell 'cfd_anchor_p' finished -> ../runs/ablation/cfd_anchor_p/checkpoints/pinn_Re40_single.pt
